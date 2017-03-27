@@ -1,6 +1,6 @@
 #version 400
 out vec4 fragColor;
-uniform vec4 color;
+//uniform vec4 color;
 
 void main()
 {
@@ -8,6 +8,8 @@ void main()
   vec2 position = 2 * gl_PointCoord - 1;
 
   // fragment is inside the circle when the length is smaller than one
-  float scale = length(position) < 1 ? 1 : 0;
-  fragColor = color * scale;
+  //vec4 a = color;
+  fragColor = length(position) < 1 ? vec4(0,0,0,1) : vec4(1,1,1,1);
+
+  //fragColor = color; //* scale;
 }
