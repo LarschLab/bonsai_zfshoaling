@@ -338,13 +338,14 @@ def process(value):
     wellstr = "%0.f %0.f %0.3f" % welldata
     allwells.append(wellstr)
 
-  xp=value.Item2.Item2/2.
-  yp=value.Item2.Item3/2.
-  sp=value.Item2.Item4*500
+  xp=value.Item2.Item2
+  yp=value.Item2.Item3
+  sp=value.Item2.Item4
+  eName=value.Item2.Item1
 
-  welldata = ((round(xp)), (round(yp)), 0)
+  welldata = ((round(xp)), (round(yp)), sp,eName)
   allCoor.append([xp,yp,xoff,yoff,sp])
-  wellstr = "%0.f %0.f %0.3f" % welldata
+  wellstr = "%0.f %0.f %0.f %s" % welldata
   allwells.append(wellstr)  
 
   toDraw=[]
@@ -719,12 +720,48 @@ def process(inputs):
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>\\O1-298\data2\b\2017\FixVarSize_test.csv</q3:FileName>
+        <q3:FileName>\\O1-298\data2\b\2017\VarSizeSprites01_test.csv</q3:FileName>
         <q3:ScanPattern>%s,%f,%f,%f</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="Zip" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="RepeatCount">
+          <Count>26</Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Buffer">
+          <Count>1</Count>
+          <Skip>10</Skip>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="SelectMany">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Concat" />
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>2</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
       </Expression>
     </Nodes>
     <Edges>
@@ -815,13 +852,28 @@ def process(inputs):
       </Edge>
       <Edge>
         <From>18</From>
-        <To>19</To>
-        <Label>Source2</Label>
+        <To>20</To>
+        <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>19</From>
         <To>2</To>
         <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>20</From>
+        <To>21</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>21</From>
+        <To>22</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>22</From>
+        <To>19</To>
+        <Label>Source2</Label>
       </Edge>
     </Edges>
   </Workflow>
@@ -847,5 +899,7 @@ def process(inputs):
     <Type>Bonsai.Shaders.DrawArrays, Bonsai.Shaders, Version=0.16.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.CsvReader, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.RepeatCount, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Buffer, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
