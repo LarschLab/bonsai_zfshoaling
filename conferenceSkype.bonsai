@@ -26,9 +26,9 @@ allCoor=[]
 oldCoor=[]
 
 def transf(x,y):
-  values = Array[float]([0.937164942927109, 0.01804231993398031, 15.749625993518926,
- -0.017824421340766766, 0.9391464341755035, 61.52281770774729,
- -2.5852511641587885e-06, 7.443860971386423e-06, 1.0])
+  values = Array[float]([0.9271299372832925, 0.015435469380171572, 22.016640722106533,
+ -0.022144577222853266, 0.9311909930928342, 73.8836436004395,
+ -5.818711593274499e-06, 6.624876098799e-06, 1.0])
 
   h = Mat.FromArray(values, 3, 3, Depth.F64, 1)
 
@@ -702,7 +702,7 @@ def process(inputs):
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-03-24T09_47_25.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-03-28T10_27_23.csv</q3:FileName>
         <q3:ScanPattern>%i %i %i %i %i %i</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
@@ -720,7 +720,7 @@ def process(inputs):
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>\\O1-298\data2\b\2017\VarSizeSprites01_test.csv</q3:FileName>
+        <q3:FileName>\\O1-298\data2\b\2017\VarSizeSprites01.csv</q3:FileName>
         <q3:ScanPattern>%s,%f,%f,%f</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
@@ -731,37 +731,6 @@ def process(inputs):
         <Combinator xsi:type="RepeatCount">
           <Count>26</Count>
         </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Buffer">
-          <Count>1</Count>
-          <Skip>10</Skip>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="SelectMany">
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Concat" />
-            </Expression>
-          </Nodes>
-          <Edges>
-            <Edge>
-              <From>0</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-          </Edges>
-        </Workflow>
       </Expression>
     </Nodes>
     <Edges>
@@ -862,16 +831,6 @@ def process(inputs):
       </Edge>
       <Edge>
         <From>20</From>
-        <To>21</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>21</From>
-        <To>22</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>22</From>
         <To>19</To>
         <Label>Source2</Label>
       </Edge>
@@ -900,6 +859,5 @@ def process(inputs):
     <Type>Bonsai.IO.CsvReader, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.RepeatCount, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Buffer, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
