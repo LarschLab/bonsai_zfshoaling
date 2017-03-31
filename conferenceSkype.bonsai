@@ -20,17 +20,14 @@ clr.AddReference("OpenCV.Net")
 from OpenCV.Net import *
 import math
 
-xMax=2048.0
+xMax=2048.0 #relevant for openGL scaling
 yMax=1280.0
 allCoor=[]
 oldCoor=[]
 
-def transf(x,y):
-  values = Array[float]([0.6747984177444281, -1.6791373756504249, 298.4195591870471,
- -0.010677370068575543, -1.0153952604223122, 335.67287823232266,
- 8.052923031368625e-07, -0.0016418920784208695, 1.0])
+def transf(x,y,hArr):
 
-  h = Mat.FromArray(values, 3, 3, Depth.F64, 1)
+  h = Mat.FromArray(hArr, 3, 3, Depth.F64, 1)
 
   values1 = Array[float]([x,y])
   values2 = Array[float]([1,1])
@@ -44,24 +41,6 @@ def transf(x,y):
   y=out.Item[0].Val1
 
   return x,y
-
-def pairList():
-  l=[[0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
- [1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
- [1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
- [1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
- [1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
- [1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
- [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
- [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
- [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
- [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0],
- [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0],
- [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0],
- [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0],
- [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0],
- [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0]]
-  return l
 
 @returns(Tuple[str,Array[Vector3]])
 def process(value):
@@ -81,6 +60,7 @@ def process(value):
     y = well.Centroid.Y
     o=well.Orientation
 
+    #use previous coordinates if current coordinates are NaN
     if math.isnan(x):
       if len(oldCoor)&gt;0:
         x=oldCoor[w][0]
@@ -89,7 +69,6 @@ def process(value):
         yoff=oldCoor[w][3]
         o=oldCoor[w][4]
 
-    
     i+=1
 
     welldata = ((round(x)), (round(y)), o)
@@ -97,9 +76,10 @@ def process(value):
     wellstr = "%0.f %0.f %0.3f" % welldata
     allwells.append(wellstr)
 
+  #add one more row, representing pre recorded trajectory, episode name and disc size for visual stimulation
   xp=value.Item2.Item2
   yp=value.Item2.Item3
-  sp=value.Item2.Item4
+  sp=value.Item2.Item4 #sprite point size
   eName=value.Item2.Item1
 
   welldata = ((round(xp)), (round(yp)), sp,eName)
@@ -109,7 +89,8 @@ def process(value):
 
   toDraw=[]
 
-  drawList=pairList()
+  drawList=value.Item1.Item3 #animal pair matrix
+  hArr =value.Item1.Item4 #projector-camera calibration matrix
 
   
   for i in range(len(allCoor)):
@@ -121,12 +102,12 @@ def process(value):
         x=p[0]+allCoor[ii][2]
         y=p[1]+allCoor[ii][3]
 
-        x,y=transf(x,y)
+        x,y=transf(x,y,hArr) ##projector-camera calibration
 
         toDraw.append([x,y])
 
 
-  ar=Array[Vector3]([Vector3(2*(well[0]-xMax/2)/xMax,-2*(well[1]-yMax/2)/yMax,sp) for well in toDraw])
+  ar=Array[Vector3]([Vector3(int(2*(well[0]-xMax/2))/xMax,int(-2*(well[1]-yMax/2))/yMax,sp) for well in toDraw])
  
   return Tuple.Create(" ".join(allwells),ar)</q2:Script>
       </Expression>
@@ -164,8 +145,8 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q4:Crop">
                 <q4:RegionOfInterest>
-                  <q4:X>1645</q4:X>
-                  <q4:Y>847</q4:Y>
+                  <q4:X>1657</q4:X>
+                  <q4:Y>823</q4:Y>
                   <q4:Width>388</q4:Width>
                   <q4:Height>388</q4:Height>
                 </q4:RegionOfInterest>
@@ -210,6 +191,12 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="Zip" />
             </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Source.Item3</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Source.Item4</Selector>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge>
@@ -220,6 +207,16 @@ def process(value):
             <Edge>
               <From>0</From>
               <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>0</From>
+              <To>13</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>0</From>
+              <To>14</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
@@ -281,6 +278,16 @@ def process(value):
               <From>12</From>
               <To>1</To>
               <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>13</From>
+              <To>12</To>
+              <Label>Source3</Label>
+            </Edge>
+            <Edge>
+              <From>14</From>
+              <To>12</To>
+              <Label>Source4</Label>
             </Edge>
           </Edges>
         </Workflow>
@@ -461,7 +468,7 @@ def process(inputs):
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-03-30T10_20_34.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-03-31T10_00_41.csv</q3:FileName>
         <q3:ScanPattern>%i %i %i %i %i %i</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
@@ -490,6 +497,35 @@ def process(inputs):
         <Combinator xsi:type="RepeatCount">
           <Count>26</Count>
         </Combinator>
+      </Expression>
+      <Expression xsi:type="q2:PythonTransform">
+        <q2:Name>splitPairList</q2:Name>
+        <q2:Script>@returns(list)
+def process(value):
+  pairList=[]
+  for l in value:
+    pairList.append([int(x) for x in l.split()])
+  return pairList</q2:Script>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="ToList" />
+      </Expression>
+      <Expression xsi:type="q3:CsvReader">
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_16_eachWithLast.txt</q3:FileName>
+        <q3:ScanPattern>%s</q3:ScanPattern>
+        <q3:SkipRows>0</q3:SkipRows>
+      </Expression>
+      <Expression xsi:type="q3:CsvReader">
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2017-03-31T11_13_48.csv</q3:FileName>
+        <q3:ScanPattern>%s</q3:ScanPattern>
+        <q3:SkipRows>0</q3:SkipRows>
+      </Expression>
+      <Expression xsi:type="q2:PythonTransform">
+        <q2:Name>split_hMat</q2:Name>
+        <q2:Script>from System import Array
+@returns(Array)
+def process(value):
+  return Array[float]([float(el) for el in value.split()])</q2:Script>
       </Expression>
     </Nodes>
     <Edges>
@@ -592,6 +628,31 @@ def process(inputs):
         <From>20</From>
         <To>19</To>
         <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>21</From>
+        <To>7</To>
+        <Label>Source3</Label>
+      </Edge>
+      <Edge>
+        <From>22</From>
+        <To>21</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>23</From>
+        <To>22</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>24</From>
+        <To>25</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>25</From>
+        <To>7</To>
+        <Label>Source4</Label>
       </Edge>
     </Edges>
   </Workflow>
