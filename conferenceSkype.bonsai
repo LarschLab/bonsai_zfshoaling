@@ -25,6 +25,18 @@ yMax=1280.0
 allCoor=[]
 oldCoor=[]
 
+def correctFish(x,y,xOff,yOff,xMax,xMaxCm):
+
+  scale=xMax/xMaxCm
+  xR=x+xOff
+  yR=y+yOff
+
+  xR=xR-(scale*(xR-xMax/2.)/(79*scale))
+  yR=yR-(scale*(yR-yMax/2.)/(79*scale))
+
+  return xR-xOff,yR-yOff
+
+
 def transf(x,y,hArr):
 
   h = Mat.FromArray(hArr, 3, 3, Depth.F64, 1)
@@ -68,6 +80,8 @@ def process(value):
         xoff=oldCoor[w][2]
         yoff=oldCoor[w][3]
         o=oldCoor[w][4]
+    else:
+      x,y = correctFish(x,y,xoff,yoff,xMax,53.)
 
     i+=1
 
@@ -91,6 +105,8 @@ def process(value):
 
   drawList=value.Item1.Item3 #animal pair matrix
   hArr =value.Item1.Item4 #projector-camera calibration matrix
+  
+  scale=xMax/53.
 
   
   for i in range(len(allCoor)):
@@ -101,6 +117,9 @@ def process(value):
       if l[ii]==1:
         x=p[0]+allCoor[ii][2]
         y=p[1]+allCoor[ii][3]
+  
+        #x=x-(scale*(x-xMax/2.)/(79*scale))
+        #y=y-(scale*(y-yMax/2.)/(79*scale))
 
         x,y=transf(x,y,hArr) ##projector-camera calibration
 
@@ -468,7 +487,7 @@ def process(inputs):
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-04-24T15_45_28.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-04-26T15_14_03.csv</q3:FileName>
         <q3:ScanPattern>%i %i %i %i %i %i</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
@@ -480,7 +499,7 @@ def process(inputs):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q4:Threshold">
-          <q4:ThresholdValue>15</q4:ThresholdValue>
+          <q4:ThresholdValue>20</q4:ThresholdValue>
           <q4:MaxValue>255</q4:MaxValue>
           <q4:ThresholdType>Binary</q4:ThresholdType>
         </Combinator>
@@ -516,7 +535,7 @@ def process(value):
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2017-04-24T15_47_32.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2017-04-26T15_14_47.csv</q3:FileName>
         <q3:ScanPattern>%s</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
@@ -526,6 +545,272 @@ def process(value):
 @returns(Array)
 def process(value):
   return Array[float]([float(el) for el in value.split()])</q2:Script>
+      </Expression>
+      <Expression xsi:type="q2:ExpressionTransform">
+        <q2:Expression>(it%10)&lt;-5</q2:Expression>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="Timer">
+          <DueTime>PT0S</DueTime>
+          <Period>PT1S</Period>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="CombineLatest" />
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q5:DrawMesh">
+                <q5:ShaderName>Waveform</q5:ShaderName>
+                <q5:MeshName>Waveform</q5:MeshName>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q5:UpdateUniform">
+                <q5:UniformName>frequency</q5:UniformName>
+                <q5:ShaderName>Waveform</q5:ShaderName>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q5:UpdateVertexBuffer">
+                <q5:MeshName>Waveform</q5:MeshName>
+                <q5:DrawMode>Points</q5:DrawMode>
+                <q5:Usage>DynamicDraw</q5:Usage>
+                <q5:VertexAttributes>
+                  <q5:VertexAttributeMapping>
+                    <q5:Size>2</q5:Size>
+                    <q5:Normalized>false</q5:Normalized>
+                    <q5:Type>Double</q5:Type>
+                  </q5:VertexAttributeMapping>
+                </q5:VertexAttributes>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q5:UpdateUniform">
+                <q5:UniformName>phase</q5:UniformName>
+                <q5:ShaderName>Waveform</q5:ShaderName>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>20</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Source.Item1</Selector>
+            </Expression>
+            <Expression xsi:type="q2:ExpressionTransform">
+              <q2:Expression>single(it)</q2:Expression>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="CombineLatest" />
+            </Expression>
+            <Expression xsi:type="Accumulate" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Take">
+                <Count>5</Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="q2:PythonTransform">
+              <q2:Script>import clr
+clr.AddReference("OpenTK")
+from OpenTK import Vector2, Vector3
+from System import Array, Single, Random,Tuple
+clr.AddReference("OpenCV.Net")
+from OpenCV.Net import *
+
+xMax=2048.0 #relevant for openGL scaling
+yMax=1280.0
+
+def transf(x,y,hArr):
+
+  h = Mat.FromArray(hArr, 3, 3, Depth.F64, 1)
+
+  values1 = Array[float]([x,y])
+  values2 = Array[float]([1,1])
+
+  point = Mat.FromArray(values1, 1, 1, Depth.F64,2)
+  out = Mat.FromArray(values2, 1, 1, Depth.F64,2)
+
+  CV.PerspectiveTransform(point,out,h)
+
+  x=out.Item[0].Val0
+  y=out.Item[0].Val1
+
+  return x,y
+
+@returns(Mat)
+def process(value):
+  hArr =value.Item2
+
+
+  x = [r.Item4 for r in value.Item1]
+  y = [r.Item5 for r in value.Item1]
+  scale=xMax/52.
+  for i in range(len(x)):
+    
+    
+    
+    x[i]=x[i]-(x[i]-xMax/2.)/(79*scale)
+    y[i]=y[i]-(y[i]-yMax/2.)/(79*scale)
+    x[i],y[i]=transf(x[i],y[i],hArr)
+    x[i]=(2*(x[i]-xMax/2))/xMax
+    y[i]=(-2*(y[i]-yMax/2))/yMax
+
+  
+  xy=sum(zip(x, y), ()) 
+
+  xyA = Array[float](xy)
+
+
+  xym = Mat.FromArray(xyA, len(value.Item1), 2, Depth.F64, 1)
+
+  return xym</q2:Script>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Source.Item2.EventArgs.Time</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Source.Item3,Source.Item4</Selector>
+            </Expression>
+            <Expression xsi:type="Condition">
+              <Workflow>
+                <Nodes>
+                  <Expression xsi:type="WorkflowInput">
+                    <Name>Source1</Name>
+                  </Expression>
+                  <Expression xsi:type="WorkflowOutput" />
+                  <Expression xsi:type="MemberSelector">
+                    <Selector>Source.Item1</Selector>
+                  </Expression>
+                </Nodes>
+                <Edges>
+                  <Edge>
+                    <From>0</From>
+                    <To>2</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                  <Edge>
+                    <From>2</From>
+                    <To>1</To>
+                    <Label>Source1</Label>
+                  </Edge>
+                </Edges>
+              </Workflow>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>5</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="Zip" />
+            </Expression>
+            <Expression xsi:type="Multiply" />
+          </Nodes>
+          <Edges>
+            <Edge>
+              <From>0</From>
+              <To>4</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>3</From>
+              <To>0</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>4</From>
+              <To>1</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>5</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>16</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
+              <To>15</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>7</From>
+              <To>5</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>6</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>9</From>
+              <To>7</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>10</From>
+              <To>7</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>11</From>
+              <To>8</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>11</From>
+              <To>9</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>12</From>
+              <To>10</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>13</From>
+              <To>11</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>13</From>
+              <To>12</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>14</From>
+              <To>13</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>15</From>
+              <To>16</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>16</From>
+              <To>17</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>17</From>
+              <To>3</To>
+              <Label>Source1</Label>
+            </Edge>
+          </Edges>
+        </Workflow>
       </Expression>
     </Nodes>
     <Edges>
@@ -565,6 +850,11 @@ def process(value):
         <Label>Source1</Label>
       </Edge>
       <Edge>
+        <From>5</From>
+        <To>28</To>
+        <Label>Source3</Label>
+      </Edge>
+      <Edge>
         <From>6</From>
         <To>19</To>
         <Label>Source1</Label>
@@ -593,6 +883,11 @@ def process(value):
         <From>12</From>
         <To>15</To>
         <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>12</From>
+        <To>28</To>
+        <Label>Source2</Label>
       </Edge>
       <Edge>
         <From>14</From>
@@ -654,6 +949,26 @@ def process(value):
         <To>7</To>
         <Label>Source4</Label>
       </Edge>
+      <Edge>
+        <From>25</From>
+        <To>28</To>
+        <Label>Source4</Label>
+      </Edge>
+      <Edge>
+        <From>26</From>
+        <To>28</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>27</From>
+        <To>26</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>28</From>
+        <To>29</To>
+        <Label>Source1</Label>
+      </Edge>
     </Edges>
   </Workflow>
   <ExtensionTypes>
@@ -674,10 +989,19 @@ def process(value):
     <Type>Bonsai.Scripting.PythonSource, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.IntProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Expressions.IntProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.UpdateFrame, Bonsai.Shaders, Version=0.16.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.DrawArrays, Bonsai.Shaders, Version=0.16.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Shaders.UpdateFrame, Bonsai.Shaders, Version=0.16.1.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Shaders.DrawArrays, Bonsai.Shaders, Version=0.16.1.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.CsvReader, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.RepeatCount, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Scripting.ExpressionTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Timer, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Shaders.DrawMesh, Bonsai.Shaders, Version=0.16.1.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Shaders.UpdateUniform, Bonsai.Shaders, Version=0.16.1.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Shaders.UpdateVertexBuffer, Bonsai.Shaders, Version=0.16.1.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.FloatProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.AccumulateBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Expressions.MultiplyBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
