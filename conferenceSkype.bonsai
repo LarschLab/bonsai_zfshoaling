@@ -5,7 +5,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
           <q1:Index>0</q1:Index>
-          <q1:ConfigFile>C:\Users\jlarsch\Documents\bonsai\ids\2048x1280_30fps_c.ini</q1:ConfigFile>
+          <q1:ConfigFile>C:\Users\jlarsch\Documents\bonsai\ids\2048x1280_30fps_d_slowClock.ini</q1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -164,8 +164,8 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q4:Crop">
                 <q4:RegionOfInterest>
-                  <q4:X>1638</q4:X>
-                  <q4:Y>846</q4:Y>
+                  <q4:X>1632</q4:X>
+                  <q4:Y>852</q4:Y>
                   <q4:Width>390</q4:Width>
                   <q4:Height>390</q4:Height>
                 </q4:RegionOfInterest>
@@ -487,7 +487,7 @@ def process(inputs):
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-04-26T15_14_03.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-07-19T15_47_11.csv</q3:FileName>
         <q3:ScanPattern>%i %i %i %i %i %i</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
@@ -505,7 +505,7 @@ def process(inputs):
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>\\O1-298\data2\b\2017\VarSizeSprites01.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\kineticParameters_05b.csv</q3:FileName>
         <q3:ScanPattern>%s,%f,%f,%f</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
@@ -514,7 +514,7 @@ def process(inputs):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="RepeatCount">
-          <Count>26</Count>
+          <Count>20</Count>
         </Combinator>
       </Expression>
       <Expression xsi:type="q2:PythonTransform">
@@ -535,7 +535,7 @@ def process(value):
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2017-04-26T15_14_47.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2017-07-19T15_48_52.csv</q3:FileName>
         <q3:ScanPattern>%s</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
