@@ -68,6 +68,9 @@ def process(value):
     xoff=value.Item1.Item2[i].Item1
     yoff=value.Item1.Item2[i].Item2
 
+    #Also correct dish ROI! Added 7-19-2017
+    xoff,yoff = correctFish(xoff,yoff,0,0,xMax,53.)
+
     x = well.Centroid.X
     y = well.Centroid.Y
     o=well.Orientation
@@ -164,10 +167,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q4:Crop">
                 <q4:RegionOfInterest>
-                  <q4:X>1632</q4:X>
-                  <q4:Y>852</q4:Y>
-                  <q4:Width>390</q4:Width>
-                  <q4:Height>390</q4:Height>
+                  <q4:X>1621</q4:X>
+                  <q4:Y>859</q4:Y>
+                  <q4:Width>388</q4:Width>
+                  <q4:Height>388</q4:Height>
                 </q4:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -487,7 +490,7 @@ def process(inputs):
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-07-19T15_47_11.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-07-19T16_23_07.csv</q3:FileName>
         <q3:ScanPattern>%i %i %i %i %i %i</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
