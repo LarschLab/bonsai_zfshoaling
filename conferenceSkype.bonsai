@@ -54,13 +54,15 @@ def transf(x,y,hArr):
 
   return x,y
 
-@returns(Tuple[str,Array[Vector3]])
+@returns(Tuple[str,Array[Vector3],Single,Single])
 def process(value):
   global allCoor,xMax,yMax,oldCoor
 
   allwells=[]
   oldCoor=allCoor
   allCoor=[]
+  bgCol=0
+  DotCol=1
   i=0
   for w in range(len(value.Item1.Item1)):
 
@@ -97,6 +99,10 @@ def process(value):
   xp=value.Item2.Item2
   yp=value.Item2.Item3
   sp=value.Item2.Item4 #sprite point size
+  bgCol=value.Item2.Item5
+  DotCol=value.Item2.Item6
+
+
   eName=value.Item2.Item1
 
   welldata = ((round(xp)), (round(yp)), sp,eName)
@@ -130,8 +136,8 @@ def process(value):
 
 
   ar=Array[Vector3]([Vector3(int(2*(well[0]-xMax/2))/xMax,int(-2*(well[1]-yMax/2))/yMax,sp) for well in toDraw])
- 
-  return Tuple.Create(" ".join(allwells),ar)</q2:Script>
+
+  return Tuple.Create(" ".join(allwells),ar,Single(bgCol),Single(DotCol))</q2:Script>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q3:TextWriter">
@@ -167,10 +173,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q4:Crop">
                 <q4:RegionOfInterest>
-                  <q4:X>1621</q4:X>
-                  <q4:Y>859</q4:Y>
-                  <q4:Width>388</q4:Width>
-                  <q4:Height>388</q4:Height>
+                  <q4:X>1638</q4:X>
+                  <q4:Y>840</q4:Y>
+                  <q4:Width>390</q4:Width>
+                  <q4:Height>390</q4:Height>
                 </q4:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -470,7 +476,7 @@ def process(inputs):
         <Selector>Source.Item1</Selector>
       </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Source.Item2</Selector>
+        <Selector>Source.Item2,Source.Item3,Source.Item4</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q5:UpdateFrame" />
@@ -490,7 +496,7 @@ def process(inputs):
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-07-19T16_23_07.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-07-21T09_51_43.csv</q3:FileName>
         <q3:ScanPattern>%i %i %i %i %i %i</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
@@ -498,7 +504,7 @@ def process(inputs):
         <Combinator xsi:type="CombineLatest" />
       </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Source.Item2</Selector>
+        <Selector>Source.Item2.Item1</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q4:Threshold">
@@ -508,8 +514,8 @@ def process(inputs):
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\kineticParameters_05b.csv</q3:FileName>
-        <q3:ScanPattern>%s,%f,%f,%f</q3:ScanPattern>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectory_20170721_spriteSkype8Col.csv</q3:FileName>
+        <q3:ScanPattern>%s,%f,%f,%f,%f,%f</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -517,7 +523,7 @@ def process(inputs):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="RepeatCount">
-          <Count>20</Count>
+          <Count>2</Count>
         </Combinator>
       </Expression>
       <Expression xsi:type="q2:PythonTransform">
@@ -538,7 +544,7 @@ def process(value):
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2017-07-19T15_48_52.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2017-07-21T09_52_25.csv</q3:FileName>
         <q3:ScanPattern>%s</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
@@ -815,6 +821,30 @@ def process(value):
           </Edges>
         </Workflow>
       </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Item2.Item2</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q5:UpdateUniform">
+          <q5:UniformName>colBG</q5:UniformName>
+          <q5:ShaderName>Particles</q5:ShaderName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q5:UpdateUniform">
+          <q5:UniformName>colBG</q5:UniformName>
+          <q5:ShaderName>bg</q5:ShaderName>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Item2.Item3</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q5:UpdateUniform">
+          <q5:UniformName>colDot</q5:UniformName>
+          <q5:ShaderName>Particles</q5:ShaderName>
+        </Combinator>
+      </Expression>
     </Nodes>
     <Edges>
       <Edge>
@@ -903,6 +933,16 @@ def process(value):
         <Label>Source1</Label>
       </Edge>
       <Edge>
+        <From>15</From>
+        <To>30</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>15</From>
+        <To>33</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
         <From>16</From>
         <To>13</To>
         <Label>Source1</Label>
@@ -970,6 +1010,21 @@ def process(value):
       <Edge>
         <From>28</From>
         <To>29</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>30</From>
+        <To>31</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>31</From>
+        <To>32</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>33</From>
+        <To>34</To>
         <Label>Source1</Label>
       </Edge>
     </Edges>
