@@ -173,10 +173,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q4:Crop">
                 <q4:RegionOfInterest>
-                  <q4:X>1638</q4:X>
-                  <q4:Y>840</q4:Y>
-                  <q4:Width>390</q4:Width>
-                  <q4:Height>390</q4:Height>
+                  <q4:X>1629</q4:X>
+                  <q4:Y>837</q4:Y>
+                  <q4:Width>384</q4:Width>
+                  <q4:Height>384</q4:Height>
                 </q4:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -206,7 +206,7 @@ def process(value):
                   <q4:X>0</q4:X>
                   <q4:Y>0</q4:Y>
                 </q4:Offset>
-                <q4:MinArea>5</q4:MinArea>
+                <q4:MinArea>4</q4:MinArea>
                 <q4:MaxArea>500</q4:MaxArea>
               </Combinator>
             </Expression>
@@ -496,7 +496,7 @@ def process(inputs):
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-07-21T09_51_43.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-08-02T10_06_22.csv</q3:FileName>
         <q3:ScanPattern>%i %i %i %i %i %i</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
@@ -508,13 +508,13 @@ def process(inputs):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q4:Threshold">
-          <q4:ThresholdValue>20</q4:ThresholdValue>
+          <q4:ThresholdValue>18</q4:ThresholdValue>
           <q4:MaxValue>255</q4:MaxValue>
           <q4:ThresholdType>Binary</q4:ThresholdType>
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectory_20170721_spriteSkype8Col.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\kineticParameters_05d.csv</q3:FileName>
         <q3:ScanPattern>%s,%f,%f,%f,%f,%f</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
@@ -544,7 +544,7 @@ def process(value):
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2017-07-21T09_52_25.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2017-08-02T10_07_14.csv</q3:FileName>
         <q3:ScanPattern>%s</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
