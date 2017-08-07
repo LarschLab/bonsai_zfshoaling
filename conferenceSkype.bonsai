@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:q4="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.joh.Vision;assembly=BonsaiPackage5" xmlns:q4="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q6="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
@@ -24,6 +24,10 @@ xMax=2048.0 #relevant for openGL scaling
 yMax=1280.0
 allCoor=[]
 oldCoor=[]
+posPick=300
+fr=0
+posList=[]
+CL=True
 
 def correctFish(x,y,xOff,yOff,xMax,xMaxCm):
 
@@ -54,9 +58,13 @@ def transf(x,y,hArr):
 
   return x,y
 
-@returns(Tuple[str,Array[Vector3],Single,Single])
+def toGL(c,cMax):
+  return int(2*(c-cMax/2))/cMax
+
+
+@returns(Tuple[str,Array[Vector3],Single,Single,str])
 def process(value):
-  global allCoor,xMax,yMax,oldCoor
+  global allCoor,xMax,yMax,oldCoor,fr,posList
 
   allwells=[]
   oldCoor=allCoor
@@ -88,12 +96,24 @@ def process(value):
     else:
       x,y = correctFish(x,y,xoff,yoff,xMax,53.)
 
+
+
     i+=1
 
     welldata = ((round(x)), (round(y)), o)
     allCoor.append([x,y,xoff,yoff,o])
     wellstr = "%0.f %0.f %0.3f" % welldata
     allwells.append(wellstr)
+
+  if CL:
+    
+    if fr==0:
+      posList=allCoor
+      fr=0
+    fr+=1
+    if fr==posPick:
+      fr=0
+    
 
   #add one more row, representing pre recorded trajectory, episode name and disc size for visual stimulation
   xp=value.Item2.Item2
@@ -117,27 +137,68 @@ def process(value):
   
   scale=xMax/53.
 
-  
+  drawStr=[]
   for i in range(len(allCoor)):
-    p=allCoor[i]
-    l=drawList[i]
+    p=allCoor[i] #point to be drawn (unless in skype mode, ones should only be in i=15 (last animal)
+    l=drawList[i] #find where to draw it (which dish)
     for ii in range(len(l)):
       
-      if l[ii]==1:
-        x=p[0]+allCoor[ii][2]
-        y=p[1]+allCoor[ii][3]
-  
-        #x=x-(scale*(x-xMax/2.)/(79*scale))
-        #y=y-(scale*(y-yMax/2.)/(79*scale))
+      if l[ii]==1: #draw into dish ii
+
+        if CL:
+          o=posList[ii][4]#+math.pi
+          xo=posList[ii][0]
+          yo=posList[ii][1]
+          
+          dx=p[0]
+          dy=p[1]
+
+          dist=math.sqrt((dx**2)+(dy**2))
+          if dist==0:
+            dist=1
+          
+          phi=math.asin(dx/dist)
+          
+
+          heading=-o+(math.pi*(1/2.))
+          #heading=o+(math.pi*(1/2))
+
+          
+
+          x=math.sin(heading+phi)*dist
+          y=math.cos(heading+phi)*dist
+          #print 'x',x,'y',y,'dist',dist,'phi',phi,'o',o,'heading',heading
+          x=x+xo
+          y=y+yo
+          
+          wellDiam=value.Item1.Item2[ii].Item3
+          #print x,y,wellDiam
+          if (x&lt;wellDiam) and (x&gt;0) and (y&lt;wellDiam) and (y&gt;0):
+            x=x+allCoor[ii][2]
+            y=y+allCoor[ii][3]
+          else:
+            #print 'not drawing dot for animal',ii
+            x=0
+            y=0
+
+        else:
+          x=p[0]+allCoor[ii][2] #add offsets of current dish
+          y=p[1]+allCoor[ii][3]
+        
 
         x,y=transf(x,y,hArr) ##projector-camera calibration
 
+        x=toGL(x,xMax)
+        y=-toGL(y,yMax)
+
         toDraw.append([x,y])
+        wellStr = "%0.f %0.f" % (x,y)
+        drawStr.append(wellStr)
 
 
-  ar=Array[Vector3]([Vector3(int(2*(well[0]-xMax/2))/xMax,int(-2*(well[1]-yMax/2))/yMax,sp) for well in toDraw])
+  ar=Array[Vector3]([Vector3(well[0],well[1],sp) for well in toDraw])
 
-  return Tuple.Create(" ".join(allwells),ar,Single(bgCol),Single(DotCol))</q2:Script>
+  return Tuple.Create(" ".join(allwells),ar,Single(bgCol),Single(DotCol)," ".join(drawStr))</q2:Script>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q3:TextWriter">
@@ -151,7 +212,7 @@ def process(value):
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q4:BackgroundSubtraction">
           <q4:BackgroundFrames>120</q4:BackgroundFrames>
-          <q4:AdaptationRate>0.001</q4:AdaptationRate>
+          <q4:AdaptationRate>0.0005</q4:AdaptationRate>
           <q4:ThresholdValue>0</q4:ThresholdValue>
           <q4:ThresholdType>ToZero</q4:ThresholdType>
           <q4:SubtractionMethod>Dark</q4:SubtractionMethod>
@@ -173,8 +234,8 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q4:Crop">
                 <q4:RegionOfInterest>
-                  <q4:X>1629</q4:X>
-                  <q4:Y>837</q4:Y>
+                  <q4:X>1635</q4:X>
+                  <q4:Y>843</q4:Y>
                   <q4:Width>384</q4:Width>
                   <q4:Height>384</q4:Height>
                 </q4:RegionOfInterest>
@@ -224,6 +285,9 @@ def process(value):
             </Expression>
             <Expression xsi:type="MemberSelector">
               <Selector>Source.Item4</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="q5:HeadingFromOrientation" />
             </Expression>
           </Nodes>
           <Edges>
@@ -294,7 +358,7 @@ def process(value):
             </Edge>
             <Edge>
               <From>10</From>
-              <To>11</To>
+              <To>15</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
@@ -316,6 +380,11 @@ def process(value):
               <From>14</From>
               <To>12</To>
               <Label>Source4</Label>
+            </Edge>
+            <Edge>
+              <From>15</From>
+              <To>11</To>
+              <Label>Source1</Label>
             </Edge>
           </Edges>
         </Workflow>
@@ -479,24 +548,24 @@ def process(inputs):
         <Selector>Source.Item2,Source.Item3,Source.Item4</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q5:UpdateFrame" />
+        <Combinator xsi:type="q6:UpdateFrame" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q5:DrawArrays">
-          <q5:ShaderName>Particles</q5:ShaderName>
-          <q5:DrawMode>Points</q5:DrawMode>
-          <q5:Usage>DynamicDraw</q5:Usage>
-          <q5:VertexAttributes>
-            <q5:VertexAttributeMapping>
-              <q5:Size>3</q5:Size>
-              <q5:Normalized>false</q5:Normalized>
-              <q5:Type>Float</q5:Type>
-            </q5:VertexAttributeMapping>
-          </q5:VertexAttributes>
+        <Combinator xsi:type="q6:DrawArrays">
+          <q6:ShaderName>Particles</q6:ShaderName>
+          <q6:DrawMode>Points</q6:DrawMode>
+          <q6:Usage>DynamicDraw</q6:Usage>
+          <q6:VertexAttributes>
+            <q6:VertexAttributeMapping>
+              <q6:Size>3</q6:Size>
+              <q6:Normalized>false</q6:Normalized>
+              <q6:Type>Float</q6:Type>
+            </q6:VertexAttributeMapping>
+          </q6:VertexAttributes>
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-08-02T10_06_22.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2017-08-07T12_47_12.csv</q3:FileName>
         <q3:ScanPattern>%i %i %i %i %i %i</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
@@ -508,13 +577,13 @@ def process(inputs):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q4:Threshold">
-          <q4:ThresholdValue>18</q4:ThresholdValue>
+          <q4:ThresholdValue>15</q4:ThresholdValue>
           <q4:MaxValue>255</q4:MaxValue>
           <q4:ThresholdType>Binary</q4:ThresholdType>
         </Combinator>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\kineticParameters_05d.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\CL_01.csv</q3:FileName>
         <q3:ScanPattern>%s,%f,%f,%f,%f,%f</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
@@ -523,7 +592,7 @@ def process(inputs):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="RepeatCount">
-          <Count>2</Count>
+          <Count>50</Count>
         </Combinator>
       </Expression>
       <Expression xsi:type="q2:PythonTransform">
@@ -544,7 +613,7 @@ def process(value):
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
       <Expression xsi:type="q3:CsvReader">
-        <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2017-08-02T10_07_14.csv</q3:FileName>
+        <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2017-08-07T12_47_57.csv</q3:FileName>
         <q3:ScanPattern>%s</q3:ScanPattern>
         <q3:SkipRows>0</q3:SkipRows>
       </Expression>
@@ -571,35 +640,35 @@ def process(value):
         <Workflow>
           <Nodes>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q5:DrawMesh">
-                <q5:ShaderName>Waveform</q5:ShaderName>
-                <q5:MeshName>Waveform</q5:MeshName>
+              <Combinator xsi:type="q6:DrawMesh">
+                <q6:ShaderName>Waveform</q6:ShaderName>
+                <q6:MeshName>Waveform</q6:MeshName>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q5:UpdateUniform">
-                <q5:UniformName>frequency</q5:UniformName>
-                <q5:ShaderName>Waveform</q5:ShaderName>
+              <Combinator xsi:type="q6:UpdateUniform">
+                <q6:UniformName>frequency</q6:UniformName>
+                <q6:ShaderName>Waveform</q6:ShaderName>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q5:UpdateVertexBuffer">
-                <q5:MeshName>Waveform</q5:MeshName>
-                <q5:DrawMode>Points</q5:DrawMode>
-                <q5:Usage>DynamicDraw</q5:Usage>
-                <q5:VertexAttributes>
-                  <q5:VertexAttributeMapping>
-                    <q5:Size>2</q5:Size>
-                    <q5:Normalized>false</q5:Normalized>
-                    <q5:Type>Double</q5:Type>
-                  </q5:VertexAttributeMapping>
-                </q5:VertexAttributes>
+              <Combinator xsi:type="q6:UpdateVertexBuffer">
+                <q6:MeshName>Waveform</q6:MeshName>
+                <q6:DrawMode>Points</q6:DrawMode>
+                <q6:Usage>DynamicDraw</q6:Usage>
+                <q6:VertexAttributes>
+                  <q6:VertexAttributeMapping>
+                    <q6:Size>2</q6:Size>
+                    <q6:Normalized>false</q6:Normalized>
+                    <q6:Type>Double</q6:Type>
+                  </q6:VertexAttributeMapping>
+                </q6:VertexAttributes>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="q5:UpdateUniform">
-                <q5:UniformName>phase</q5:UniformName>
-                <q5:ShaderName>Waveform</q5:ShaderName>
+              <Combinator xsi:type="q6:UpdateUniform">
+                <q6:UniformName>phase</q6:UniformName>
+                <q6:ShaderName>Waveform</q6:ShaderName>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -825,24 +894,24 @@ def process(value):
         <Selector>Source.Item2.Item2</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q5:UpdateUniform">
-          <q5:UniformName>colBG</q5:UniformName>
-          <q5:ShaderName>Particles</q5:ShaderName>
+        <Combinator xsi:type="q6:UpdateUniform">
+          <q6:UniformName>colBG</q6:UniformName>
+          <q6:ShaderName>Particles</q6:ShaderName>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q5:UpdateUniform">
-          <q5:UniformName>colBG</q5:UniformName>
-          <q5:ShaderName>bg</q5:ShaderName>
+        <Combinator xsi:type="q6:UpdateUniform">
+          <q6:UniformName>colBG</q6:UniformName>
+          <q6:ShaderName>bg</q6:ShaderName>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
         <Selector>Source.Item2.Item3</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q5:UpdateUniform">
-          <q5:UniformName>colDot</q5:UniformName>
-          <q5:ShaderName>Particles</q5:ShaderName>
+        <Combinator xsi:type="q6:UpdateUniform">
+          <q6:UniformName>colDot</q6:UniformName>
+          <q6:ShaderName>Particles</q6:ShaderName>
         </Combinator>
       </Expression>
     </Nodes>
@@ -1043,6 +1112,7 @@ def process(value):
     <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.LargestBinaryRegion, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Zip, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.joh.Vision.HeadingFromOrientation, BonsaiPackage5, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.ImageWriter, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Scripting.PythonSource, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.IntProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>

@@ -233,10 +233,10 @@
     <WindowState>Normal</WindowState>
   </DialogSettings>
   <DialogSettings>
-    <Visible>false</Visible>
+    <Visible>true</Visible>
     <Location>
-      <X>204</X>
-      <Y>356</Y>
+      <X>447</X>
+      <Y>227</Y>
     </Location>
     <Size>
       <Width>970</Width>
