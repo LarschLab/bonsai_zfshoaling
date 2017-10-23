@@ -1,6 +1,6 @@
 #version 400
 
-uniform float colBG = 0.0;
+uniform float colBG = 1.0;
 out vec4 frag_colour;
 
 void main()
