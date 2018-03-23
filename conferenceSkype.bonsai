@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.joh.Vision;assembly=BonsaiPackage5" xmlns:q4="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q6="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns:q2="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q4="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q5="clr-namespace:Bonsai.joh.Vision;assembly=BonsaiPackage5" xmlns:q6="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
           <q1:DeviceId xsi:nil="true" />
-          <q1:ConfigFile>C:\Users\jlarsch\Documents\bonsai\ids\2048x1280_30fps_d_slowClock.ini</q1:ConfigFile>
+          <q1:ConfigFile>2048x1280_30fps_slowClock_rev2.ini</q1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
