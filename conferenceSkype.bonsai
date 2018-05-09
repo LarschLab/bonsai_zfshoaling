@@ -5,7 +5,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
           <q1:DeviceId xsi:nil="true" />
-          <q1:ConfigFile>getCircles\2048x1280_30fps_slowClock_4.9.ini</q1:ConfigFile>
+          <q1:ConfigFile>2048x1280_30fps_slowClock_4.9.ini</q1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
