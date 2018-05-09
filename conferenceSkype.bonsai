@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.joh.Vision;assembly=BonsaiPackage5" xmlns:q4="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:q1="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.joh.Vision;assembly=BonsaiPackage5" xmlns:q4="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:q6="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns:q1="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="NestedWorkflow">
         <Name>save in chunks</Name>
@@ -134,7 +134,7 @@ def process(inputs):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="q2:ImageWriter">
-                      <q2:Path>\\.\pipe\p201805092346551</q2:Path>
+                      <q2:Path>\\.\pipe\p201805092357294</q2:Path>
                       <q2:Suffix>None</q2:Suffix>
                       <q2:Overwrite>false</q2:Overwrite>
                     </Combinator>
@@ -188,7 +188,7 @@ def process(inputs):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="q3:TextWriter">
-                      <q3:FileName>d:\data\201805092346551.csv</q3:FileName>
+                      <q3:FileName>e:\data\201805092357294.csv</q3:FileName>
                       <q3:Suffix>None</q3:Suffix>
                       <q3:Buffered>true</q3:Buffered>
                       <q3:Overwrite>false</q3:Overwrite>
@@ -699,16 +699,6 @@ def process(value):
             </Edge>
           </Edges>
         </Workflow>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:FileCapture">
-          <q2:FileName>E:\b\2018\20180502_CarlosF1_social\a\out_id0_30fps_20180502092138.avi</q2:FileName>
-          <q2:PlaybackRate>0</q2:PlaybackRate>
-          <q2:StartPosition>0</q2:StartPosition>
-          <q2:PositionUnits>Frames</q2:PositionUnits>
-          <q2:Loop>false</q2:Loop>
-          <q2:Playing>true</q2:Playing>
-        </Combinator>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
         <Name>GLdraw</Name>
@@ -1422,51 +1412,60 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>d:\data\</Value>
+          <Value>e:\data\</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="Zip" />
       </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q6:uEyeCapture">
+          <q6:DeviceId>2</q6:DeviceId>
+          <q6:ConfigFile>2048x1280_30fps_slowClock_4.9.ini</q6:ConfigFile>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Image</Selector>
+      </Expression>
     </Nodes>
     <Edges>
       <Edge>
-        <From>2</From>
-        <To>19</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
+        <From>3</From>
         <To>1</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>5</From>
-        <To>22</To>
+        <From>4</From>
+        <To>21</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
+        <From>5</From>
+        <To>2</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
         <From>6</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>7</From>
         <To>3</To>
         <Label>Source2</Label>
       </Edge>
       <Edge>
         <From>7</From>
-        <To>4</To>
+        <To>2</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>8</From>
         <To>4</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
-        <To>3</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>9</From>
+        <From>8</From>
         <To>5</To>
         <Label>Source1</Label>
       </Edge>
@@ -1477,77 +1476,82 @@ def process(value):
       </Edge>
       <Edge>
         <From>10</From>
-        <To>7</To>
+        <To>8</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>11</From>
-        <To>9</To>
+        <To>10</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>12</From>
-        <To>11</To>
-        <Label>Source1</Label>
+        <To>10</To>
+        <Label>Source2</Label>
       </Edge>
       <Edge>
         <From>13</From>
         <To>11</To>
-        <Label>Source2</Label>
+        <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>14</From>
-        <To>12</To>
+        <To>13</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>15</From>
-        <To>14</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>15</From>
-        <To>4</To>
+        <From>14</From>
+        <To>3</To>
         <Label>Source3</Label>
       </Edge>
       <Edge>
-        <From>16</From>
-        <To>14</To>
+        <From>15</From>
+        <To>13</To>
+        <Label>Source4</Label>
+      </Edge>
+      <Edge>
+        <From>15</From>
+        <To>3</To>
         <Label>Source4</Label>
       </Edge>
       <Edge>
         <From>16</From>
-        <To>4</To>
-        <Label>Source4</Label>
+        <To>13</To>
+        <Label>Source2</Label>
       </Edge>
       <Edge>
         <From>17</From>
-        <To>14</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>18</From>
-        <To>14</To>
+        <To>13</To>
         <Label>Source3</Label>
       </Edge>
       <Edge>
-        <From>19</From>
-        <To>17</To>
+        <From>18</From>
+        <To>16</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>19</From>
-        <To>22</To>
+        <From>18</From>
+        <To>21</To>
         <Label>Source2</Label>
       </Edge>
       <Edge>
+        <From>20</From>
+        <To>19</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
         <From>21</From>
-        <To>20</To>
+        <To>0</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>22</From>
-        <To>0</To>
+        <To>23</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>23</From>
+        <To>18</To>
         <Label>Source1</Label>
       </Edge>
     </Edges>
@@ -1578,7 +1582,6 @@ def process(value):
     <Type>Bonsai.Expressions.FloatProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.AccumulateBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.MultiplyBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Shaders.DrawArrays, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Shaders.UpdateFrame, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Crop, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
@@ -1595,5 +1598,6 @@ def process(value):
     <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.IO.CsvReader, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.uEye.uEyeCapture, Bonsai.uEye, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
