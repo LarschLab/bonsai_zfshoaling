@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.joh.Vision;assembly=BonsaiPackage5" xmlns:q4="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:q1="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.joh.Vision;assembly=BonsaiPackage5" xmlns:q4="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:q6="clr-namespace:Bonsai.Reactive;assembly=BonsaiPackage1" xmlns:q1="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="NestedWorkflow">
         <Name>save in chunks</Name>
@@ -134,7 +134,7 @@ def process(inputs):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="q2:ImageWriter">
-                      <q2:Path>\\.\pipe\p201805111934380</q2:Path>
+                      <q2:Path>\\.\pipe\p201805182100140</q2:Path>
                       <q2:Suffix>None</q2:Suffix>
                       <q2:Overwrite>false</q2:Overwrite>
                     </Combinator>
@@ -188,7 +188,7 @@ def process(inputs):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="q3:TextWriter">
-                      <q3:FileName>e:\data\201805111934380.csv</q3:FileName>
+                      <q3:FileName>e:\data\201805182100140.csv</q3:FileName>
                       <q3:Suffix>None</q3:Suffix>
                       <q3:Buffered>true</q3:Buffered>
                       <q3:Overwrite>false</q3:Overwrite>
@@ -847,7 +847,7 @@ posPick=300
 fr=0
 posList=[]
 CL=False
-FlexPair=False
+FlexPair=True
 
 def correctFish(x,y,xOff,yOff,xMax,xMaxCm):
 
@@ -1226,26 +1226,7 @@ def unload():
         <Workflow>
           <Nodes>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Zip" />
-            </Expression>
-            <Expression xsi:type="ExternalizedPropertyOfInt32Skip">
-              <MemberName>Count</MemberName>
-              <Name>Count</Name>
-              <Value>0</Value>
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>Source.Item1</Selector>
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>anTrack</Name>
-            </Expression>
-            <Expression xsi:type="Combinator">
               <Combinator xsi:type="Switch" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="TakeLast">
-                <Count>1</Count>
-              </Combinator>
             </Expression>
             <Expression xsi:type="WindowWorkflow">
               <Name>PaddedTra</Name>
@@ -1303,7 +1284,7 @@ def process(inputs):
                         <Expression xsi:type="WorkflowOutput" />
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="Timer">
-                            <DueTime>PT21.1231176S</DueTime>
+                            <DueTime>PT1H25M29.9500547S</DueTime>
                             <Period>PT0S</Period>
                           </Combinator>
                         </Expression>
@@ -1343,16 +1324,10 @@ def process(inputs):
                     <q3:ScanPattern>%s</q3:ScanPattern>
                     <q3:SkipRows>0</q3:SkipRows>
                   </Expression>
-                  <Expression xsi:type="SubscribeSubject">
-                    <Name>lastPos</Name>
-                  </Expression>
                   <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
                     <MemberName>FileName</MemberName>
                     <Name>fnTim</Name>
                     <Value>E:\00_bonsai_ffmpeg_out\stimTimes.csv</Value>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="Merge" />
                   </Expression>
                 </Nodes>
                 <Edges>
@@ -1383,7 +1358,7 @@ def process(inputs):
                   </Edge>
                   <Edge>
                     <From>6</From>
-                    <To>10</To>
+                    <To>1</To>
                     <Label>Source1</Label>
                   </Edge>
                   <Edge>
@@ -1393,21 +1368,16 @@ def process(inputs):
                   </Edge>
                   <Edge>
                     <From>8</From>
-                    <To>10</To>
-                    <Label>Source2</Label>
-                  </Edge>
-                  <Edge>
-                    <From>9</From>
                     <To>7</To>
-                    <Label>Source1</Label>
-                  </Edge>
-                  <Edge>
-                    <From>10</From>
-                    <To>1</To>
                     <Label>Source1</Label>
                   </Edge>
                 </Edges>
               </Workflow>
+            </Expression>
+            <Expression xsi:type="q3:CsvReader">
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectory_20170919_SkypePair_and_knot_halfSpeedSize4_test.txt</q3:FileName>
+              <q3:ScanPattern>%s,%f,%f,%f,%f,%f</q3:ScanPattern>
+              <q3:SkipRows>0</q3:SkipRows>
             </Expression>
             <Expression xsi:type="ReplaySubject">
               <Name>tra</Name>
@@ -1415,152 +1385,68 @@ def process(inputs):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="Take">
-                <Count>150</Count>
+                <Count>1</Count>
               </Combinator>
             </Expression>
-            <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\test.csv</q3:FileName>
-              <q3:ScanPattern>%s,%f,%f,%f,%f,%f</q3:ScanPattern>
-              <q3:SkipRows>0</q3:SkipRows>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
+              <MemberName>fnTim</MemberName>
+              <Name>fnTim</Name>
+              <Value>E:\00_bonsai_ffmpeg_out\stimTimes.csv</Value>
             </Expression>
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>fnTrajectory</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\trajectories\test.csv</Value>
-            </Expression>
-            <Expression xsi:type="ReplaySubject">
-              <Name>lastPos</Name>
-              <BufferSize xsi:nil="true" />
+              <Value>E:\00_bonsai_ffmpeg_out\trajectories\trajectory_20170919_SkypePair_and_knot_halfSpeedSize4_test.txt</Value>
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Count" />
-            </Expression>
-            <Expression xsi:type="ReplaySubject">
-              <Name>traLen</Name>
-              <BufferSize xsi:nil="true" />
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>anTrack</Name>
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>Source.Item1</Selector>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="CombineLatest" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="Skip">
-                <Count>0</Count>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>traLen</Name>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="ReplaySubject">
-              <Name>lp2</Name>
-              <BufferSize>1</BufferSize>
+              <Combinator xsi:type="Merge" />
             </Expression>
           </Nodes>
           <Edges>
             <Edge>
               <From>0</From>
-              <To>15</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>1</From>
-              <To>17</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>0</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>3</From>
-              <To>0</To>
-              <Label>Source2</Label>
-            </Edge>
-            <Edge>
-              <From>4</From>
-              <To>20</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>5</From>
-              <To>11</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>6</From>
-              <To>4</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>7</From>
-              <To>6</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>8</From>
-              <To>7</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>9</From>
               <To>8</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>9</From>
-              <To>5</To>
+              <From>1</From>
+              <To>0</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>9</From>
-              <To>12</To>
+              <From>2</From>
+              <To>3</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>10</From>
-              <To>9</To>
+              <From>2</From>
+              <To>4</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>12</From>
-              <To>13</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>14</From>
-              <To>17</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>15</From>
-              <To>19</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>16</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>17</From>
-              <To>16</To>
+              <From>4</From>
+              <To>1</To>
               <Label>Source2</Label>
             </Edge>
             <Edge>
-              <From>18</From>
+              <From>4</From>
+              <To>8</To>
+              <Label>Source2</Label>
+            </Edge>
+            <Edge>
+              <From>6</From>
               <To>1</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>20</From>
-              <To>16</To>
+              <From>7</From>
+              <To>2</To>
+              <Label>Source1</Label>
+            </Edge>
+            <Edge>
+              <From>8</From>
+              <To>5</To>
               <Label>Source1</Label>
             </Edge>
           </Edges>
@@ -1673,14 +1559,14 @@ def process(value):
               <Combinator xsi:type="ToList" />
             </Expression>
             <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_16_eachWithLast.txt</q3:FileName>
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PairList_20170919_SkypePair_and_knot.csv</q3:FileName>
               <q3:ScanPattern>%s</q3:ScanPattern>
               <q3:SkipRows>0</q3:SkipRows>
             </Expression>
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\pairLists\PL_16_eachWithLast.txt</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\pairLists\PairList_20170919_SkypePair_and_knot.csv</Value>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -1733,8 +1619,8 @@ def process(value):
           <q2:Playing>true</q2:Playing>
         </Combinator>
       </Expression>
-      <Expression xsi:type="PublishSubject">
-        <Name>anTrack</Name>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q6:DiscriminatedUnion" />
       </Expression>
     </Nodes>
     <Edges>
@@ -1800,7 +1686,7 @@ def process(value):
       </Edge>
       <Edge>
         <From>12</From>
-        <To>10</To>
+        <To>23</To>
         <Label>Source2</Label>
       </Edge>
       <Edge>
@@ -1863,6 +1749,11 @@ def process(value):
         <To>18</To>
         <Label>Source1</Label>
       </Edge>
+      <Edge>
+        <From>23</From>
+        <To>10</To>
+        <Label>Source2</Label>
+      </Edge>
     </Edges>
   </Workflow>
   <ExtensionTypes>
@@ -1902,17 +1793,14 @@ def process(value):
     <Type>Bonsai.Vision.LargestBinaryRegion, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.ToList, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.joh.Vision.HeadingFromOrientation, BonsaiPackage5, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Reactive.Skip, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.TakeLast, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Repeat, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.ExternalizedTimeSpan`1[[Bonsai.Reactive.Timer, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.CsvReader, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.IO.CsvReader, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Merge, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Count, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Skip, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Reactive.DiscriminatedUnion, BonsaiPackage1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
