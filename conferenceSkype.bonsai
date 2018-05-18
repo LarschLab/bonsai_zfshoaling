@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.joh.Vision;assembly=BonsaiPackage5" xmlns:q4="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:q6="clr-namespace:Bonsai.Reactive;assembly=BonsaiPackage1" xmlns:q1="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q7="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.joh.Vision;assembly=BonsaiPackage5" xmlns:q4="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:q6="clr-namespace:Bonsai.Reactive;assembly=BonsaiPackage1" xmlns:q1="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="NestedWorkflow">
         <Name>save in chunks</Name>
@@ -1327,7 +1327,7 @@ def process(inputs):
                   <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
                     <MemberName>FileName</MemberName>
                     <Name>fnTim</Name>
-                    <Value>E:\00_bonsai_ffmpeg_out\stimTimes.csv</Value>
+                    <Value>E:\00_bonsai_ffmpeg_out\longRec\stimTimes.csv</Value>
                   </Expression>
                 </Nodes>
                 <Edges>
@@ -1390,14 +1390,9 @@ def process(inputs):
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
-              <MemberName>fnTim</MemberName>
-              <Name>fnTim</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\stimTimes.csv</Value>
-            </Expression>
-            <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>fnTrajectory</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\trajectories\trajectory_20170919_SkypePair_and_knot_halfSpeedSize4_test.txt</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\trajectories\trajectory_20170919_SkypePair_and_knot_halfSpeedSize4.txt</Value>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="Merge" />
@@ -1406,7 +1401,7 @@ def process(inputs):
           <Edges>
             <Edge>
               <From>0</From>
-              <To>8</To>
+              <To>7</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
@@ -1427,25 +1422,20 @@ def process(inputs):
             <Edge>
               <From>4</From>
               <To>1</To>
-              <Label>Source2</Label>
+              <Label>Source1</Label>
             </Edge>
             <Edge>
               <From>4</From>
-              <To>8</To>
+              <To>7</To>
               <Label>Source2</Label>
             </Edge>
             <Edge>
               <From>6</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>7</From>
               <To>2</To>
               <Label>Source1</Label>
             </Edge>
             <Edge>
-              <From>8</From>
+              <From>7</From>
               <To>5</To>
               <Label>Source1</Label>
             </Edge>
@@ -1470,7 +1460,7 @@ def process(inputs):
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2018-05-02T09_16_29.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2018-05-18T21_48_52.csv</Value>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -1512,7 +1502,7 @@ def process(value):
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\calibrationOut2018-05-02T09_18_04.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\calibrationOut2018-05-18T21_51_11.csv</Value>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -1594,33 +1584,38 @@ def process(value):
           </Edges>
         </Workflow>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Grayscale" />
-      </Expression>
       <Expression xsi:type="ReplaySubject">
         <Name>DataPath</Name>
         <BufferSize xsi:nil="true" />
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="StringProperty">
-          <Value>e:\data\</Value>
+          <Value>E:\00_bonsai_ffmpeg_out\longRec\</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="Zip" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:FileCapture">
-          <q2:FileName>E:\b\2018\20180502_CarlosF1_social\a\out_id0_30fps_20180502092138.avi</q2:FileName>
-          <q2:PlaybackRate>0</q2:PlaybackRate>
-          <q2:StartPosition>0</q2:StartPosition>
-          <q2:PositionUnits>Frames</q2:PositionUnits>
-          <q2:Loop>false</q2:Loop>
-          <q2:Playing>true</q2:Playing>
+        <Combinator xsi:type="q2:BackgroundSubtraction">
+          <q2:BackgroundFrames>120</q2:BackgroundFrames>
+          <q2:AdaptationRate>0.0005</q2:AdaptationRate>
+          <q2:ThresholdValue>0</q2:ThresholdValue>
+          <q2:ThresholdType>ToZero</q2:ThresholdType>
+          <q2:SubtractionMethod>Dark</q2:SubtractionMethod>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q6:DiscriminatedUnion" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Source.Image</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q7:uEyeCapture">
+          <q7:DeviceId xsi:nil="true" />
+          <q7:ConfigFile>getCircles\2048x1280_30fps_slowClock_4.9.ini</q7:ConfigFile>
+        </Combinator>
       </Expression>
     </Nodes>
     <Edges>
@@ -1631,7 +1626,7 @@ def process(value):
       </Edge>
       <Edge>
         <From>4</From>
-        <To>21</To>
+        <To>20</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
@@ -1681,12 +1676,12 @@ def process(value):
       </Edge>
       <Edge>
         <From>11</From>
-        <To>23</To>
+        <To>22</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>12</From>
-        <To>23</To>
+        <To>22</To>
         <Label>Source2</Label>
       </Edge>
       <Edge>
@@ -1725,34 +1720,39 @@ def process(value):
         <Label>Source3</Label>
       </Edge>
       <Edge>
-        <From>18</From>
-        <To>16</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>18</From>
-        <To>21</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>20</From>
-        <To>19</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>21</From>
-        <To>0</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>22</From>
+        <From>19</From>
         <To>18</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>23</From>
+        <From>20</From>
+        <To>0</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>21</From>
+        <To>16</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>21</From>
+        <To>20</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>22</From>
         <To>10</To>
         <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>23</From>
+        <To>21</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>24</From>
+        <To>23</To>
+        <Label>Source1</Label>
       </Edge>
     </Edges>
   </Workflow>
@@ -1799,8 +1799,8 @@ def process(value):
     <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.IO.CsvReader, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Merge, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FileCapture, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.DiscriminatedUnion, BonsaiPackage1, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.uEye.uEyeCapture, Bonsai.uEye, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
