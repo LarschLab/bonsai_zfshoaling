@@ -43,7 +43,7 @@ def process(inputs):
 
   pipe=inputs.Item4.Item1.Item2
 
-  fname = inputs.Item4.Item2 +pipe[-15:] + '.avi'
+  fname = inputs.Item4.Item2 +pipe[-17:] + '.avi'
 
 
   cmd='c:\\ffmpeg\\bin\\ffmpeg.exe -y -f rawvideo -vcodec rawvideo -s '+vid_width+'x'+vid_height+' -r '+vid_rate+' -pix_fmt gray -i ' +pipe+' -q:v '+codec_q+' -vcodec mpeg4 -vtag xvid ' +fname
@@ -134,7 +134,7 @@ def process(inputs):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="q2:ImageWriter">
-                      <q2:Path>\\.\pipe\p2018051822104669</q2:Path>
+                      <q2:Path>\\.\pipe\p20180530204703077</q2:Path>
                       <q2:Suffix>None</q2:Suffix>
                       <q2:Overwrite>false</q2:Overwrite>
                     </Combinator>
@@ -188,7 +188,7 @@ def process(inputs):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="q3:TextWriter">
-                      <q3:FileName>E:\00_bonsai_ffmpeg_out\longRec\018051822104669.csv</q3:FileName>
+                      <q3:FileName>E:\00_bonsai_ffmpeg_out\longRec2\20180530204703077.csv</q3:FileName>
                       <q3:Suffix>None</q3:Suffix>
                       <q3:Buffered>true</q3:Buffered>
                       <q3:Overwrite>false</q3:Overwrite>
@@ -208,7 +208,7 @@ def process(inputs):
 def process(inputs):
 
 
-  return inputs.Item1 + inputs.Item2[-15:] + '.csv'</q1:Script>
+  return inputs.Item1 + inputs.Item2[-17:] + '.csv'</q1:Script>
                   </Expression>
                   <Expression xsi:type="SubscribeSubject">
                     <Name>pipeName</Name>
@@ -350,7 +350,7 @@ def generate():
   yield currentTime.strftime('%Y%m%d%H%M%S')</q1:Script>
                   </Expression>
                   <Expression xsi:type="q1:ExpressionTransform">
-                    <q1:Expression>it.ToString()</q1:Expression>
+                    <q1:Expression>it.ToString("D3")</q1:Expression>
                   </Expression>
                   <Expression xsi:type="MemberSelector">
                     <Selector>Source.Index</Selector>
@@ -1066,10 +1066,10 @@ def unload():
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q2:Crop">
                 <q2:RegionOfInterest>
-                  <q2:X>1642</q2:X>
-                  <q2:Y>868</q2:Y>
-                  <q2:Width>382</q2:Width>
-                  <q2:Height>382</q2:Height>
+                  <q2:X>1637</q2:X>
+                  <q2:Y>869</q2:Y>
+                  <q2:Width>392</q2:Width>
+                  <q2:Height>392</q2:Height>
                 </q2:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -1284,7 +1284,7 @@ def process(inputs):
                         <Expression xsi:type="WorkflowOutput" />
                         <Expression xsi:type="Combinator">
                           <Combinator xsi:type="Timer">
-                            <DueTime>PT23H59M58.9288469S</DueTime>
+                            <DueTime>PT23H59M58.6027023S</DueTime>
                             <Period>PT0S</Period>
                           </Combinator>
                         </Expression>
@@ -1320,7 +1320,7 @@ def process(inputs):
                     <Combinator xsi:type="SubscribeWhen" />
                   </Expression>
                   <Expression xsi:type="q3:CsvReader">
-                    <q3:FileName>E:\00_bonsai_ffmpeg_out\longRec\stimTimes.csv</q3:FileName>
+                    <q3:FileName>E:\00_bonsai_ffmpeg_out\longRec2\stimTimes.csv</q3:FileName>
                     <q3:ScanPattern>%s</q3:ScanPattern>
                     <q3:SkipRows>0</q3:SkipRows>
                   </Expression>
@@ -1375,7 +1375,7 @@ def process(inputs):
               </Workflow>
             </Expression>
             <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectory_20170919_SkypePair_and_knot_halfSpeedSize4.txt</q3:FileName>
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectory_20180508_SkypePermutation_wholeDay_halfSpeed_SunRiseSet.csv</q3:FileName>
               <q3:ScanPattern>%s,%f,%f,%f,%f,%f</q3:ScanPattern>
               <q3:SkipRows>0</q3:SkipRows>
             </Expression>
@@ -1453,7 +1453,7 @@ def process(inputs):
               <Combinator xsi:type="ToList" />
             </Expression>
             <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2018-05-18T21_48_52.csv</q3:FileName>
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2018-05-30T18_20_10.csv</q3:FileName>
               <q3:ScanPattern>%i %i %i %i %i %i</q3:ScanPattern>
               <q3:SkipRows>0</q3:SkipRows>
             </Expression>
@@ -1495,7 +1495,7 @@ def process(value):
   return Array[float]([float(el) for el in value.split()])</q1:Script>
             </Expression>
             <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2018-05-18T21_51_11.csv</q3:FileName>
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2018-05-30T18_21_13.csv</q3:FileName>
               <q3:ScanPattern>%s</q3:ScanPattern>
               <q3:SkipRows>0</q3:SkipRows>
             </Expression>
@@ -1527,7 +1527,7 @@ def process(value):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q2:Threshold">
-          <q2:ThresholdValue>15</q2:ThresholdValue>
+          <q2:ThresholdValue>14</q2:ThresholdValue>
           <q2:MaxValue>255</q2:MaxValue>
           <q2:ThresholdType>Binary</q2:ThresholdType>
         </Combinator>
