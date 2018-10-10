@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q3="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:q4="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q5="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q6="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q4="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q6="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
           <q1:DeviceId xsi:nil="true" />
-          <q1:ConfigFile>2048x1280_10fps_slowClock_rev2.ini</q1:ConfigFile>
+          <q1:ConfigFile>2048x1380_10fps_slowClock_rev2.ini</q1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -139,7 +139,7 @@ def process(value):
   detected=value.Item1
   projected=value.Item2
 
-  ppl=[0,4,10,14]
+  ppl=[8,12,22,26]#[0,4,10,14]
 
   pl=[]
   boxWidth=(projected[0].Item3/2)
@@ -237,7 +237,7 @@ def process(value):
 
   allwells=[]
 
-  wellList=[0,4,10,14]
+  wellList=[8,12,22,26]#[0,4,10,14]
   posList=[]
 
   for w in wellList:
@@ -247,12 +247,12 @@ def process(value):
     x = (well.Item1+well.Item3/2.)
     y = (well.Item2+well.Item3/2.)
 
-    allwells.append(Vector3(2*(x-1024)/2048.0,-2*(y-640)/1280.0,25))
+    allwells.append(Vector3(2*(x-1024)/2048.0,-2*(y-690)/1380.0,25))
 
     s=value.Item4
     if len(s)&gt;1:
       xt,yt=transf(x,y,s)
-      allwells.append(Vector3(2*(xt-1024)/2048.0,-2*(yt-640)/1280.0,5))
+      allwells.append(Vector3(2*(xt-1024)/2048.0,-2*(yt-690)/1380.0,5))
 
     
 
@@ -355,7 +355,7 @@ def process(value):
         <Workflow>
           <Nodes>
             <Expression xsi:type="q5:CsvReader">
-              <q5:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2018-01-29T10_36_11.csv</q5:FileName>
+              <q5:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2018-10-05T10_27_29.csv</q5:FileName>
               <q5:ScanPattern>%i %i %i %i %i %i</q5:ScanPattern>
               <q5:SkipRows>0</q5:SkipRows>
             </Expression>
@@ -363,7 +363,7 @@ def process(value):
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2018-04-06T16_02_26.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2018-10-05T10_27_29.csv</Value>
             </Expression>
           </Nodes>
           <Edges>

@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:q3="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:q4="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q5="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q6="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q4="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q6="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
           <q1:DeviceId xsi:nil="true" />
-          <q1:ConfigFile>2048x1280_30fps_slowClock_4.9.ini</q1:ConfigFile>
+          <q1:ConfigFile>2048x1380_30fps_slowClock_4.9.ini</q1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -41,16 +41,6 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="CombineLatest" />
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:HoughCircles">
-          <q2:AccumulatorFactor>6</q2:AccumulatorFactor>
-          <q2:MinDistance>380</q2:MinDistance>
-          <q2:Param1>50</q2:Param1>
-          <q2:Param2>100</q2:Param2>
-          <q2:MinRadius>180</q2:MinRadius>
-          <q2:MaxRadius>200</q2:MaxRadius>
-        </Combinator>
-      </Expression>
       <Expression xsi:type="ExternalizedPropertyOfBooleanBooleanProperty">
         <MemberName>Value</MemberName>
         <Name>Value</Name>
@@ -74,7 +64,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="Take">
-                <Count>15</Count>
+                <Count>35</Count>
               </Combinator>
             </Expression>
             <Expression xsi:type="q5:PythonTransform">
@@ -101,7 +91,7 @@ def process(value):
             <Expression xsi:type="ExternalizedPropertyOfInt32Take">
               <MemberName>Count</MemberName>
               <Name>Count</Name>
-              <Value>15</Value>
+              <Value>35</Value>
             </Expression>
             <Expression xsi:type="MemberSelector">
               <Selector>Source.Length</Selector>
@@ -353,6 +343,16 @@ def process(value):
           </Edges>
         </Workflow>
       </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q2:HoughCircles">
+          <q2:AccumulatorFactor>20</q2:AccumulatorFactor>
+          <q2:MinDistance>240</q2:MinDistance>
+          <q2:Param1>50</q2:Param1>
+          <q2:Param2>100</q2:Param2>
+          <q2:MinRadius>110</q2:MinRadius>
+          <q2:MaxRadius>150</q2:MaxRadius>
+        </Combinator>
+      </Expression>
     </Nodes>
     <Edges>
       <Edge>
@@ -362,12 +362,12 @@ def process(value):
       </Edge>
       <Edge>
         <From>1</From>
-        <To>16</To>
+        <To>15</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>1</From>
-        <To>13</To>
+        <To>12</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
@@ -387,12 +387,12 @@ def process(value):
       </Edge>
       <Edge>
         <From>5</From>
-        <To>10</To>
+        <To>9</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
         <From>6</From>
-        <To>19</To>
+        <To>18</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
@@ -402,77 +402,77 @@ def process(value):
       </Edge>
       <Edge>
         <From>8</From>
-        <To>12</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>9</From>
-        <To>15</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>10</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>11</From>
-        <To>18</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>12</From>
-        <To>22</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>13</From>
         <To>14</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>14</From>
-        <To>3</To>
+        <From>9</From>
+        <To>23</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>15</From>
-        <To>1</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>16</From>
+        <From>10</From>
         <To>17</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>17</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>18</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>19</From>
+        <From>11</From>
         <To>21</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>21</From>
+        <From>12</From>
+        <To>13</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>13</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>14</From>
+        <To>1</To>
+        <Label>Source2</Label>
+      </Edge>
+      <Edge>
+        <From>15</From>
+        <To>16</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>16</From>
+        <To>5</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>17</From>
+        <To>8</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>18</From>
         <To>20</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>22</From>
+        <From>20</From>
+        <To>19</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>21</From>
         <To>7</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
-        <From>22</From>
-        <To>23</To>
+        <From>21</From>
+        <To>22</To>
+        <Label>Source1</Label>
+      </Edge>
+      <Edge>
+        <From>23</From>
+        <To>11</To>
         <Label>Source1</Label>
       </Edge>
     </Edges>
@@ -484,7 +484,6 @@ def process(value):
     <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.Grayscale, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.HoughCircles, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Expressions.BooleanProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Dsp.RunningAverage, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Windows.Input.KeyDown, Bonsai.Windows.Input, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
@@ -497,5 +496,6 @@ def process(value):
     <Type>Bonsai.Expressions.EqualBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.WorkflowProperty`1[[System.Windows.Forms.Keys, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.TextWriter, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Vision.HoughCircles, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
