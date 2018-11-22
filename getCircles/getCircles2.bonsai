@@ -286,9 +286,9 @@ def process(value):
   tupRoundAll=[]
   for c in value:
     x=c.Item1
-    xr=(x/100)*100
+    xr=(x/180)*180
     y=c.Item2
-    yr=(y/100)*100
+    yr=(y/180)*180
     w=c.Item3
     xc=c.Item4
     yc=c.Item5

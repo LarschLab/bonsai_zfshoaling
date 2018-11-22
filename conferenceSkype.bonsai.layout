@@ -17,14 +17,14 @@
     </VisualizerSettings>
   </DialogSettings>
   <DialogSettings>
-    <Visible>false</Visible>
+    <Visible>true</Visible>
     <Location>
       <X>200</X>
       <Y>200</Y>
     </Location>
     <Size>
-      <Width>336</Width>
-      <Height>278</Height>
+      <Width>925</Width>
+      <Height>783</Height>
     </Size>
     <WindowState>Normal</WindowState>
     <VisualizerTypeName>Bonsai.Vision.Design.IplImageVisualizer</VisualizerTypeName>
@@ -49,10 +49,10 @@
     </VisualizerSettings>
   </DialogSettings>
   <DialogSettings>
-    <Visible>true</Visible>
+    <Visible>false</Visible>
     <Location>
-      <X>125</X>
-      <Y>461</Y>
+      <X>667</X>
+      <Y>96</Y>
     </Location>
     <Size>
       <Width>988</Width>
@@ -205,10 +205,10 @@
     <WindowState>Normal</WindowState>
   </DialogSettings>
   <DialogSettings>
-    <Visible>false</Visible>
+    <Visible>true</Visible>
     <Location>
-      <X>447</X>
-      <Y>227</Y>
+      <X>723</X>
+      <Y>200</Y>
     </Location>
     <Size>
       <Width>970</Width>
