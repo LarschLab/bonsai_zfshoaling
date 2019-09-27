@@ -5,7 +5,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
           <q1:DeviceId xsi:nil="true" />
-          <q1:ConfigFile>2048x1380_30fps_slowClock_4.9.ini</q1:ConfigFile>
+          <q1:ConfigFile>C:\Users\Experimenter\Documents\bonsai_zfshoaling\2048x1380_30fps_slowClock_4.92.ini</q1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -286,9 +286,9 @@ def process(value):
   tupRoundAll=[]
   for c in value:
     x=c.Item1
-    xr=(x/100)*100
+    xr=(x/180)*180
     y=c.Item2
-    yr=(y/100)*100
+    yr=(y/180)*180
     w=c.Item3
     xc=c.Item4
     yc=c.Item5
@@ -349,7 +349,7 @@ def process(value):
           <q2:MinDistance>240</q2:MinDistance>
           <q2:Param1>50</q2:Param1>
           <q2:Param2>100</q2:Param2>
-          <q2:MinRadius>110</q2:MinRadius>
+          <q2:MinRadius>120</q2:MinRadius>
           <q2:MaxRadius>150</q2:MaxRadius>
         </Combinator>
       </Expression>

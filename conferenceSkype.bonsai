@@ -5,7 +5,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
           <q1:DeviceId xsi:nil="true" />
-          <q1:ConfigFile>2048x1380_30fps_slowClock_4.9.ini</q1:ConfigFile>
+          <q1:ConfigFile>2048x1380_30fps_slowClock_4.92.ini</q1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -36,8 +36,8 @@ def correctFish(x,y,xOff,yOff,xMax,xMaxCm):
   xR=x+xOff
   yR=y+yOff
 
-  xR=xR-(scale*(xR-xMax/2.)/(105*scale))
-  yR=yR-(scale*(yR-yMax/2.)/(105*scale))
+  xR=xR-(scale*(xR-xMax/2.)/(180*scale))
+  yR=yR-(scale*(yR-yMax/2.)/(180*scale))
 
   return xR-xOff,yR-yOff
 
@@ -89,7 +89,7 @@ def process(value):
     yoff=value.Item1.Item2[i].Item2
 
     #Also correct dish ROI! Added 7-19-2017
-    xoff,yoff = correctFish(xoff,yoff,0,0,xMax,53.)
+    xoff,yoff = correctFish(xoff,yoff,0,0,xMax,65)
 
     x = well.Centroid.X
     y = well.Centroid.Y
@@ -259,14 +259,14 @@ def process(value):
               <Combinator xsi:type="ToList" />
             </Expression>
             <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_eachWithSelf.txt</q3:FileName>
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_eachWithSelf.csv</q3:FileName>
               <q3:ScanPattern>%s</q3:ScanPattern>
               <q3:SkipRows>0</q3:SkipRows>
             </Expression>
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_eachWithLast.txt</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_eachWithLast.csv</Value>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -307,10 +307,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q4:Crop">
                 <q4:RegionOfInterest>
-                  <q4:X>1760</q4:X>
-                  <q4:Y>1100</q4:Y>
-                  <q4:Width>260</q4:Width>
-                  <q4:Height>260</q4:Height>
+                  <q4:X>1747</q4:X>
+                  <q4:Y>1107</q4:Y>
+                  <q4:Width>246</q4:Width>
+                  <q4:Height>246</q4:Height>
                 </q4:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -747,7 +747,7 @@ def process(inputs):
               </Combinator>
             </Expression>
             <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35wellPlate_01.csv</q3:FileName>
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35wellPlate_03.csv</q3:FileName>
               <q3:ScanPattern>%s,%f,%f,%f,%f,%f</q3:ScanPattern>
               <q3:SkipRows>0</q3:SkipRows>
             </Expression>
@@ -759,7 +759,7 @@ def process(inputs):
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35wellPlate_01.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35wellPlate_03.csv</Value>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -795,14 +795,14 @@ def process(inputs):
               <Combinator xsi:type="ToList" />
             </Expression>
             <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2018-10-05T10_27_29.csv</q3:FileName>
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2019-09-25T11_29_07.csv</q3:FileName>
               <q3:ScanPattern>%i %i %i %i %i %i</q3:ScanPattern>
               <q3:SkipRows>0</q3:SkipRows>
             </Expression>
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2018-10-05T10_27_29.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2019-09-25T11_29_07.csv</Value>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -1104,14 +1104,14 @@ def process(value):
   return Array[float]([float(el) for el in value.split()])</q2:Script>
             </Expression>
             <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2018-10-05T13_29_19.csv</q3:FileName>
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2019-09-25T11_30_42.csv</q3:FileName>
               <q3:ScanPattern>%s</q3:ScanPattern>
               <q3:SkipRows>0</q3:SkipRows>
             </Expression>
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\calibrationOut2018-10-05T13_29_19.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\calibrationOut2019-09-25T11_30_42.csv</Value>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>

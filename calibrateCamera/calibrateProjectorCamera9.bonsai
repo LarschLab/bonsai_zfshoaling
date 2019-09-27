@@ -5,7 +5,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
           <q1:DeviceId xsi:nil="true" />
-          <q1:ConfigFile>2048x1380_10fps_slowClock_rev2.ini</q1:ConfigFile>
+          <q1:ConfigFile>2048x1380_10fps_slowClock_4.92.ini</q1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -363,7 +363,7 @@ def process(value):
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2018-10-05T10_27_29.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2019-09-25T11_29_07.csv</Value>
             </Expression>
           </Nodes>
           <Edges>
