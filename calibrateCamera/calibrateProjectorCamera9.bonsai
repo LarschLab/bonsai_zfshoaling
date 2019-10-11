@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q4="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q6="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:q7="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q4="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q6="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
           <q1:DeviceId xsi:nil="true" />
-          <q1:ConfigFile>2048x1380_10fps_slowClock_rev2.ini</q1:ConfigFile>
+          <q1:ConfigFile>C:\Users\Experimenter\Documents\bonsai_zfshoaling 35Dish\calibrateCamera\2048x1380_10fps_slowClock_rev2_15msExposure.ini</q1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -20,7 +20,7 @@
         <Combinator xsi:type="q2:BackgroundSubtraction">
           <q2:BackgroundFrames>10</q2:BackgroundFrames>
           <q2:AdaptationRate>0.01</q2:AdaptationRate>
-          <q2:ThresholdValue>15</q2:ThresholdValue>
+          <q2:ThresholdValue>27</q2:ThresholdValue>
           <q2:ThresholdType>Binary</q2:ThresholdType>
           <q2:SubtractionMethod>Dark</q2:SubtractionMethod>
         </Combinator>
@@ -355,7 +355,7 @@ def process(value):
         <Workflow>
           <Nodes>
             <Expression xsi:type="q5:CsvReader">
-              <q5:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2018-10-05T10_27_29.csv</q5:FileName>
+              <q5:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2019-02-04T11_58_58.csv</q5:FileName>
               <q5:ScanPattern>%i %i %i %i %i %i</q5:ScanPattern>
               <q5:SkipRows>0</q5:SkipRows>
             </Expression>
@@ -363,7 +363,7 @@ def process(value):
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2018-10-05T10_27_29.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2019-07-19T11_00_32.csv</Value>
             </Expression>
           </Nodes>
           <Edges>
@@ -379,6 +379,11 @@ def process(value):
             </Edge>
           </Edges>
         </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q7:RunningAverage">
+          <q7:Alpha>1</q7:Alpha>
+        </Combinator>
       </Expression>
     </Nodes>
     <Edges>
@@ -404,7 +409,7 @@ def process(value):
       </Edge>
       <Edge>
         <From>4</From>
-        <To>14</To>
+        <To>31</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
@@ -537,6 +542,11 @@ def process(value):
         <To>5</To>
         <Label>Source1</Label>
       </Edge>
+      <Edge>
+        <From>31</From>
+        <To>14</To>
+        <Label>Source1</Label>
+      </Edge>
     </Edges>
   </Workflow>
   <ExtensionTypes>
@@ -563,5 +573,6 @@ def process(value):
     <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.CsvReader, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.IO.CsvReader, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.RunningAverage, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
