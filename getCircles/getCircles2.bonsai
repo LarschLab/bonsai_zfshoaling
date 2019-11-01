@@ -349,7 +349,7 @@ def process(value):
           <q2:MinDistance>240</q2:MinDistance>
           <q2:Param1>50</q2:Param1>
           <q2:Param2>100</q2:Param2>
-          <q2:MinRadius>120</q2:MinRadius>
+          <q2:MinRadius>110</q2:MinRadius>
           <q2:MaxRadius>150</q2:MaxRadius>
         </Combinator>
       </Expression>

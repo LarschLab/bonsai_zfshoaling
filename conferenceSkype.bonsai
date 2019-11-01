@@ -307,10 +307,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q4:Crop">
                 <q4:RegionOfInterest>
-                  <q4:X>1747</q4:X>
-                  <q4:Y>1107</q4:Y>
-                  <q4:Width>246</q4:Width>
-                  <q4:Height>246</q4:Height>
+                  <q4:X>1764</q4:X>
+                  <q4:Y>1104</q4:Y>
+                  <q4:Width>252</q4:Width>
+                  <q4:Height>252</q4:Height>
                 </q4:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -795,14 +795,14 @@ def process(inputs):
               <Combinator xsi:type="ToList" />
             </Expression>
             <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2019-09-25T11_29_07.csv</q3:FileName>
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2019-10-31T11_29_31.csv</q3:FileName>
               <q3:ScanPattern>%i %i %i %i %i %i</q3:ScanPattern>
               <q3:SkipRows>0</q3:SkipRows>
             </Expression>
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2019-09-25T11_29_07.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2019-10-31T11_29_31.csv</Value>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -1104,14 +1104,14 @@ def process(value):
   return Array[float]([float(el) for el in value.split()])</q2:Script>
             </Expression>
             <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2019-09-25T11_30_42.csv</q3:FileName>
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2019-10-31T11_34_28.csv</q3:FileName>
               <q3:ScanPattern>%s</q3:ScanPattern>
               <q3:SkipRows>0</q3:SkipRows>
             </Expression>
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\calibrationOut2019-09-25T11_30_42.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\calibrationOut2019-10-31T11_34_28.csv</Value>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>

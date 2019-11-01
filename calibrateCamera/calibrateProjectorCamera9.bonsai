@@ -363,7 +363,7 @@ def process(value):
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2019-09-25T11_29_07.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2019-10-31T11_29_31.csv</Value>
             </Expression>
           </Nodes>
           <Edges>
