@@ -1,6 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:q7="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q4="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q6="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns="https://horizongir.org/bonsai">
+<WorkflowBuilder Version="2.4.0"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye"
+                 xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                 xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
+                 xmlns:q2="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
+                 xmlns:wie="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input"
+                 xmlns:dsp="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp"
+                 xmlns="https://bonsai-rx.org/2018/workflow">
+  <Workflow>
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
@@ -9,7 +21,71 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Source.Image</Selector>
+        <Selector>Image</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:BackgroundSubtraction">
+          <cv:BackgroundFrames>10</cv:BackgroundFrames>
+          <cv:AdaptationRate>0.01</cv:AdaptationRate>
+          <cv:ThresholdValue>27</cv:ThresholdValue>
+          <cv:ThresholdType>Binary</cv:ThresholdType>
+          <cv:SubtractionMethod>Dark</cv:SubtractionMethod>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:Threshold">
+          <cv:ThresholdValue>35</cv:ThresholdValue>
+          <cv:MaxValue>255</cv:MaxValue>
+          <cv:ThresholdType>Binary</cv:ThresholdType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="dsp:RunningAverage">
+          <dsp:Alpha>1</dsp:Alpha>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:FindContours">
+          <cv:Mode>External</cv:Mode>
+          <cv:Method>ChainApproxNone</cv:Method>
+          <cv:Offset>
+            <cv:X>0</cv:X>
+            <cv:Y>0</cv:Y>
+          </cv:Offset>
+          <cv:MinArea>200</cv:MinArea>
+          <cv:MaxArea xsi:nil="true" />
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:BinaryRegionAnalysis" />
+      </Expression>
+      <Expression xsi:type="scr:PythonTransform">
+        <scr:Name>SortContours</scr:Name>
+        <scr:Script>import clr
+clr.AddReference("Bonsai.Vision")
+from Bonsai.Vision import ConnectedComponent
+from System.Collections.Generic import IList
+from System import Tuple
+
+@returns(IList[ConnectedComponent])
+
+def process(value):
+
+  tupRoundAll=[]
+  for c in value:
+
+    y=c.Centroid.Y
+    yr=(int(y/400)*400)
+    x=c.Centroid.X
+    xr=(int(x/400)*400)
+    
+    tupRoundAll.append((yr,xr))
+  
+  so=[i[0] for i in sorted(enumerate(tupRoundAll), key=lambda x:x[1])]
+
+  s=[value[i] for i in so]
+
+  return s</scr:Script>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="FloatProperty">
@@ -17,109 +93,72 @@
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:BackgroundSubtraction">
-          <q2:BackgroundFrames>10</q2:BackgroundFrames>
-          <q2:AdaptationRate>0.01</q2:AdaptationRate>
-          <q2:ThresholdValue>27</q2:ThresholdValue>
-          <q2:ThresholdType>Binary</q2:ThresholdType>
-          <q2:SubtractionMethod>Dark</q2:SubtractionMethod>
+        <Combinator xsi:type="rx:Timer">
+          <rx:DueTime>PT0S</rx:DueTime>
+          <rx:Period>PT2S</rx:Period>
         </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:Threshold">
-          <q2:ThresholdValue>35</q2:ThresholdValue>
-          <q2:MaxValue>255</q2:MaxValue>
-          <q2:ThresholdType>Binary</q2:ThresholdType>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="ToList" />
-      </Expression>
-      <Expression xsi:type="Equal" />
-      <Expression xsi:type="Condition">
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="MemberSelector">
-              <Selector>Source.Item3</Selector>
-            </Expression>
-          </Nodes>
-          <Edges>
-            <Edge>
-              <From>0</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-          </Edges>
-        </Workflow>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="CombineLatest" />
       </Expression>
       <Expression xsi:type="Mod">
-        <Operand xsi:type="WorkflowPropertyOfInt64">
+        <Operand xsi:type="WorkflowProperty" TypeArguments="sys:Int64">
           <Value>2</Value>
         </Operand>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Timer">
-          <DueTime>PT0S</DueTime>
-          <Period>PT2S</Period>
+        <Combinator xsi:type="rx:CombineLatest" />
+      </Expression>
+      <Expression xsi:type="Equal" />
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="gl:UpdateFrame" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="wie:KeyDown">
+          <wie:Filter>A</wie:Filter>
+          <wie:SuppressRepetitions>false</wie:SuppressRepetitions>
         </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:UpdateFrame" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q3:DrawArrays">
-          <q3:ShaderName>Particles</q3:ShaderName>
-          <q3:DrawMode>Points</q3:DrawMode>
-          <q3:Usage>DynamicDraw</q3:Usage>
-          <q3:VertexAttributes>
-            <q3:VertexAttributeMapping>
-              <q3:Size>3</q3:Size>
-              <q3:Normalized>false</q3:Normalized>
-              <q3:Type>Float</q3:Type>
-            </q3:VertexAttributeMapping>
-          </q3:VertexAttributes>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="CombineLatest" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:FindContours">
-          <q2:Mode>External</q2:Mode>
-          <q2:Method>ChainApproxNone</q2:Method>
-          <q2:Offset>
-            <q2:X>0</q2:X>
-            <q2:Y>0</q2:Y>
-          </q2:Offset>
-          <q2:MinArea>200</q2:MinArea>
-          <q2:MaxArea xsi:nil="true" />
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q2:BinaryRegionAnalysis" />
       </Expression>
       <Expression xsi:type="Equal">
-        <Operand xsi:type="WorkflowPropertyOfKeys">
+        <Operand xsi:type="WorkflowProperty" TypeArguments="q2:Keys">
           <Value>A</Value>
         </Operand>
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="CombineLatest" />
+      <Expression xsi:type="PropertyMapping">
+        <PropertyMappings>
+          <Property Name="Value" />
+        </PropertyMappings>
       </Expression>
-      <Expression xsi:type="q4:PythonTransform">
-        <q4:Script>import clr
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="BooleanProperty">
+          <Value>false</Value>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>ROI File</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="FileName" />
+            </Expression>
+            <Expression xsi:type="io:CsvReader">
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2019-02-04T11_58_58.csv</io:FileName>
+              <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
+              <io:SkipRows>0</io:SkipRows>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:ToList" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:CombineLatest" />
+      </Expression>
+      <Expression xsi:type="scr:PythonTransform">
+        <scr:Script>import clr
 clr.AddReference("OpenTK")
 clr.AddReference("OpenCV.Net")
 from System.Collections.Generic import IList
@@ -203,10 +242,70 @@ def process(value):
 def unload():
   global dlOld,dl
   dlOld=None
-  dl=None</q4:Script>
+  dl=None</scr:Script>
       </Expression>
-      <Expression xsi:type="q4:PythonTransform">
-        <q4:Script>import clr
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:CombineLatest" />
+      </Expression>
+      <Expression xsi:type="Condition">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item2</Selector>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Take">
+          <rx:Count>1</rx:Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item1.Item1</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="io:TextWriter">
+          <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut.csv</io:FileName>
+          <io:Suffix>Timestamp</io:Suffix>
+          <io:Buffered>true</io:Buffered>
+          <io:Overwrite>false</io:Overwrite>
+          <io:Append>false</io:Append>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item1</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:CombineLatest" />
+      </Expression>
+      <Expression xsi:type="Condition">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item3</Selector>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="scr:PythonTransform">
+        <scr:Script>import clr
 clr.AddReference("OpenTK")
 from OpenTK import Vector2, Vector3
 from System import Array, Tuple
@@ -257,322 +356,56 @@ def process(value):
     
 
   ar=Array[Vector3](allwells)
-  return ar</q4:Script>
-      </Expression>
-      <Expression xsi:type="ExternalizedPropertyOfBooleanBooleanProperty">
-        <MemberName>Value</MemberName>
-        <Name>Value</Name>
-        <Value>false</Value>
+  return ar</scr:Script>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="BooleanProperty">
-          <Value>false</Value>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q5:TextWriter">
-          <q5:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut.csv</q5:FileName>
-          <q5:Suffix>Timestamp</q5:Suffix>
-          <q5:Buffered>true</q5:Buffered>
-          <q5:Overwrite>false</q5:Overwrite>
-          <q5:Append>false</q5:Append>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q6:KeyDown">
-          <q6:Filter>A</q6:Filter>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="CombineLatest" />
-      </Expression>
-      <Expression xsi:type="Condition">
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="MemberSelector">
-              <Selector>Source.Item2</Selector>
-            </Expression>
-          </Nodes>
-          <Edges>
-            <Edge>
-              <From>0</From>
-              <To>2</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-          </Edges>
-        </Workflow>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="Take">
-          <Count>1</Count>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Source.Item1.Item1</Selector>
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Source.Item1</Selector>
-      </Expression>
-      <Expression xsi:type="q4:PythonTransform">
-        <q4:Name>SortContours</q4:Name>
-        <q4:Script>import clr
-clr.AddReference("Bonsai.Vision")
-from Bonsai.Vision import ConnectedComponent
-from System.Collections.Generic import IList
-from System import Tuple
-
-@returns(IList[ConnectedComponent])
-
-def process(value):
-
-  tupRoundAll=[]
-  for c in value:
-
-    y=c.Centroid.Y
-    yr=(int(y/400)*400)
-    x=c.Centroid.X
-    xr=(int(x/400)*400)
-    
-    tupRoundAll.append((yr,xr))
-  
-  so=[i[0] for i in sorted(enumerate(tupRoundAll), key=lambda x:x[1])]
-
-  s=[value[i] for i in so]
-
-  return s</q4:Script>
-      </Expression>
-      <Expression xsi:type="NestedWorkflow">
-        <Name>ROI File</Name>
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="q5:CsvReader">
-              <q5:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2019-02-04T11_58_58.csv</q5:FileName>
-              <q5:ScanPattern>%i %i %i %i %i %i</q5:ScanPattern>
-              <q5:SkipRows>0</q5:SkipRows>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
-              <MemberName>FileName</MemberName>
-              <Name>FileName</Name>
-              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2019-07-19T11_00_32.csv</Value>
-            </Expression>
-          </Nodes>
-          <Edges>
-            <Edge>
-              <From>0</From>
-              <To>1</To>
-              <Label>Source1</Label>
-            </Edge>
-            <Edge>
-              <From>2</From>
-              <To>0</To>
-              <Label>Source1</Label>
-            </Edge>
-          </Edges>
-        </Workflow>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="q7:RunningAverage">
-          <q7:Alpha>1</q7:Alpha>
+        <Combinator xsi:type="gl:DrawArrays">
+          <gl:ShaderName>Particles</gl:ShaderName>
+          <gl:DrawMode>Points</gl:DrawMode>
+          <gl:Usage>DynamicDraw</gl:Usage>
+          <gl:VertexAttributes>
+            <gl:VertexAttributeMapping>
+              <gl:Size>3</gl:Size>
+              <gl:Normalized>false</gl:Normalized>
+              <gl:Type>Float</gl:Type>
+            </gl:VertexAttributeMapping>
+          </gl:VertexAttributes>
         </Combinator>
       </Expression>
     </Nodes>
     <Edges>
-      <Edge>
-        <From>0</From>
-        <To>1</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>1</From>
-        <To>3</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>2</From>
-        <To>8</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>3</From>
-        <To>4</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>4</From>
-        <To>31</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>13</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>5</From>
-        <To>17</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>6</From>
-        <To>13</To>
-        <Label>Source3</Label>
-      </Edge>
-      <Edge>
-        <From>7</From>
-        <To>19</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>8</From>
-        <To>6</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>9</From>
-        <To>8</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>10</From>
-        <To>9</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>11</From>
-        <To>13</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>13</From>
-        <To>7</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>14</From>
-        <To>15</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>15</From>
-        <To>29</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>16</From>
-        <To>20</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>17</From>
-        <To>18</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>18</From>
-        <To>24</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>18</From>
-        <To>28</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>19</From>
-        <To>12</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>20</From>
-        <To>21</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>21</From>
-        <To>24</To>
-        <Label>Source2</Label>
-      </Edge>
-      <Edge>
-        <From>23</From>
-        <To>16</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>24</From>
-        <To>25</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>25</From>
-        <To>26</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>26</From>
-        <To>27</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>27</From>
-        <To>22</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>28</From>
-        <To>13</To>
-        <Label>Source4</Label>
-      </Edge>
-      <Edge>
-        <From>29</From>
-        <To>17</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>30</From>
-        <To>5</To>
-        <Label>Source1</Label>
-      </Edge>
-      <Edge>
-        <From>31</From>
-        <To>14</To>
-        <Label>Source1</Label>
-      </Edge>
+      <Edge From="0" To="1" Label="Source1" />
+      <Edge From="1" To="2" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="3" To="4" Label="Source1" />
+      <Edge From="4" To="5" Label="Source1" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="7" Label="Source1" />
+      <Edge From="7" To="20" Label="Source1" />
+      <Edge From="8" To="11" Label="Source2" />
+      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="12" To="28" Label="Source3" />
+      <Edge From="13" To="28" Label="Source2" />
+      <Edge From="14" To="15" Label="Source1" />
+      <Edge From="15" To="16" Label="Source1" />
+      <Edge From="16" To="17" Label="Source1" />
+      <Edge From="17" To="22" Label="Source2" />
+      <Edge From="18" To="19" Label="Source1" />
+      <Edge From="19" To="28" Label="Source1" />
+      <Edge From="19" To="20" Label="Source2" />
+      <Edge From="20" To="21" Label="Source1" />
+      <Edge From="21" To="22" Label="Source1" />
+      <Edge From="21" To="27" Label="Source1" />
+      <Edge From="22" To="23" Label="Source1" />
+      <Edge From="23" To="24" Label="Source1" />
+      <Edge From="24" To="25" Label="Source1" />
+      <Edge From="25" To="26" Label="Source1" />
+      <Edge From="27" To="28" Label="Source4" />
+      <Edge From="28" To="29" Label="Source1" />
+      <Edge From="29" To="30" Label="Source1" />
+      <Edge From="30" To="31" Label="Source1" />
     </Edges>
   </Workflow>
-  <ExtensionTypes>
-    <Type>Bonsai.uEye.uEyeCapture, Bonsai.uEye, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.FloatProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.Threshold, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.ToList, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.EqualBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.CombineLatest, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.ModBuilder, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.WorkflowProperty`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Timer, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.UpdateFrame, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Shaders.DrawArrays, Bonsai.Shaders, Version=0.18.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.FindContours, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Vision.BinaryRegionAnalysis, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.WorkflowProperty`1[[System.Windows.Forms.Keys, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.Expressions.BooleanProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.BooleanProperty, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.IO.TextWriter, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Windows.Input.KeyDown, Bonsai.Windows.Input, Version=2.2.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.IO.CsvReader, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.IO.CsvReader, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-    <Type>Bonsai.Dsp.RunningAverage, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
-  </ExtensionTypes>
 </WorkflowBuilder>
