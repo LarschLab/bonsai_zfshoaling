@@ -4,7 +4,7 @@
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
-          <q1:Index>0</q1:Index>
+          <q1:DeviceId xsi:nil="true" />
           <q1:ConfigFile>2048x1280_30fps_slowClock_4.9.ini</q1:ConfigFile>
         </Combinator>
       </Expression>
@@ -28,7 +28,7 @@ posPick=300
 fr=0
 posList=[]
 CL=False
-FlexPair=False
+FlexPair=True
 
 def correctFish(x,y,xOff,yOff,xMax,xMaxCm):
 
@@ -36,8 +36,8 @@ def correctFish(x,y,xOff,yOff,xMax,xMaxCm):
   xR=x+xOff
   yR=y+yOff
 
-  xR=xR-(scale*(xR-xMax/2.)/(105*scale))
-  yR=yR-(scale*(yR-yMax/2.)/(105*scale))
+  xR=xR-(scale*(xR-xMax/2.)/(180*scale))
+  yR=yR-(scale*(yR-yMax/2.)/(180*scale))
 
   return xR-xOff,yR-yOff
 
@@ -89,7 +89,7 @@ def process(value):
     yoff=value.Item1.Item2[i].Item2
 
     #Also correct dish ROI! Added 7-19-2017
-    xoff,yoff = correctFish(xoff,yoff,0,0,xMax,53.)
+    xoff,yoff = correctFish(xoff,yoff,0,0,xMax,65.)
 
     x = well.Centroid.X
     y = well.Centroid.Y
@@ -259,14 +259,14 @@ def process(value):
               <Combinator xsi:type="ToList" />
             </Expression>
             <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_16_eachWithSelf.txt</q3:FileName>
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\pairLists\old\PairList_20170919_SkypePair_and_knot.csv</q3:FileName>
               <q3:ScanPattern>%s</q3:ScanPattern>
               <q3:SkipRows>0</q3:SkipRows>
             </Expression>
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>testExperiment\pairLists\PL_16_eachWithLast.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\pairLists\old\PairList_20170919_SkypePair_and_knot.csv</Value>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -307,10 +307,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="q4:Crop">
                 <q4:RegionOfInterest>
-                  <q4:X>1636</q4:X>
-                  <q4:Y>844</q4:Y>
-                  <q4:Width>382</q4:Width>
-                  <q4:Height>382</q4:Height>
+                  <q4:X>1637</q4:X>
+                  <q4:Y>857</q4:Y>
+                  <q4:Width>380</q4:Width>
+                  <q4:Height>380</q4:Height>
                 </q4:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -747,7 +747,7 @@ def process(inputs):
               </Combinator>
             </Expression>
             <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\kineticParameters_03d_smallSlowLoopy_c.csv</q3:FileName>
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectory_20170919_SkypePair_and_knot_halfSpeedSize4.txt</q3:FileName>
               <q3:ScanPattern>%s,%f,%f,%f,%f,%f</q3:ScanPattern>
               <q3:SkipRows>0</q3:SkipRows>
             </Expression>
@@ -759,7 +759,7 @@ def process(inputs):
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>testExperiment\trajectories\KnotTrajectory_6Sizes.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\trajectories\trajectory_20170919_SkypePair_and_knot_halfSpeedSize4.txt</Value>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -795,14 +795,14 @@ def process(inputs):
               <Combinator xsi:type="ToList" />
             </Expression>
             <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2018-05-03T10_31_23.csv</q3:FileName>
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-01-15T09_43_19.csv</q3:FileName>
               <q3:ScanPattern>%i %i %i %i %i %i</q3:ScanPattern>
               <q3:SkipRows>0</q3:SkipRows>
             </Expression>
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>testExperiment\ROIdef2018-05-02T09_16_29.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\ROIdef2020-01-15T09_43_19.csv</Value>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -1104,14 +1104,14 @@ def process(value):
   return Array[float]([float(el) for el in value.split()])</q2:Script>
             </Expression>
             <Expression xsi:type="q3:CsvReader">
-              <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2018-05-03T10_32_23.csv</q3:FileName>
+              <q3:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2020-01-15T09_44_34.csv</q3:FileName>
               <q3:ScanPattern>%s</q3:ScanPattern>
               <q3:SkipRows>0</q3:SkipRows>
             </Expression>
             <Expression xsi:type="ExternalizedPropertyOfStringCsvReader">
               <MemberName>FileName</MemberName>
               <Name>FileName</Name>
-              <Value>testExperiment\calibrationOut2018-05-02T09_18_04.csv</Value>
+              <Value>E:\00_bonsai_ffmpeg_out\calibrationOut2020-01-15T09_44_34.csv</Value>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
@@ -1259,7 +1259,7 @@ def process(value):
     </Edges>
   </Workflow>
   <ExtensionTypes>
-    <Type>Bonsai.uEye.uEyeCapture, Bonsai.uEye, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.uEye.uEyeCapture, Bonsai.uEye, Version=2.1.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Scripting.PythonTransform, Bonsai.Scripting, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.TextWriter, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Vision.BackgroundSubtraction, Bonsai.Vision, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
