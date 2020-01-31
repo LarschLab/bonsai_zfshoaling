@@ -2,12 +2,12 @@
 <WorkflowBuilder Version="2.4.0"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
                  xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
-                 xmlns:q2="clr-namespace:Bonsai.joh.Vision;assembly=BonsaiPackage5"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
+                 xmlns:q2="clr-namespace:Bonsai.joh.Vision;assembly=BonsaiPackage5"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -31,7 +31,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:Threshold">
-          <cv:ThresholdValue>9</cv:ThresholdValue>
+          <cv:ThresholdValue>14</cv:ThresholdValue>
           <cv:MaxValue>255</cv:MaxValue>
           <cv:ThresholdType>Binary</cv:ThresholdType>
         </Combinator>
@@ -44,7 +44,7 @@
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_eachWithSelf.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_eachWithLast.csv</io:FileName>
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -111,7 +111,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2019-10-04T16_34_03.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-01-29T15_48_49.csv</io:FileName>
               <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -144,7 +144,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2019-10-04T11_36_43.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2020-01-29T15_49_42.csv</io:FileName>
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -194,10 +194,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1767</cv:X>
-                  <cv:Y>1107</cv:Y>
-                  <cv:Width>246</cv:Width>
-                  <cv:Height>246</cv:Height>
+                  <cv:X>1766</cv:X>
+                  <cv:Y>1106</cv:Y>
+                  <cv:Width>248</cv:Width>
+                  <cv:Height>248</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
