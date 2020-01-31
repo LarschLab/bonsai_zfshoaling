@@ -17,7 +17,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
           <q1:DeviceId xsi:nil="true" />
-          <q1:ConfigFile>C:\Users\Experimenter\Documents\bonsai_zfshoaling 35Dish\calibrateCamera\2048x1380_10fps_slowClock_rev2_15msExposure.ini</q1:ConfigFile>
+          <q1:ConfigFile>2048x1380_10fps_slowClock_4.92.ini</q1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">

@@ -14,7 +14,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
           <q1:DeviceId xsi:nil="true" />
-          <q1:ConfigFile>2048x1380_30fps_slowClock_4.9.ini</q1:ConfigFile>
+          <q1:ConfigFile>2048x1380_30fps_slowClock_4.92.ini</q1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -287,8 +287,8 @@ def correctFish(x,y,xOff,yOff,xMax,xMaxCm):
   xR=x+xOff
   yR=y+yOff
 
-  xR=xR-(scale*(xR-xMax/2.)/(150*scale))
-  yR=yR-(scale*(yR-yMax/2.)/(150*scale))
+  xR=xR-(scale*(xR-xMax/2.)/(180*scale))
+  yR=yR-(scale*(yR-yMax/2.)/(180*scale))
 
   return xR-xOff,yR-yOff
 
@@ -340,7 +340,7 @@ def process(value):
     yoff=value.Item1.Item2[i].Item2
 
     #Also correct dish ROI! Added 7-19-2017
-    xoff,yoff = correctFish(xoff,yoff,0,0,xMax,60)
+    xoff,yoff = correctFish(xoff,yoff,0,0,xMax,65)
 
     x = well.Centroid.X
     y = well.Centroid.Y
