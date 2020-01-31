@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorkflowBuilder Version="2.3.0">
-  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q4="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q6="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns="https://horizongir.org/bonsai">
+  <Workflow xmlns:q2="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:q3="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders" xmlns:q7="clr-namespace:Bonsai.Dsp;assembly=Bonsai.Dsp" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:q5="clr-namespace:Bonsai.IO;assembly=Bonsai.System" xmlns:q4="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting" xmlns:q6="clr-namespace:Bonsai.Windows.Input;assembly=Bonsai.Windows.Input" xmlns:q1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye" xmlns="https://horizongir.org/bonsai">
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="q1:uEyeCapture">
@@ -103,7 +103,7 @@
             <q2:X>0</q2:X>
             <q2:Y>0</q2:Y>
           </q2:Offset>
-          <q2:MinArea>200</q2:MinArea>
+          <q2:MinArea>800</q2:MinArea>
           <q2:MaxArea xsi:nil="true" />
         </Combinator>
       </Expression>
@@ -380,6 +380,11 @@ def process(value):
           </Edges>
         </Workflow>
       </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="q7:RunningAverage">
+          <q7:Alpha>0.11</q7:Alpha>
+        </Combinator>
+      </Expression>
     </Nodes>
     <Edges>
       <Edge>
@@ -389,7 +394,7 @@ def process(value):
       </Edge>
       <Edge>
         <From>1</From>
-        <To>3</To>
+        <To>31</To>
         <Label>Source1</Label>
       </Edge>
       <Edge>
@@ -537,6 +542,11 @@ def process(value):
         <To>5</To>
         <Label>Source1</Label>
       </Edge>
+      <Edge>
+        <From>31</From>
+        <To>3</To>
+        <Label>Source1</Label>
+      </Edge>
     </Edges>
   </Workflow>
   <ExtensionTypes>
@@ -563,5 +573,6 @@ def process(value):
     <Type>Bonsai.Reactive.Take, Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.IO.CsvReader, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
     <Type>Bonsai.Expressions.ExternalizedProperty`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[Bonsai.IO.CsvReader, Bonsai.System, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null]], Bonsai.Core, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
+    <Type>Bonsai.Dsp.RunningAverage, Bonsai.Dsp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null</Type>
   </ExtensionTypes>
 </WorkflowBuilder>
