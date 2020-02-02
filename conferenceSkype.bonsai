@@ -83,7 +83,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\jlarsch\Documents\00_work\demoVideos\35Animals\trajectories_35wellPlate_03.csv</io:FileName>
+              <io:FileName>C:\Users\jlarsch\Documents\00_work\demoVideos\35Animals\trajectories_35wellPlate_shaderTest.csv</io:FileName>
               <io:ScanPattern>%s,%f,%f,%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -125,15 +125,6 @@ def process(value):
             <Edge From="2" To="3" Label="Source1" />
           </Edges>
         </Workflow>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:Timer">
-          <rx:DueTime>PT0S</rx:DueTime>
-          <rx:Period>PT1S</rx:Period>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="scr:ExpressionTransform">
-        <scr:Expression>(it%10)&lt;5</scr:Expression>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
         <Name>calibration file</Name>
@@ -458,7 +449,7 @@ posList=[]
 CL=False
 FlexPair=False
 
-@returns(Tuple[str,Array[Vector3],Single,Single,str,str])
+@returns(Tuple[str,Array[Vector3],Single,Single,str,str,Tuple[bool,Single,Single,Single]])
 def process(value):
   global allCoor,oldCoor,fr,posList
 
@@ -506,7 +497,19 @@ def process(value):
         drawStr.append(wellStr)
   
   ar=sS.listToTkArray(toDraw)
-  return Tuple.Create(" ".join(allwells),ar,Single(bgCol),Single(DotCol)," ".join(drawStr)," ".join(saveSettings))
+  eName = value.Item2.Item1
+  grat=eName[:4]=='grat'
+  if grat:
+    contrast=Single(float(eName[4:7])/100.)
+    freq=Single(float(eName[7:10]))
+    speed=Single(float(eName[10:13]))
+  else:
+    contrast=Single(1.)
+    speed=Single(1.)
+    freq=Single(1.)
+
+
+  return Tuple.Create(" ".join(allwells),ar,Single(bgCol),Single(DotCol)," ".join(drawStr)," ".join(saveSettings),Tuple.Create(grat,contrast,speed,freq))
 
 def unload():
   global allCoor,oldCoor,fr,posList
@@ -530,6 +533,143 @@ def unload():
       <Expression xsi:type="MemberSelector">
         <Selector>Item2,Item3,Item4</Selector>
       </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>GLdraw</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source2</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:CombineLatest" />
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item2.Item1</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="gl:DrawArrays">
+                <gl:ShaderName>Particles</gl:ShaderName>
+                <gl:DrawMode>Points</gl:DrawMode>
+                <gl:Usage>DynamicDraw</gl:Usage>
+                <gl:VertexAttributes>
+                  <gl:VertexAttributeMapping>
+                    <gl:Size>3</gl:Size>
+                    <gl:Normalized>false</gl:Normalized>
+                    <gl:Type>Float</gl:Type>
+                  </gl:VertexAttributeMapping>
+                </gl:VertexAttributes>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item2.Item2</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="gl:UpdateUniform">
+                <gl:UniformName>colBG</gl:UniformName>
+                <gl:ShaderName>Particles</gl:ShaderName>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="gl:UpdateUniform">
+                <gl:UniformName>colBG</gl:UniformName>
+                <gl:ShaderName>bg</gl:ShaderName>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item2.Item3</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="gl:UpdateUniform">
+                <gl:UniformName>colDot</gl:UniformName>
+                <gl:ShaderName>Particles</gl:ShaderName>
+              </Combinator>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="2" Label="Source1" />
+            <Edge From="1" To="2" Label="Source2" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="2" To="5" Label="Source1" />
+            <Edge From="2" To="8" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item2</Selector>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source2</Name>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item6</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Take">
+                <rx:Count>1</rx:Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item1</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item2</Selector>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="Value" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="Add">
+              <Operand xsi:type="StringProperty">
+                <Value>False False 2048.0 1380.0</Value>
+              </Operand>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="io:TextWriter">
+                <io:FileName>C:\00_bonsai_ffmpeg_out\saveSettings.txt</io:FileName>
+                <io:Suffix>Timestamp</io:Suffix>
+                <io:Buffered>true</io:Buffered>
+                <io:Overwrite>false</io:Overwrite>
+                <io:Append>false</io:Append>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="5" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source2" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="5" To="7" Label="Source1" />
+            <Edge From="6" To="9" Label="Source2" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item7</Selector>
+      </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:CombineLatest" />
       </Expression>
@@ -547,7 +687,7 @@ def unload():
                     <Name>Source1</Name>
                   </Expression>
                   <Expression xsi:type="MemberSelector">
-                    <Selector>Item1</Selector>
+                    <Selector>Item1.Item1</Selector>
                   </Expression>
                   <Expression xsi:type="WorkflowOutput" />
                 </Nodes>
@@ -563,38 +703,6 @@ def unload():
             <Expression xsi:type="rx:Accumulate" />
             <Expression xsi:type="scr:ExpressionTransform">
               <scr:Expression>single(it)</scr:Expression>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="FloatProperty">
-                <Value>5</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Zip" />
-            </Expression>
-            <Expression xsi:type="Multiply" />
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="gl:UpdateUniform">
-                <gl:UniformName>phase</gl:UniformName>
-                <gl:ShaderName>Waveform</gl:ShaderName>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="gl:DrawMesh">
-                <gl:ShaderName>Waveform</gl:ShaderName>
-                <gl:MeshName>Waveform</gl:MeshName>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="FloatProperty">
-                <Value>20</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="gl:UpdateUniform">
-                <gl:UniformName>frequency</gl:UniformName>
-                <gl:ShaderName>Waveform</gl:ShaderName>
-              </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Take">
@@ -680,177 +788,130 @@ def process(value):
                 </gl:VertexAttributes>
               </Combinator>
             </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item1</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item2</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="gl:UpdateUniform">
+                <gl:UniformName>contrast</gl:UniformName>
+                <gl:ShaderName>Waveform</gl:ShaderName>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item3</Selector>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="Value" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>10</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="Multiply" />
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="gl:UpdateUniform">
+                <gl:UniformName>phase</gl:UniformName>
+                <gl:ShaderName>Waveform</gl:ShaderName>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="gl:DrawMesh">
+                <gl:ShaderName>Waveform</gl:ShaderName>
+                <gl:MeshName>Waveform</gl:MeshName>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item4</Selector>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="Value" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>20</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="gl:UpdateUniform">
+                <gl:UniformName>frequency</gl:UniformName>
+                <gl:ShaderName>Waveform</gl:ShaderName>
+              </Combinator>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
-            <Edge From="1" To="13" Label="Source1" />
+            <Edge From="1" To="6" Label="Source1" />
+            <Edge From="1" To="11" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="2" To="12" Label="Source1" />
+            <Edge From="2" To="5" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
-            <Edge From="4" To="6" Label="Source1" />
-            <Edge From="4" To="5" Label="Source1" />
-            <Edge From="5" To="6" Label="Source2" />
+            <Edge From="4" To="17" Label="Source1" />
+            <Edge From="4" To="16" Label="Source1" />
+            <Edge From="5" To="8" Label="Source2" />
             <Edge From="6" To="7" Label="Source1" />
             <Edge From="7" To="8" Label="Source1" />
             <Edge From="8" To="9" Label="Source1" />
             <Edge From="9" To="10" Label="Source1" />
-            <Edge From="10" To="11" Label="Source1" />
-            <Edge From="12" To="15" Label="Source2" />
-            <Edge From="13" To="14" Label="Source1" />
+            <Edge From="11" To="12" Label="Source1" />
+            <Edge From="11" To="14" Label="Source1" />
+            <Edge From="11" To="21" Label="Source1" />
+            <Edge From="12" To="13" Label="Source1" />
             <Edge From="14" To="15" Label="Source1" />
-            <Edge From="15" To="16" Label="Source1" />
-            <Edge From="16" To="17" Label="Source1" />
+            <Edge From="15" To="16" Label="Source2" />
+            <Edge From="16" To="17" Label="Source2" />
+            <Edge From="17" To="18" Label="Source1" />
+            <Edge From="18" To="19" Label="Source1" />
+            <Edge From="19" To="20" Label="Source1" />
+            <Edge From="20" To="23" Label="Source1" />
+            <Edge From="21" To="22" Label="Source1" />
+            <Edge From="22" To="23" Label="Source2" />
+            <Edge From="23" To="24" Label="Source1" />
           </Edges>
         </Workflow>
-      </Expression>
-      <Expression xsi:type="NestedWorkflow">
-        <Name>GLdraw</Name>
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source2</Name>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:CombineLatest" />
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>Item2.Item1</Selector>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="gl:DrawArrays">
-                <gl:ShaderName>Particles</gl:ShaderName>
-                <gl:DrawMode>Points</gl:DrawMode>
-                <gl:Usage>DynamicDraw</gl:Usage>
-                <gl:VertexAttributes>
-                  <gl:VertexAttributeMapping>
-                    <gl:Size>3</gl:Size>
-                    <gl:Normalized>false</gl:Normalized>
-                    <gl:Type>Float</gl:Type>
-                  </gl:VertexAttributeMapping>
-                </gl:VertexAttributes>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>Item2.Item2</Selector>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="gl:UpdateUniform">
-                <gl:UniformName>colBG</gl:UniformName>
-                <gl:ShaderName>Particles</gl:ShaderName>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="gl:UpdateUniform">
-                <gl:UniformName>colBG</gl:UniformName>
-                <gl:ShaderName>bg</gl:ShaderName>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>Item2.Item3</Selector>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="gl:UpdateUniform">
-                <gl:UniformName>colDot</gl:UniformName>
-                <gl:ShaderName>Particles</gl:ShaderName>
-              </Combinator>
-            </Expression>
-          </Nodes>
-          <Edges>
-            <Edge From="0" To="2" Label="Source1" />
-            <Edge From="1" To="2" Label="Source2" />
-            <Edge From="2" To="3" Label="Source1" />
-            <Edge From="2" To="5" Label="Source1" />
-            <Edge From="2" To="8" Label="Source1" />
-            <Edge From="3" To="4" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
-            <Edge From="6" To="7" Label="Source1" />
-            <Edge From="8" To="9" Label="Source1" />
-          </Edges>
-        </Workflow>
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Item6</Selector>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:Take">
-          <rx:Count>1</rx:Count>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Item2</Selector>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:Zip" />
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Item1</Selector>
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Item2</Selector>
-      </Expression>
-      <Expression xsi:type="PropertyMapping">
-        <PropertyMappings>
-          <Property Name="Value" />
-        </PropertyMappings>
-      </Expression>
-      <Expression xsi:type="Add">
-        <Operand xsi:type="StringProperty">
-          <Value>False False 2048.0 1380.0</Value>
-        </Operand>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="io:TextWriter">
-          <io:FileName>C:\00_bonsai_ffmpeg_out\saveSettings.txt</io:FileName>
-          <io:Suffix>Timestamp</io:Suffix>
-          <io:Buffered>true</io:Buffered>
-          <io:Overwrite>false</io:Overwrite>
-          <io:Append>false</io:Append>
-        </Combinator>
       </Expression>
     </Nodes>
     <Edges>
       <Edge From="0" To="1" Label="Source1" />
       <Edge From="1" To="2" Label="Source1" />
-      <Edge From="3" To="17" Label="Source3" />
-      <Edge From="4" To="24" Label="Source2" />
-      <Edge From="4" To="26" Label="Source1" />
-      <Edge From="5" To="19" Label="Source2" />
-      <Edge From="6" To="17" Label="Source1" />
-      <Edge From="6" To="24" Label="Source3" />
-      <Edge From="7" To="8" Label="Source1" />
-      <Edge From="8" To="24" Label="Source1" />
-      <Edge From="9" To="17" Label="Source4" />
-      <Edge From="9" To="24" Label="Source4" />
-      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="3" To="15" Label="Source3" />
+      <Edge From="4" To="25" Label="Source2" />
+      <Edge From="4" To="22" Label="Source1" />
+      <Edge From="5" To="17" Label="Source2" />
+      <Edge From="6" To="15" Label="Source1" />
+      <Edge From="6" To="25" Label="Source3" />
+      <Edge From="7" To="15" Label="Source4" />
+      <Edge From="7" To="25" Label="Source4" />
+      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="9" To="11" Label="Source1" />
+      <Edge From="10" To="15" Label="Source2" />
       <Edge From="11" To="12" Label="Source1" />
-      <Edge From="11" To="13" Label="Source1" />
-      <Edge From="12" To="17" Label="Source2" />
       <Edge From="13" To="14" Label="Source1" />
+      <Edge From="13" To="23" Label="Source1" />
+      <Edge From="14" To="15" Label="Source5" />
       <Edge From="15" To="16" Label="Source1" />
-      <Edge From="15" To="29" Label="Source1" />
-      <Edge From="16" To="17" Label="Source5" />
+      <Edge From="16" To="17" Label="Source1" />
       <Edge From="17" To="18" Label="Source1" />
       <Edge From="18" To="19" Label="Source1" />
+      <Edge From="18" To="21" Label="Source1" />
+      <Edge From="18" To="23" Label="Source2" />
+      <Edge From="18" To="24" Label="Source1" />
       <Edge From="19" To="20" Label="Source1" />
-      <Edge From="20" To="21" Label="Source1" />
-      <Edge From="20" To="23" Label="Source1" />
-      <Edge From="20" To="27" Label="Source1" />
-      <Edge From="21" To="22" Label="Source1" />
-      <Edge From="23" To="26" Label="Source2" />
+      <Edge From="21" To="22" Label="Source2" />
       <Edge From="24" To="25" Label="Source1" />
-      <Edge From="27" To="28" Label="Source1" />
-      <Edge From="28" To="30" Label="Source2" />
-      <Edge From="29" To="30" Label="Source1" />
-      <Edge From="30" To="31" Label="Source1" />
-      <Edge From="30" To="32" Label="Source1" />
-      <Edge From="31" To="34" Label="Source2" />
-      <Edge From="32" To="33" Label="Source1" />
-      <Edge From="33" To="34" Label="Source1" />
-      <Edge From="34" To="35" Label="Source1" />
+      <Edge From="25" To="26" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
