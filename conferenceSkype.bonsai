@@ -133,7 +133,7 @@ def process(value):
         </Combinator>
       </Expression>
       <Expression xsi:type="scr:ExpressionTransform">
-        <scr:Expression>(it%10)&lt;-5</scr:Expression>
+        <scr:Expression>(it%10)&lt;5</scr:Expression>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
         <Name>calibration file</Name>
@@ -162,6 +162,373 @@ def process(value):
             <Edge From="2" To="3" Label="Source1" />
           </Edges>
         </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:FileCapture">
+          <cv:FileName>C:\Users\jlarsch\Documents\00_work\demoVideos\35Animals\out_id0_30fps_20200129153339.avi</cv:FileName>
+          <cv:PlaybackRate>30</cv:PlaybackRate>
+          <cv:StartPosition>0</cv:StartPosition>
+          <cv:PositionUnits>Frames</cv:PositionUnits>
+          <cv:Loop>false</cv:Loop>
+          <cv:Playing>true</cv:Playing>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:Grayscale" />
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:Threshold">
+          <cv:ThresholdValue>9</cv:ThresholdValue>
+          <cv:MaxValue>255</cv:MaxValue>
+          <cv:ThresholdType>Binary</cv:ThresholdType>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>ffmpeg</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="scr:PythonSource">
+              <scr:Script>import datetime
+@returns(str)
+def generate():
+  currentTime=datetime.datetime.now()
+  yield currentTime.strftime('%Y%m%d%H%M%S')</scr:Script>
+            </Expression>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Width</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Height</Selector>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="codec q" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="IntProperty">
+                <Value>5</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="cam id" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="IntProperty">
+                <Value>0</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="vid fps" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="IntProperty">
+                <Value>30</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="scr:PythonTransform">
+              <scr:Script>import subprocess as sp
+import datetime
+
+@returns(bool)
+def process(inputs):
+
+  vid_width=str(inputs.Item5)
+  vid_height=str(inputs.Item6)
+  vid_rate=str(inputs.Item1)
+  currentTime=inputs.Item2
+  cam_id=str(inputs.Item3)
+  codec_q=str(inputs.Item4)
+
+  cmd='c:\\ffmpeg\\bin\\ffmpeg.exe -y -f rawvideo -vcodec rawvideo -s '+vid_width+'x'+vid_height+' -r '+vid_rate+' -pix_fmt gray -i \\\\.\\pipe\\p1 -q:v '+codec_q+' -vcodec mpeg4 -vtag xvid c:\\00_bonsai_ffmpeg_out\\out_id'+cam_id+'_'+vid_rate+'fps'+'_'+currentTime+'.avi'
+  sp.Popen(cmd)
+  return True</scr:Script>
+            </Expression>
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="11" Label="Source3" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="1" To="3" Label="Source1" />
+            <Edge From="1" To="4" Label="Source1" />
+            <Edge From="2" To="11" Label="Source6" />
+            <Edge From="3" To="11" Label="Source7" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="6" To="11" Label="Source5" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="11" Label="Source4" />
+            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="10" To="11" Label="Source2" />
+            <Edge From="11" To="12" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:ImageWriter">
+          <cv:Path>\\.\pipe\p1</cv:Path>
+          <cv:Suffix>None</cv:Suffix>
+          <cv:Overwrite>false</cv:Overwrite>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="NestedWorkflow">
+        <Name>camHeight</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="FileName" />
+            </Expression>
+            <Expression xsi:type="io:CsvReader">
+              <io:FileName>C:\Users\jlarsch\Documents\00_work\demoVideos\35Animals\camHeight.csv</io:FileName>
+              <io:ScanPattern>%s</io:ScanPattern>
+              <io:SkipRows>0</io:SkipRows>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:ToList" />
+            </Expression>
+            <Expression xsi:type="scr:PythonTransform">
+              <scr:Name>splitCamList</scr:Name>
+              <scr:Script>import os
+from System import Tuple
+import datetime
+
+@returns(Tuple[int,str])
+def process(value):
+  CamList=[]
+  for l in value:
+    CamList.append([x for x in l.split()])
+
+  pcName=os.environ['COMPUTERNAME']
+  currentTime=datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+
+  
+
+  camHeight=-1
+  for c in CamList:
+    if c[0]==pcName:
+      camHeight=int(c[1])
+
+  saveSet=[currentTime,pcName,str(camHeight)+" "]
+  return Tuple.Create(camHeight," ".join(saveSet))
+
+
+  </scr:Script>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item1</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:CombineLatest" />
+      </Expression>
+      <Expression xsi:type="SelectMany">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item1</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Concat" />
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item2</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:CombineLatest" />
+            </Expression>
+            <Expression xsi:type="InputMapping">
+              <PropertyMappings>
+                <Property Name="RegionOfInterest" Selector="Item2.Item1,Item2.Item2,Item2.Item3,Item2.Item3" />
+              </PropertyMappings>
+              <Selector>Item1</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:Crop">
+                <cv:RegionOfInterest>
+                  <cv:X>1766</cv:X>
+                  <cv:Y>1106</cv:Y>
+                  <cv:Width>248</cv:Width>
+                  <cv:Height>248</cv:Height>
+                </cv:RegionOfInterest>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:FindContours">
+                <cv:Mode>External</cv:Mode>
+                <cv:Method>ChainApproxNone</cv:Method>
+                <cv:Offset>
+                  <cv:X>0</cv:X>
+                  <cv:Y>0</cv:Y>
+                </cv:Offset>
+                <cv:MinArea>4</cv:MinArea>
+                <cv:MaxArea>500</cv:MaxArea>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:BinaryRegionAnalysis" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="cv:LargestBinaryRegion" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="p2:HeadingFromOrientation" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:ToList" />
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item3</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item4</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item2.Size</Selector>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item5</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="0" To="3" Label="Source1" />
+            <Edge From="0" To="12" Label="Source1" />
+            <Edge From="0" To="13" Label="Source1" />
+            <Edge From="0" To="14" Label="Source1" />
+            <Edge From="0" To="15" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="1" To="16" Label="Source2" />
+            <Edge From="2" To="4" Label="Source2" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source1" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="11" To="16" Label="Source1" />
+            <Edge From="12" To="16" Label="Source3" />
+            <Edge From="13" To="16" Label="Source4" />
+            <Edge From="14" To="16" Label="Source5" />
+            <Edge From="15" To="16" Label="Source6" />
+            <Edge From="16" To="17" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Zip" />
+      </Expression>
+      <Expression xsi:type="scr:PythonTransform">
+        <scr:Script>import sys
+import clr
+clr.AddReference("OpenTK")
+from OpenTK import Vector3
+from System import Array, Tuple, Single
+
+sys.path.append('C:\\Users\\jlarsch\\Documents\\bonsai_zfshoaling\\python')
+import CameraInterceptCorrection as cic
+import geometry as geo
+import skypeShoal as sS
+
+allCoor=[]
+oldCoor=[]
+posPick=300
+fr=0
+posList=[]
+CL=False
+FlexPair=False
+
+@returns(Tuple[str,Array[Vector3],Single,Single,str,str])
+def process(value):
+  global allCoor,oldCoor,fr,posList
+
+  xMax = float(value.Item1.Item5.Width)
+  yMax = float(value.Item1.Item5.Height)
+  bgCol = value.Item2.Item5
+  DotCol = value.Item2.Item6
+  sp = value.Item2.Item4  # sprite point size
+
+  hArr =value.Item1.Item4 #projector-camera calibration matrix
+  pairList=sS.getPairList(value, FlexPair) #animal pair matrix
+  saveSettings=[str(CL),str(FlexPair),str(xMax),str(yMax)]
+
+  allCoor, allwells=sS.getAnimalCoors(value,allCoor)
+
+  if CL:
+    if fr==0:
+      posList=allCoor
+    fr+=1
+    if fr==posPick:
+      fr=0
+
+  toDraw=[]
+  drawStr=[]
+
+  for i,p in enumerate(allCoor):
+    #p: point to be drawn (unless in skype mode, ones should only be in i=15 or 35 (last animal)
+    l=pairList[i] #find where to draw it (which dish)
+    for ii,pp in enumerate(l):
+      if pp==1: #draw into dish ii
+
+        if CL: # for 'closed loop', place stimuli relative to defined position
+          x,y=sS.CLstim(value,allCoor,posList,p,ii)
+
+        else:
+          x=p[0]+allCoor[ii][2] #add offsets of current dish
+          y=p[1]+allCoor[ii][3]
+          
+        x,y=geo.transf(x,y,hArr) ##projector-camera calibration
+        x=geo.toGL(x,xMax) # transform to openGL coordinates
+        y=-geo.toGL(y,yMax)
+
+        toDraw.append([x,y,sp]) 
+        wellStr = "%0.f %0.f" % (x,y)
+        drawStr.append(wellStr)
+  
+  ar=sS.listToTkArray(toDraw)
+  return Tuple.Create(" ".join(allwells),ar,Single(bgCol),Single(DotCol)," ".join(drawStr)," ".join(saveSettings))
+
+def unload():
+  global allCoor,oldCoor,fr,posList
+  allCoor=None
+  oldCoor=None
+  fr=None
+  posList=None</scr:Script>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item1</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="io:TextWriter">
+          <io:FileName>C:\00_bonsai_ffmpeg_out\PositionTxt_allROI.txt</io:FileName>
+          <io:Suffix>Timestamp</io:Suffix>
+          <io:Buffered>true</io:Buffered>
+          <io:Overwrite>false</io:Overwrite>
+          <io:Append>false</io:Append>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item2,Item3,Item4</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:CombineLatest" />
@@ -277,8 +644,8 @@ def process(value):
     
     
     
-    x[i]=x[i]-(x[i]-xMax/2.)/(79*scale)
-    y[i]=y[i]-(y[i]-yMax/2.)/(79*scale)
+    x[i]=x[i]-(x[i]-xMax/2.)/(180)
+    y[i]=y[i]-(y[i]-yMax/2.)/(180)
     x[i],y[i]=transf(x[i],y[i],hArr)
     x[i]=(2*(x[i]-xMax/2))/xMax
     y[i]=(-2*(y[i]-yMax/2))/yMax
@@ -336,235 +703,6 @@ def process(value):
             <Edge From="16" To="17" Label="Source1" />
           </Edges>
         </Workflow>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="cv:FileCapture">
-          <cv:FileName>C:\Users\jlarsch\Documents\00_work\demoVideos\35Animals\out_id0_30fps_20200129153339.avi</cv:FileName>
-          <cv:PlaybackRate>30</cv:PlaybackRate>
-          <cv:StartPosition>0</cv:StartPosition>
-          <cv:PositionUnits>Frames</cv:PositionUnits>
-          <cv:Loop>false</cv:Loop>
-          <cv:Playing>true</cv:Playing>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="cv:Grayscale" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="cv:Threshold">
-          <cv:ThresholdValue>9</cv:ThresholdValue>
-          <cv:MaxValue>255</cv:MaxValue>
-          <cv:ThresholdType>Binary</cv:ThresholdType>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:CombineLatest" />
-      </Expression>
-      <Expression xsi:type="SelectMany">
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>Item1</Selector>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Concat" />
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>Item2</Selector>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:CombineLatest" />
-            </Expression>
-            <Expression xsi:type="InputMapping">
-              <PropertyMappings>
-                <Property Name="RegionOfInterest" Selector="Item2.Item1,Item2.Item2,Item2.Item3,Item2.Item3" />
-              </PropertyMappings>
-              <Selector>Item1</Selector>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="cv:Crop">
-                <cv:RegionOfInterest>
-                  <cv:X>1766</cv:X>
-                  <cv:Y>1106</cv:Y>
-                  <cv:Width>248</cv:Width>
-                  <cv:Height>248</cv:Height>
-                </cv:RegionOfInterest>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="cv:FindContours">
-                <cv:Mode>External</cv:Mode>
-                <cv:Method>ChainApproxNone</cv:Method>
-                <cv:Offset>
-                  <cv:X>0</cv:X>
-                  <cv:Y>0</cv:Y>
-                </cv:Offset>
-                <cv:MinArea>4</cv:MinArea>
-                <cv:MaxArea>500</cv:MaxArea>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="cv:BinaryRegionAnalysis" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="cv:LargestBinaryRegion" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="p2:HeadingFromOrientation" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:ToList" />
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>Item3</Selector>
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>Item4</Selector>
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>Item2.Size</Selector>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Zip" />
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-          </Nodes>
-          <Edges>
-            <Edge From="0" To="1" Label="Source1" />
-            <Edge From="0" To="3" Label="Source1" />
-            <Edge From="0" To="12" Label="Source1" />
-            <Edge From="0" To="13" Label="Source1" />
-            <Edge From="0" To="14" Label="Source1" />
-            <Edge From="1" To="2" Label="Source1" />
-            <Edge From="1" To="15" Label="Source2" />
-            <Edge From="2" To="4" Label="Source2" />
-            <Edge From="3" To="4" Label="Source1" />
-            <Edge From="4" To="5" Label="Source1" />
-            <Edge From="5" To="6" Label="Source1" />
-            <Edge From="6" To="7" Label="Source1" />
-            <Edge From="7" To="8" Label="Source1" />
-            <Edge From="8" To="9" Label="Source1" />
-            <Edge From="9" To="10" Label="Source1" />
-            <Edge From="10" To="11" Label="Source1" />
-            <Edge From="11" To="15" Label="Source1" />
-            <Edge From="12" To="15" Label="Source3" />
-            <Edge From="13" To="15" Label="Source4" />
-            <Edge From="14" To="15" Label="Source5" />
-            <Edge From="15" To="16" Label="Source1" />
-          </Edges>
-        </Workflow>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:Zip" />
-      </Expression>
-      <Expression xsi:type="scr:PythonTransform">
-        <scr:Script>import sys
-import clr
-clr.AddReference("OpenTK")
-from OpenTK import Vector2, Vector3
-from System import Array, Single, Random,Tuple
-
-
-sys.path.append('C:\\Users\\jlarsch\\Documents\\bonsai_zfshoaling\\python')
-import CameraInterceptCorrection as cic
-import geometry as geo
-import skypeShoal as sS
-
-allCoor=[]
-oldCoor=[]
-posPick=300
-fr=0
-posList=[]
-CL=False
-FlexPair=False
-camHeight=180
-
-@returns(Tuple[str,Array[Vector3],Single,Single,str])
-def process(value):
-  global allCoor,oldCoor,fr,posList
-
-  xMax = float(value.Item1.Item5.Width)
-  yMax = float(value.Item1.Item5.Height)
-  allCoor, allwells=sS.getAnimalCoors(value,allCoor,camHeight)
-
-  if CL:
-    
-    if fr==0:
-      posList=allCoor
-      fr=0
-    fr+=1
-    if fr==posPick:
-      fr=0
-
-  toDraw=[]
-
-  if FlexPair:
-    pairListNr=int(eName[:2])
-    drawList=value.Item1.Item3[pairListNr*16:(pairListNr+1)*16]
-  else:
-    drawList=value.Item1.Item3 #animal pair matrix
-
-  hArr =value.Item1.Item4 #projector-camera calibration matrix
-  
-
-  drawStr=[]
-  for i in range(len(allCoor)):
-    p=allCoor[i] #point to be drawn (unless in skype mode, ones should only be in i=15 (last animal)
-    l=drawList[i] #find where to draw it (which dish)
-    for ii in range(len(l)):
-      
-      if l[ii]==1: #draw into dish ii
-
-        if CL:
-
-          x,y=sS.CLstim(value,allCoor,posList,p,ii)
-
-        else:
-          x=p[0]+allCoor[ii][2] #add offsets of current dish
-          y=p[1]+allCoor[ii][3]
-          
-
-        x,y=geo.transf(x,y,hArr) ##projector-camera calibration
-
-
-        x=geo.toGL(x,xMax)
-        y=-geo.toGL(y,yMax)
-
-        toDraw.append([x,y])
-        wellStr = "%0.f %0.f" % (x,y)
-        drawStr.append(wellStr)
-  
-  bgCol = value.Item2.Item5
-  DotCol = value.Item2.Item6
-  sp = value.Item2.Item4  # sprite point size
-  ar=Array[Vector3]([Vector3(well[0],well[1],sp) for well in toDraw])
-
-  return Tuple.Create(" ".join(allwells),ar,Single(bgCol),Single(DotCol)," ".join(drawStr))
-
-def unload():
-  global allCoor,oldCoor,fr,posList
-  allCoor=None
-  oldCoor=None
-  fr=None
-  posList=None</scr:Script>
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Item1</Selector>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="io:TextWriter">
-          <io:FileName>C:\00_bonsai_ffmpeg_out\PositionTxt_allROI.txt</io:FileName>
-          <io:Suffix>Timestamp</io:Suffix>
-          <io:Buffered>true</io:Buffered>
-          <io:Overwrite>false</io:Overwrite>
-          <io:Append>false</io:Append>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="MemberSelector">
-        <Selector>Item2,Item3,Item4</Selector>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
         <Name>GLdraw</Name>
@@ -635,127 +773,84 @@ def unload():
         </Workflow>
       </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Item5</Selector>
-      </Expression>
-      <Expression xsi:type="NestedWorkflow">
-        <Name>ffmpeg</Name>
-        <Workflow>
-          <Nodes>
-            <Expression xsi:type="scr:PythonSource">
-              <scr:Script>import datetime
-@returns(str)
-def generate():
-  currentTime=datetime.datetime.now()
-  yield currentTime.strftime('%Y%m%d%H%M%S')</scr:Script>
-            </Expression>
-            <Expression xsi:type="WorkflowInput">
-              <Name>Source1</Name>
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>Width</Selector>
-            </Expression>
-            <Expression xsi:type="MemberSelector">
-              <Selector>Height</Selector>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="codec q" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="IntProperty">
-                <Value>5</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="cam id" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="IntProperty">
-                <Value>0</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Value" DisplayName="vid fps" />
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="IntProperty">
-                <Value>30</Value>
-              </Combinator>
-            </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Zip" />
-            </Expression>
-            <Expression xsi:type="scr:PythonTransform">
-              <scr:Script>import subprocess as sp
-import datetime
-
-@returns(bool)
-def process(inputs):
-
-  vid_width=str(inputs.Item5)
-  vid_height=str(inputs.Item6)
-  vid_rate=str(inputs.Item1)
-  currentTime=inputs.Item2
-  cam_id=str(inputs.Item3)
-  codec_q=str(inputs.Item4)
-
-  cmd='c:\\ffmpeg\\bin\\ffmpeg.exe -y -f rawvideo -vcodec rawvideo -s '+vid_width+'x'+vid_height+' -r '+vid_rate+' -pix_fmt gray -i \\\\.\\pipe\\p1 -q:v '+codec_q+' -vcodec mpeg4 -vtag xvid c:\\00_bonsai_ffmpeg_out\\out_id'+cam_id+'_'+vid_rate+'fps'+'_'+currentTime+'.avi'
-  sp.Popen(cmd)
-  return True</scr:Script>
-            </Expression>
-          </Nodes>
-          <Edges>
-            <Edge From="0" To="11" Label="Source3" />
-            <Edge From="1" To="2" Label="Source1" />
-            <Edge From="1" To="3" Label="Source1" />
-            <Edge From="1" To="4" Label="Source1" />
-            <Edge From="2" To="11" Label="Source6" />
-            <Edge From="3" To="11" Label="Source7" />
-            <Edge From="5" To="6" Label="Source1" />
-            <Edge From="6" To="11" Label="Source5" />
-            <Edge From="7" To="8" Label="Source1" />
-            <Edge From="8" To="11" Label="Source4" />
-            <Edge From="9" To="10" Label="Source1" />
-            <Edge From="10" To="11" Label="Source2" />
-            <Edge From="11" To="12" Label="Source1" />
-          </Edges>
-        </Workflow>
+        <Selector>Item6</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="cv:ImageWriter">
-          <cv:Path>\\.\pipe\p1</cv:Path>
-          <cv:Suffix>None</cv:Suffix>
-          <cv:Overwrite>false</cv:Overwrite>
+        <Combinator xsi:type="rx:Take">
+          <rx:Count>1</rx:Count>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item2</Selector>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Zip" />
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item1</Selector>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item2</Selector>
+      </Expression>
+      <Expression xsi:type="PropertyMapping">
+        <PropertyMappings>
+          <Property Name="Value" />
+        </PropertyMappings>
+      </Expression>
+      <Expression xsi:type="Add">
+        <Operand xsi:type="StringProperty">
+          <Value>False False 2048.0 1380.0</Value>
+        </Operand>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="io:TextWriter">
+          <io:FileName>C:\00_bonsai_ffmpeg_out\saveSettings.txt</io:FileName>
+          <io:Suffix>Timestamp</io:Suffix>
+          <io:Buffered>true</io:Buffered>
+          <io:Overwrite>false</io:Overwrite>
+          <io:Append>false</io:Append>
         </Combinator>
       </Expression>
     </Nodes>
     <Edges>
       <Edge From="0" To="1" Label="Source1" />
       <Edge From="1" To="2" Label="Source1" />
-      <Edge From="3" To="15" Label="Source3" />
-      <Edge From="4" To="10" Label="Source2" />
-      <Edge From="4" To="22" Label="Source1" />
-      <Edge From="5" To="17" Label="Source2" />
-      <Edge From="6" To="15" Label="Source1" />
-      <Edge From="6" To="10" Label="Source3" />
+      <Edge From="3" To="17" Label="Source3" />
+      <Edge From="4" To="24" Label="Source2" />
+      <Edge From="4" To="26" Label="Source1" />
+      <Edge From="5" To="19" Label="Source2" />
+      <Edge From="6" To="17" Label="Source1" />
+      <Edge From="6" To="24" Label="Source3" />
       <Edge From="7" To="8" Label="Source1" />
-      <Edge From="8" To="10" Label="Source1" />
-      <Edge From="9" To="15" Label="Source4" />
-      <Edge From="9" To="10" Label="Source4" />
+      <Edge From="8" To="24" Label="Source1" />
+      <Edge From="9" To="17" Label="Source4" />
+      <Edge From="9" To="24" Label="Source4" />
       <Edge From="10" To="11" Label="Source1" />
-      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="11" To="13" Label="Source1" />
+      <Edge From="12" To="17" Label="Source2" />
       <Edge From="13" To="14" Label="Source1" />
-      <Edge From="13" To="24" Label="Source1" />
-      <Edge From="14" To="15" Label="Source2" />
       <Edge From="15" To="16" Label="Source1" />
-      <Edge From="16" To="17" Label="Source1" />
+      <Edge From="15" To="29" Label="Source1" />
+      <Edge From="16" To="17" Label="Source5" />
       <Edge From="17" To="18" Label="Source1" />
       <Edge From="18" To="19" Label="Source1" />
-      <Edge From="18" To="21" Label="Source1" />
-      <Edge From="18" To="23" Label="Source1" />
       <Edge From="19" To="20" Label="Source1" />
-      <Edge From="21" To="22" Label="Source2" />
+      <Edge From="20" To="21" Label="Source1" />
+      <Edge From="20" To="23" Label="Source1" />
+      <Edge From="20" To="27" Label="Source1" />
+      <Edge From="21" To="22" Label="Source1" />
+      <Edge From="23" To="26" Label="Source2" />
       <Edge From="24" To="25" Label="Source1" />
+      <Edge From="27" To="28" Label="Source1" />
+      <Edge From="28" To="30" Label="Source2" />
+      <Edge From="29" To="30" Label="Source1" />
+      <Edge From="30" To="31" Label="Source1" />
+      <Edge From="30" To="32" Label="Source1" />
+      <Edge From="31" To="34" Label="Source2" />
+      <Edge From="32" To="33" Label="Source1" />
+      <Edge From="33" To="34" Label="Source1" />
+      <Edge From="34" To="35" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>

@@ -20,7 +20,7 @@ void main()
         float ang = PI / 4.0 + PI * 2.0 / 4 * i;
 
         // Offset from center of point (0.3 to accomodate for aspect ratio)
-        vec4 offset = vec4(cos(ang) * 0.3*0.8, -sin(ang) * 0.48*0.8, 0.0, 0.0);
+        vec4 offset = vec4(cos(ang) * 0.3*0.5, -sin(ang) * 0.48*0.5, 0.0, 0.0);
         gl_Position = gl_in[0].gl_Position + offset;
 		tex_coord=vec2(xAll[i%4],yAll[i%4]);
         EmitVertex();

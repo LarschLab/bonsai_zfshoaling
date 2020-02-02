@@ -1,15 +1,13 @@
 import sys
 import clr
 clr.AddReference("OpenTK")
-from OpenTK import Vector2, Vector3
-from System import Array, Single, Random,Tuple
-clr.AddReference("OpenCV.Net")
-from OpenCV.Net import *
+from OpenTK import Vector3
+from System import Array, Tuple
 import math
 
 sys.path.append('C:\\Users\\jlarsch\\Documents\\bonsai_zfshoaling\\python')
 import CameraInterceptCorrection as cic
-import geometry as geo
+#import geometry as geo
 
 
 #Item1: (zip)
@@ -18,9 +16,10 @@ import geometry as geo
 #  Item3: animal pair matrix
 #  Item4: projector-camera calibration matrix
 #  Item5: videoSize
+#  Item6: camHeight
 #Item2: (Trajectory File)
 
-def getAnimalCoors(value,allCoor,camHeight):
+def getAnimalCoors(value,allCoor):
 
     allwells=[]
     oldCoor=allCoor
@@ -28,6 +27,7 @@ def getAnimalCoors(value,allCoor,camHeight):
     i=0
     xMax = float(value.Item1.Item5.Width)
     yMax = float(value.Item1.Item5.Height)
+    camHeight=float(value.Item1.Item6)
     #print(xMax,yMax)
     for w in range(len(value.Item1.Item1)):
 
@@ -101,6 +101,7 @@ def CLstim(value,allCoor,posList,p,ii):
 
     wellDiam = value.Item1.Item2[ii].Item3
     # print x,y,wellDiam
+    # Remove stimuli that would extend into neighbor arena.
     if (x < wellDiam) and (x > 0) and (y < wellDiam) and (y > 0):
         x = x + allCoor[ii][2]
         y = y + allCoor[ii][3]
@@ -110,3 +111,15 @@ def CLstim(value,allCoor,posList,p,ii):
         y = 0
 
     return x,y
+
+def getPairList(value, FlexPair):
+    if FlexPair:
+        eName = value.Item2.Item1
+        pairListNr = int(eName[:2])
+        numAn = len(value.Item1.Item3[0])
+        return value.Item1.Item3[pairListNr * numAn:(pairListNr + 1) * numAn]
+    else:
+        return value.Item1.Item3  # animal pair matrix
+
+def listToTkArray(list):
+    return Array[Vector3]([Vector3(x[0], x[1], x[2]) for x in list])

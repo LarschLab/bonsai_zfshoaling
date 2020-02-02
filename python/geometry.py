@@ -1,9 +1,7 @@
 import clr
-clr.AddReference("OpenTK")
-from OpenTK import Vector2, Vector3
-from System import Array, Single, Random,Tuple
+from System import Array
 clr.AddReference("OpenCV.Net")
-from OpenCV.Net import *
+from OpenCV.Net import Mat, CV, Depth
 import math
 
 def transf(x,y,hArr):
