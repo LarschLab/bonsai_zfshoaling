@@ -76,12 +76,12 @@ def getAnimalCoors(value,allCoor):
     allwells.append(wellstr)
     return allCoor, allwells
 
-def CLstim(value,allCoor,posList,p,ii):
-    o = posList[ii][4]  # +math.pi
-    xo = posList[ii][0]
+def CLstim(value,allCoor,posList,p,ii,CLmode):
+    o = posList[ii][4]  # current animal orientation
+    xo = posList[ii][0] # current animal position
     yo = posList[ii][1]
 
-    dx = p[0]
+    dx = p[0]   # stim position (animal centric)
     dy = p[1]
 
     dist = math.sqrt((dx ** 2) + (dy ** 2))

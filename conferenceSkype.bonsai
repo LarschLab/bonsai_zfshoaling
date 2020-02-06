@@ -105,7 +105,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\jlarsch\Documents\00_work\demoVideos\35Animals\trajectories_35PlateGratingPilot_test.csv</io:FileName>
+              <io:FileName>E:\b\2018\trajectories_35PlateLoomPilot_test.csv</io:FileName>
               <io:ScanPattern>%s,%f,%f,%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -372,35 +372,45 @@ sys.path.append('C:\\Users\\jlarsch\\Documents\\bonsai_zfshoaling\\python')
 import CameraInterceptCorrection as cic
 import geometry as geo
 import skypeShoal as sS
+import math
 
 allCoor=[]
 oldCoor=[]
-posPick=300
-fr=0
 posList=[]
-CL=False
-FlexPair=False
-pi=3.1415926
-
+fr=0
 
 @returns(Tuple[str,Array[Vector3],Tuple[Single,Single],str,str,Tuple[bool,Single,Single,Single,str],list])
 def process(value):
   global allCoor,oldCoor,fr,posList
 
-  xMax = float(value.Item1.Item5.Width)
+  xMax = float(value.Item1.Item5.Width) # video dimensions, relevant to openGL stimulus scaling
   yMax = float(value.Item1.Item5.Height)
-  bgCol = value.Item2.Item5
-  DotCol = value.Item2.Item6
+  bgCol = value.Item2.Item5 # color of stimulus background
+  DotCol = value.Item2.Item6 # color of dot stimuli
   sp = value.Item2.Item4  # sprite point size
-
   hArr =value.Item1.Item4 #projector-camera calibration matrix
-  pairList=sS.getPairList(value, FlexPair) #animal pair matrix
-  saveSettings=[str(CL),str(FlexPair),str(xMax),str(yMax)]
 
-  allCoor, allwells=sS.getAnimalCoors(value,allCoor)
+  #Use episode number to infer stimulation mode.
   eName = value.Item2.Item1
-  grat=eName[:4]=='grat'
+  grat=eName[:4]=='grat' # grating mode
+  CL = eName[:2]=='CL'
+
+  if CL: # closed loop mode
+    FlexPair=False
+    CLmode=eName[2:6]=='full' # this should be semi:0 or full:1
+    #semi: anchor stimulus position to animal position at defined frame but don't update with subsequent animal motion.
+    #full: keep anchoring stimulus position to animal position.
+    if CLmode:
+      posPick=1
+    else:
+      posPick=int(eName[6:9]) # time interval (frames) for anchoring stimuli in semi CL mode.
+  else:
+    FlexPair=eName[:2]=='FP'
+
+  # generate string to save as experiment parameters not part of position output.
+  saveSettings=[str(CL),str(FlexPair),str(xMax),str(yMax)]
   #print(eName,grat)
+
   if grat:
     contrast=Single(float(eName[4:7])/100.)
     freq=Single(float(eName[7:10]))
@@ -411,7 +421,12 @@ def process(value):
     contrast=Single(1.)
     speed=Single(1.)
     freq=Single(1.)
-    LR=none
+    LR=None
+
+  pairList=sS.getPairList(value, FlexPair) #animal pair matrix
+
+  # get current animal positions in list and str format
+  allCoor, allwells=sS.getAnimalCoors(value,allCoor)
 
 
   if CL:
@@ -427,16 +442,16 @@ def process(value):
   for i,p in enumerate(allCoor):
 
     if LR=='L':
-      allheading.append(p[4]+pi/2.)
+      allheading.append(p[4]+math.pi/2.)
     else:
-      allheading.append((p[4]-pi)+pi/2.)
+      allheading.append((p[4]-math.pi)+math.pi/2.)
     #p: point to be drawn (unless in skype mode, ones should only be in i=15 or 35 (last animal)
     l=pairList[i] #find where to draw it (which dish)
     for ii,pp in enumerate(l):
       if pp==1: #draw into dish ii
 
         if CL: # for 'closed loop', place stimuli relative to defined position
-          x,y=sS.CLstim(value,allCoor,posList,p,ii)
+          x,y=sS.CLstim(value,allCoor,posList,p,ii,CLmode)
 
         else:
           x=p[0]+allCoor[ii][2] #add offsets of current dish
@@ -452,10 +467,6 @@ def process(value):
   
   ar=sS.listToTkArray(toDraw)
   
-  
-
-
-
   return Tuple.Create(" ".join(allwells),ar,Tuple.Create(Single(bgCol),Single(DotCol))," ".join(drawStr)," ".join(saveSettings),Tuple.Create(grat,contrast,speed,freq,eName),allheading)
 
 def unload():
@@ -588,7 +599,7 @@ def unload():
             </Expression>
             <Expression xsi:type="Add">
               <Operand xsi:type="StringProperty">
-                <Value>False False 2048.0 1380.0</Value>
+                <Value>True False 2048.0 1380.0</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -798,7 +809,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>5</Value>
+                <Value>15</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
