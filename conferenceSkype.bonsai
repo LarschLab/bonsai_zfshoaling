@@ -11,29 +11,30 @@
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="p1:uEyeCapture">
-            <p1:DeviceId xsi:nil="true" />
-            <p1:ConfigFile>2048x1380_30fps_slowClock_4.92.ini</p1:ConfigFile>
-          </Combinator>
-        </Builder>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="p1:uEyeCapture">
+          <p1:DeviceId xsi:nil="true" />
+          <p1:ConfigFile>2048x1380_30fps_slowClock_4.92.ini</p1:ConfigFile>
+        </Combinator>
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="MemberSelector">
-          <Selector>Image</Selector>
-        </Builder>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Image</Selector>
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="Combinator">
-          <Combinator xsi:type="cv:BackgroundSubtraction">
-            <cv:BackgroundFrames>120</cv:BackgroundFrames>
-            <cv:AdaptationRate>0.001</cv:AdaptationRate>
-            <cv:ThresholdValue>0</cv:ThresholdValue>
-            <cv:ThresholdType>ToZero</cv:ThresholdType>
-            <cv:SubtractionMethod>Dark</cv:SubtractionMethod>
-          </Combinator>
-        </Builder>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:BackgroundSubtraction">
+          <cv:BackgroundFrames>120</cv:BackgroundFrames>
+          <cv:AdaptationRate>0.001</cv:AdaptationRate>
+          <cv:ThresholdValue>0</cv:ThresholdValue>
+          <cv:ThresholdType>ToZero</cv:ThresholdType>
+          <cv:SubtractionMethod>Dark</cv:SubtractionMethod>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="cv:Threshold">
+          <cv:ThresholdValue>8</cv:ThresholdValue>
+          <cv:MaxValue>255</cv:MaxValue>
+          <cv:ThresholdType>Binary</cv:ThresholdType>
+        </Combinator>
       </Expression>
       <Expression xsi:type="NestedWorkflow">
         <Name>pairList</Name>
@@ -43,7 +44,7 @@
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\jlarsch\Documents\00_work\demoVideos\35Animals\PL_35_eachWithLast.txt</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_eachWithLast.csv</io:FileName>
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -105,13 +106,13 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\b\2018\trajectories_35PlateLoomPilot_test.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35PlateGratingPilot.csv</io:FileName>
               <io:ScanPattern>%s,%f,%f,%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:RepeatCount">
-                <rx:Count>30</rx:Count>
+                <rx:Count>2</rx:Count>
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
@@ -132,7 +133,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\jlarsch\Documents\00_work\demoVideos\35Animals\ROIdef2020-01-29T15_27_53.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-02-06T14_11_08.csv</io:FileName>
               <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -156,7 +157,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\jlarsch\Documents\00_work\demoVideos\35Animals\calibrationOut2020-01-29T15_32_15.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2020-02-06T14_12_52.csv</io:FileName>
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -184,7 +185,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\jlarsch\Documents\00_work\demoVideos\35Animals\camHeight.csv</io:FileName>
+              <io:FileName>C:\Users\baierlab\Documents\00_work\demovideos\35Animals\camHeight.csv</io:FileName>
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -233,26 +234,6 @@ def process(value):
         <Selector>Item1</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="cv:FileCapture">
-          <cv:FileName>C:\Users\jlarsch\Documents\00_work\demoVideos\35Animals\out_id0_30fps_20200129153339.avi</cv:FileName>
-          <cv:PlaybackRate>30</cv:PlaybackRate>
-          <cv:StartPosition>0</cv:StartPosition>
-          <cv:PositionUnits>Frames</cv:PositionUnits>
-          <cv:Loop>false</cv:Loop>
-          <cv:Playing>true</cv:Playing>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="cv:Grayscale" />
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="cv:Threshold">
-          <cv:ThresholdValue>8</cv:ThresholdValue>
-          <cv:MaxValue>255</cv:MaxValue>
-          <cv:ThresholdType>Binary</cv:ThresholdType>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:CombineLatest" />
       </Expression>
       <Expression xsi:type="SelectMany">
@@ -282,10 +263,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1766</cv:X>
-                  <cv:Y>1106</cv:Y>
-                  <cv:Width>248</cv:Width>
-                  <cv:Height>248</cv:Height>
+                  <cv:X>1764</cv:X>
+                  <cv:Y>1104</cv:Y>
+                  <cv:Width>252</cv:Width>
+                  <cv:Height>252</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -367,8 +348,8 @@ clr.AddReference("OpenTK")
 from OpenTK import Vector3
 from System import Array, Tuple, Single
 
-#sys.path.append('C:\\Users\\baierlab\\Documents\\bonsai_zfshoaling\\python')
-sys.path.append('C:\\Users\\jlarsch\\Documents\\bonsai_zfshoaling\\python')
+sys.path.append('C:\\Users\\baierlab\\Documents\\bonsai_zfshoaling\\python')
+#sys.path.append('C:\\Users\\jlarsch\\Documents\\bonsai_zfshoaling\\python')
 import CameraInterceptCorrection as cic
 import geometry as geo
 import skypeShoal as sS
@@ -481,7 +462,7 @@ def unload():
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="io:TextWriter">
-          <io:FileName>c:\00_bonsai_ffmpeg_out\PositionTxt_allROI.txt</io:FileName>
+          <io:FileName>e:\00_bonsai_ffmpeg_out\PositionTxt_allROI.txt</io:FileName>
           <io:Suffix>Timestamp</io:Suffix>
           <io:Buffered>true</io:Buffered>
           <io:Overwrite>false</io:Overwrite>
@@ -599,7 +580,7 @@ def unload():
             </Expression>
             <Expression xsi:type="Add">
               <Operand xsi:type="StringProperty">
-                <Value>True False 2048.0 1380.0</Value>
+                <Value>False False 2048.0 1380.0</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -809,7 +790,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>15</Value>
+                <Value>50</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -913,9 +894,9 @@ def process(inputs):
   cam_id=str(inputs.Item3)
   codec_q=str(inputs.Item4)
 
-  cmd='c:\\ffmpeg\\bin\\ffmpeg.exe -y -f rawvideo -vcodec rawvideo -s '+vid_width+'x'+vid_height+' -r '+vid_rate+' -pix_fmt gray -i \\\\.\\pipe\\p1 -q:v '+codec_q+' -vcodec mpeg4 -vtag xvid c:\\00_bonsai_ffmpeg_out\\out_id'+cam_id+'_'+vid_rate+'fps'+'_'+currentTime+'.avi'
+  #cmd='c:\\ffmpeg\\bin\\ffmpeg.exe -y -f rawvideo -vcodec rawvideo -s '+vid_width+'x'+vid_height+' -r '+vid_rate+' -pix_fmt gray -i \\\\.\\pipe\\p1 -q:v '+codec_q+' -vcodec mpeg4 -vtag xvid c:\\00_bonsai_ffmpeg_out\\out_id'+cam_id+'_'+vid_rate+'fps'+'_'+currentTime+'.avi'
 
-  #cmd='c:\\ffmpeg\\bin\\ffmpeg.exe -y -f rawvideo -vcodec rawvideo -s '+vid_width+'x'+vid_height+' -r '+vid_rate+' -pix_fmt gray -i \\\\.\\pipe\\p1 -q:v '+codec_q+' -vcodec mpeg4 -vtag xvid e:\\00_bonsai_ffmpeg_out\\out_id'+cam_id+'_'+vid_rate+'fps'+'_'+currentTime+'.avi'
+  cmd='c:\\ffmpeg\\bin\\ffmpeg.exe -y -f rawvideo -vcodec rawvideo -s '+vid_width+'x'+vid_height+' -r '+vid_rate+' -pix_fmt gray -i \\\\.\\pipe\\p1 -q:v '+codec_q+' -vcodec mpeg4 -vtag xvid e:\\00_bonsai_ffmpeg_out\\out_id'+cam_id+'_'+vid_rate+'fps'+'_'+currentTime+'.avi'
   sp.Popen(cmd)
   return True</scr:Script>
             </Expression>
@@ -944,36 +925,53 @@ def process(inputs):
           <cv:Overwrite>false</cv:Overwrite>
         </Combinator>
       </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="cv:FileCapture">
+            <cv:FileName>C:\Users\jlarsch\Documents\00_work\demoVideos\35Animals\out_id0_30fps_20200129153339.avi</cv:FileName>
+            <cv:PlaybackRate>30</cv:PlaybackRate>
+            <cv:StartPosition>0</cv:StartPosition>
+            <cv:PositionUnits>Frames</cv:PositionUnits>
+            <cv:Loop>false</cv:Loop>
+            <cv:Playing>true</cv:Playing>
+          </Combinator>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="cv:Grayscale" />
+        </Builder>
+      </Expression>
     </Nodes>
     <Edges>
       <Edge From="0" To="1" Label="Source1" />
       <Edge From="1" To="2" Label="Source1" />
-      <Edge From="3" To="14" Label="Source3" />
-      <Edge From="4" To="5" Label="Source1" />
-      <Edge From="5" To="24" Label="Source2" />
-      <Edge From="5" To="21" Label="Source1" />
-      <Edge From="6" To="16" Label="Source2" />
-      <Edge From="7" To="14" Label="Source1" />
-      <Edge From="7" To="24" Label="Source4" />
-      <Edge From="8" To="14" Label="Source4" />
-      <Edge From="8" To="24" Label="Source3" />
-      <Edge From="9" To="10" Label="Source1" />
-      <Edge From="9" To="22" Label="Source1" />
-      <Edge From="10" To="14" Label="Source5" />
-      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="2" To="3" Label="Source1" />
+      <Edge From="2" To="24" Label="Source1" />
+      <Edge From="3" To="12" Label="Source2" />
+      <Edge From="4" To="12" Label="Source3" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="22" Label="Source2" />
+      <Edge From="6" To="19" Label="Source1" />
+      <Edge From="7" To="14" Label="Source2" />
+      <Edge From="8" To="12" Label="Source1" />
+      <Edge From="8" To="22" Label="Source4" />
+      <Edge From="9" To="12" Label="Source4" />
+      <Edge From="9" To="22" Label="Source3" />
+      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="10" To="20" Label="Source1" />
+      <Edge From="11" To="12" Label="Source5" />
       <Edge From="12" To="13" Label="Source1" />
-      <Edge From="12" To="26" Label="Source1" />
-      <Edge From="13" To="14" Label="Source2" />
+      <Edge From="13" To="14" Label="Source1" />
       <Edge From="14" To="15" Label="Source1" />
       <Edge From="15" To="16" Label="Source1" />
+      <Edge From="15" To="18" Label="Source1" />
+      <Edge From="15" To="20" Label="Source2" />
+      <Edge From="15" To="21" Label="Source1" />
       <Edge From="16" To="17" Label="Source1" />
-      <Edge From="17" To="18" Label="Source1" />
-      <Edge From="17" To="20" Label="Source1" />
-      <Edge From="17" To="22" Label="Source2" />
-      <Edge From="17" To="23" Label="Source1" />
-      <Edge From="18" To="19" Label="Source1" />
-      <Edge From="20" To="21" Label="Source2" />
-      <Edge From="23" To="24" Label="Source1" />
+      <Edge From="18" To="19" Label="Source2" />
+      <Edge From="21" To="22" Label="Source1" />
+      <Edge From="22" To="23" Label="Source1" />
       <Edge From="24" To="25" Label="Source1" />
       <Edge From="26" To="27" Label="Source1" />
     </Edges>
