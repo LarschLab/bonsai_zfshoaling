@@ -15,7 +15,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:uEyeCapture">
           <p1:DeviceId xsi:nil="true" />
-          <p1:ConfigFile>2048x1380_30fps_slowClock_4.9.ini</p1:ConfigFile>
+          <p1:ConfigFile>C:\Users\Experimenter\Documents\bonsai_zfshoaling\2048x1380_30fps_slowClock_4.92.ini</p1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -78,11 +78,11 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:HoughCircles">
           <cv:AccumulatorFactor>20</cv:AccumulatorFactor>
-          <cv:MinDistance>240</cv:MinDistance>
+          <cv:MinDistance>380</cv:MinDistance>
           <cv:Param1>50</cv:Param1>
           <cv:Param2>100</cv:Param2>
-          <cv:MinRadius>110</cv:MinRadius>
-          <cv:MaxRadius>150</cv:MaxRadius>
+          <cv:MinRadius>175</cv:MinRadius>
+          <cv:MaxRadius>200</cv:MaxRadius>
         </Combinator>
       </Expression>
       <Expression xsi:type="SelectMany">
@@ -118,7 +118,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Take">
-                <rx:Count>35</rx:Count>
+                <rx:Count>15</rx:Count>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -147,11 +147,20 @@ def process(value):
 
   tupAll=[]
   tupRoundAll=[]
+
+  if len(value)==15:
+    fac=400
+    print('fac'+str(fac))
+  elif len(value)==35:
+    fac=180
+  else:
+    fac=380
+
   for c in value:
     x=c.Item1
-    xr=(x/180)*180
+    xr=(x/fac)*fac
     y=c.Item2
-    yr=(y/180)*180
+    yr=(y/fac)*fac
     w=c.Item3
     xc=c.Item4
     yc=c.Item5
