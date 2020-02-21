@@ -106,7 +106,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35PlateGratingPilot.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35wellPlate_ShoalGrateLoom.csv</io:FileName>
               <io:ScanPattern>%s,%f,%f,%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -133,7 +133,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-02-06T14_11_08.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-02-19T13_04_09.csv</io:FileName>
               <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -157,7 +157,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2020-02-06T14_12_52.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2020-02-19T13_07_16.csv</io:FileName>
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -185,7 +185,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\baierlab\Documents\00_work\demovideos\35Animals\camHeight.csv</io:FileName>
+              <io:FileName>C:\Users\Experimenter\Documents\00_work\demovideos\35Animals\camHeight.csv</io:FileName>
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -263,10 +263,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1764</cv:X>
-                  <cv:Y>1104</cv:Y>
-                  <cv:Width>252</cv:Width>
-                  <cv:Height>252</cv:Height>
+                  <cv:X>1765</cv:X>
+                  <cv:Y>1105</cv:Y>
+                  <cv:Width>250</cv:Width>
+                  <cv:Height>250</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -348,7 +348,8 @@ clr.AddReference("OpenTK")
 from OpenTK import Vector3
 from System import Array, Tuple, Single
 
-sys.path.append('C:\\Users\\baierlab\\Documents\\bonsai_zfshoaling\\python')
+sys.path.append('C:\\Users\\Experimenter\\Documents\\bonsai_zfshoaling\\python')
+#sys.path.append('C:\\Users\\baierlab\\Documents\\bonsai_zfshoaling\\python')
 #sys.path.append('C:\\Users\\jlarsch\\Documents\\bonsai_zfshoaling\\python')
 import CameraInterceptCorrection as cic
 import geometry as geo
