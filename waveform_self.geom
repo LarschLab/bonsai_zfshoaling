@@ -4,7 +4,7 @@ layout(points) in;
 layout(triangle_strip, max_vertices = 22) out;
 
 out vec2 tex_coord;
-
+uniform float sc = 0.8;
 
 //in vec3 vColor[];
 //out vec3 fColor;
@@ -25,7 +25,7 @@ void main()
 		float ang = gl_in[0].gl_PointSize+(PI / 4.0 + PI * 2.0 / 4 * i);
 
         // Offset from center of point (0.3 to accomodate for aspect ratio)
-        vec4 offset = vec4(cos(ang) * 0.3*0.6, -sin(ang) * 0.48*0.6, 0.0, 0.0);
+        vec4 offset = vec4(cos(ang) * 0.3*sc, -sin(ang) * 0.48*sc, 0.0, 0.0);
         gl_Position = gl_in[0].gl_Position + offset;
 		tex_coord=vec2(xAll[i%4],yAll[i%4]);
         EmitVertex();

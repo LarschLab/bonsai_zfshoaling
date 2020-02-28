@@ -25,15 +25,17 @@ def getAnimalCoors(value,allCoor):
     oldCoor=allCoor
     allCoor=[]
     i=0
-    xMax = float(value.Item1.Item5.Width)
-    yMax = float(value.Item1.Item5.Height)
-    camHeight=float(value.Item1.Item6)
-    #print(xMax,yMax)
+    xMax = float(value.Item1.Item2.Item7.Width)
+    yMax = float(value.Item1.Item2.Item7.Height)
+    camHeight=float(value.Item1.Item2.Item3.Item1)
+    pxPmm=value.Item1.Item2.Item4.Item3
+    avgRoiRadius=value.Item1.Item2.Item4.Item2/float(2)
+    #print(xMax,yMax,camHeight,pxPmm)
     for w in range(len(value.Item1.Item1)):
 
         well=value.Item1.Item1[w]
-        xoff=value.Item1.Item2[i].Item1
-        yoff=value.Item1.Item2[i].Item2
+        xoff=value.Item1.Item2.Item4.Item1[i].Item1
+        yoff=value.Item1.Item2.Item4.Item1[i].Item2
 
         #Also correct dish ROI! Added 7-19-2017
         xoff,yoff = cic.CorrectFish(xoff,yoff,0,0,xMax,yMax,camHeight)
@@ -65,16 +67,17 @@ def getAnimalCoors(value,allCoor):
 
 
     # add one more row, representing pre recorded trajectory, episode name and disc size for visual stimulation
-    xp = value.Item2.Item2
-    yp = value.Item2.Item3
+    xp = value.Item2.Item2*pxPmm+avgRoiRadius
+    yp = value.Item2.Item3*pxPmm+avgRoiRadius
     sp = value.Item2.Item4  # sprite point size
 
     eName = value.Item2.Item1
     welldata = ((round(xp)), (round(yp)), sp, eName)
+    #print(avgRoiRadius)
     allCoor.append([xp, yp, 0, 0, sp])
     wellstr = "%0.f %0.f %0.f %s" % welldata
     allwells.append(wellstr)
-    return allCoor, allwells
+    return allCoor, allwells,
 
 def CLstim(value,allCoor,posList,p,ii,CLmode):
     o = posList[ii][4]  # current animal orientation
@@ -99,7 +102,7 @@ def CLstim(value,allCoor,posList,p,ii,CLmode):
     x = x + xo
     y = y + yo
 
-    wellDiam = value.Item1.Item2[ii].Item3
+    wellDiam = value.Item1.Item2.Item4.Item3
     # print x,y,wellDiam
     # Remove stimuli that would extend into neighbor arena.
     if (x < wellDiam) and (x > 0) and (y < wellDiam) and (y > 0):
@@ -116,10 +119,10 @@ def getPairList(value, FlexPair):
     if FlexPair:
         eName = value.Item2.Item1
         pairListNr = int(eName[:2])
-        numAn = len(value.Item1.Item3[0])
-        return value.Item1.Item3[pairListNr * numAn:(pairListNr + 1) * numAn]
+        numAn = len(value.Item1.Item2.Item5[0])
+        return value.Item1.Item2.Item5[pairListNr * numAn:(pairListNr + 1) * numAn]
     else:
-        return value.Item1.Item3  # animal pair matrix
+        return value.Item1.Item2.Item5  # animal pair matrix
 
 def listToTkArray(list):
     return Array[Vector3]([Vector3(x[0], x[1], x[2]) for x in list])

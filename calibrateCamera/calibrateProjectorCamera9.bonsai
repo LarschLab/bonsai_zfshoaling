@@ -17,7 +17,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:uEyeCapture">
           <p1:DeviceId xsi:nil="true" />
-          <p1:ConfigFile>2048x1380_10fps_slowClock_4.92.ini</p1:ConfigFile>
+          <p1:ConfigFile>2048x2048_10fps_slowClock_4.92.ini</p1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -27,7 +27,7 @@
         <Combinator xsi:type="cv:BackgroundSubtraction">
           <cv:BackgroundFrames>10</cv:BackgroundFrames>
           <cv:AdaptationRate>0.01</cv:AdaptationRate>
-          <cv:ThresholdValue>27</cv:ThresholdValue>
+          <cv:ThresholdValue>15</cv:ThresholdValue>
           <cv:ThresholdType>Binary</cv:ThresholdType>
           <cv:SubtractionMethod>Dark</cv:SubtractionMethod>
         </Combinator>
@@ -52,7 +52,7 @@
             <cv:X>0</cv:X>
             <cv:Y>0</cv:Y>
           </cv:Offset>
-          <cv:MinArea>200</cv:MinArea>
+          <cv:MinArea>800</cv:MinArea>
           <cv:MaxArea xsi:nil="true" />
         </Combinator>
       </Expression>
@@ -86,6 +86,9 @@ def process(value):
   s=[value[i] for i in so]
 
   return s</scr:Script>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>ImageSize</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="FloatProperty">
@@ -139,7 +142,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-02-19T13_04_09.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-02-27T16_48_09.csv</io:FileName>
               <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -171,14 +174,15 @@ from System import Array, Single, Random,Tuple
 dlOld=[]
 dl=[]
 
-@returns(Tuple[str,str])
+@returns(Tuple[str,str,Tuple[int,int]])
 def process(value):
   global dlOld,dl
   allwells=[]
   detected=value.Item1
   projected=value.Item2
 
-  ppl=[8,12,22,26]#[0,4,10,14]
+  #ppl=[8,12,22,26]#[0,4,10,14]
+  ppl=[0,2,6,8]
 
   pl=[]
   boxWidth=(projected[0].Item3/2)
@@ -186,6 +190,12 @@ def process(value):
   for p in ppl:
     x=projected[p].Item1+boxWidth
     y=projected[p].Item2+boxWidth
+
+    ds=3/5.
+    dsh=2000/5.
+    
+    x=x*ds+dsh
+    y=y#*ds+dsh
 
     pl.append([x,y])
 
@@ -235,7 +245,7 @@ def process(value):
         sAll.append(s) 
   except:
     pass
-  return Tuple.Create(" ".join(sAll),v)
+  return Tuple.Create(" ".join(sAll),v,Tuple.Create(value.Item3.Width,value.Item3.Height))
   #except:
    # return ""
 
@@ -282,7 +292,7 @@ def unload():
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
-        <Selector>Item1</Selector>
+        <Selector>Item1,Item3</Selector>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:CombineLatest" />
@@ -336,22 +346,34 @@ def process(value):
 
   allwells=[]
 
-  wellList=[8,12,22,26]#[0,4,10,14]
+  #wellList=[8,12,22,26]#[0,4,10,14]
+  wellList=[0,2,6,8]
+
+
   posList=[]
 
   for w in wellList:
     well=value.Item1[w]
 
 
-    x = (well.Item1+well.Item3/2.)
-    y = (well.Item2+well.Item3/2.)
+    x = (well.Item1+well.Item3/2)
+    y = (well.Item2+well.Item3/2)
 
-    allwells.append(Vector3(2*(x-1024)/2048.0,-2*(y-690)/1380.0,25))
+    ds=3/5.
+    dsh=2000/5.
+    
+    x=x*ds+dsh
+    y=y#*ds+dsh
 
-    s=value.Item4
+    w=float(value.Item4.Item2.Item1)
+    h=float(value.Item4.Item2.Item2)
+
+    allwells.append(Vector3(2*(x-w/2.)/w,-2*(y-h/2.)/h,25))
+
+    s=value.Item4.Item1
     if len(s)&gt;1:
       xt,yt=transf(x,y,s)
-      allwells.append(Vector3(2*(xt-1024)/2048.0,-2*(yt-690)/1380.0,5))
+      allwells.append(Vector3(2*(xt-w/2.)/w,-2*(yt-h/2.)/h,5))
 
     
 
@@ -381,31 +403,33 @@ def process(value):
       <Edge From="4" To="5" Label="Source1" />
       <Edge From="5" To="6" Label="Source1" />
       <Edge From="6" To="7" Label="Source1" />
-      <Edge From="7" To="20" Label="Source1" />
-      <Edge From="8" To="11" Label="Source2" />
-      <Edge From="9" To="10" Label="Source1" />
+      <Edge From="6" To="8" Label="Source1" />
+      <Edge From="7" To="21" Label="Source1" />
+      <Edge From="8" To="21" Label="Source3" />
+      <Edge From="9" To="12" Label="Source2" />
       <Edge From="10" To="11" Label="Source1" />
       <Edge From="11" To="12" Label="Source1" />
-      <Edge From="12" To="28" Label="Source3" />
-      <Edge From="13" To="28" Label="Source2" />
-      <Edge From="14" To="15" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="13" To="29" Label="Source3" />
+      <Edge From="14" To="29" Label="Source2" />
       <Edge From="15" To="16" Label="Source1" />
       <Edge From="16" To="17" Label="Source1" />
-      <Edge From="17" To="22" Label="Source2" />
-      <Edge From="18" To="19" Label="Source1" />
-      <Edge From="19" To="28" Label="Source1" />
-      <Edge From="19" To="20" Label="Source2" />
-      <Edge From="20" To="21" Label="Source1" />
+      <Edge From="17" To="18" Label="Source1" />
+      <Edge From="18" To="23" Label="Source2" />
+      <Edge From="19" To="20" Label="Source1" />
+      <Edge From="20" To="29" Label="Source1" />
+      <Edge From="20" To="21" Label="Source2" />
       <Edge From="21" To="22" Label="Source1" />
-      <Edge From="21" To="27" Label="Source1" />
       <Edge From="22" To="23" Label="Source1" />
+      <Edge From="22" To="28" Label="Source1" />
       <Edge From="23" To="24" Label="Source1" />
       <Edge From="24" To="25" Label="Source1" />
       <Edge From="25" To="26" Label="Source1" />
-      <Edge From="27" To="28" Label="Source4" />
-      <Edge From="28" To="29" Label="Source1" />
+      <Edge From="26" To="27" Label="Source1" />
+      <Edge From="28" To="29" Label="Source4" />
       <Edge From="29" To="30" Label="Source1" />
       <Edge From="30" To="31" Label="Source1" />
+      <Edge From="31" To="32" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
