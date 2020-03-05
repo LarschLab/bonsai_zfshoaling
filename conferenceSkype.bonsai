@@ -3,12 +3,12 @@
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xmlns:p1="clr-namespace:Bonsai.uEye;assembly=Bonsai.uEye"
                  xmlns:cv="clr-namespace:Bonsai.Vision;assembly=Bonsai.Vision"
+                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
+                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  xmlns:gl="clr-namespace:Bonsai.Shaders;assembly=Bonsai.Shaders"
                  xmlns:io="clr-namespace:Bonsai.IO;assembly=Bonsai.System"
-                 xmlns:rx="clr-namespace:Bonsai.Reactive;assembly=Bonsai.Core"
                  xmlns:p2="clr-namespace:Bonsai.joh.Vision;assembly=BonsaiPackage5"
-                 xmlns:scr="clr-namespace:Bonsai.Scripting;assembly=Bonsai.Scripting"
-                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
                  xmlns="https://bonsai-rx.org/2018/workflow">
   <Workflow>
     <Nodes>
@@ -170,7 +170,7 @@ def process(inputs):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35PlateGratingSpeedFreq.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_15WellPlate_shoalGrateFlickerLoomAbs.csv</io:FileName>
               <io:ScanPattern>%s,%f,%f,%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -284,7 +284,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-02-27T16_48_09.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-02-29T12_35_38.csv</io:FileName>
                     <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -384,7 +384,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2020-02-27T19_45_27.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2020-02-29T12_36_58.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -500,10 +500,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1350</cv:X>
-                  <cv:Y>1370</cv:Y>
-                  <cv:Width>640</cv:Width>
-                  <cv:Height>640</cv:Height>
+                  <cv:X>1352</cv:X>
+                  <cv:Y>1392</cv:Y>
+                  <cv:Width>636</cv:Width>
+                  <cv:Height>636</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -658,8 +658,9 @@ def process(value):
       if pp==1: #draw into dish ii
 
         if CL: # for 'closed loop', place stimuli relative to defined position
+          
           x,y=sS.CLstim(value,allCoor,posList,p,ii,CLmode)
-
+          #print('cl ',x,y)
         else:
           x=p[0]+allCoor[ii][2] #add offsets of current dish
           y=p[1]+allCoor[ii][3]
@@ -812,8 +813,21 @@ def unload():
             </Expression>
             <Expression xsi:type="Add">
               <Operand xsi:type="StringProperty">
-                <Value>False False 2048.0 2048.0 3 6.32444444444</Value>
+                <Value>False False 2048.0 2048.0 3 6.34444444444</Value>
               </Operand>
+            </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item2</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="scr:PythonTransform">
+              <scr:Script>@returns(str)
+def process(value):
+
+  
+  return value.Item1+" " + " ".join(value.Item2)</scr:Script>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="io:TextWriter">
@@ -828,6 +842,7 @@ def unload():
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
+            <Edge From="0" To="10" Label="Source1" />
             <Edge From="1" To="5" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
@@ -837,8 +852,11 @@ def unload():
             <Edge From="6" To="9" Label="Source2" />
             <Edge From="7" To="8" Label="Source1" />
             <Edge From="8" To="9" Label="Source1" />
-            <Edge From="9" To="10" Label="Source1" />
-            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="9" To="11" Label="Source1" />
+            <Edge From="10" To="11" Label="Source2" />
+            <Edge From="11" To="12" Label="Source1" />
+            <Edge From="12" To="13" Label="Source1" />
+            <Edge From="13" To="14" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -998,7 +1016,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>5</Value>
+                <Value>10</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -1027,7 +1045,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>5</Value>
+                <Value>40</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">

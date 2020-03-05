@@ -80,13 +80,16 @@ def getAnimalCoors(value,allCoor):
     return allCoor, allwells,
 
 def CLstim(value,allCoor,posList,p,ii,CLmode):
+    pxPmm=value.Item1.Item2.Item4.Item3
+    avgRoiRadius=value.Item1.Item2.Item4.Item2/float(2)
     o = posList[ii][4]  # current animal orientation
     xo = posList[ii][0] # current animal position
     yo = posList[ii][1]
 
-    dx = p[0]   # stim position (animal centric)
-    dy = p[1]
-
+    
+    dx = (p[0]-avgRoiRadius)   # stim position (already defined animal centric)
+    dy = (p[1]-avgRoiRadius)
+    #print dx,dy
     dist = math.sqrt((dx ** 2) + (dy ** 2))
     if dist == 0:
         dist = 1
@@ -102,16 +105,16 @@ def CLstim(value,allCoor,posList,p,ii,CLmode):
     x = x + xo
     y = y + yo
 
-    wellDiam = value.Item1.Item2.Item4.Item3
-    # print x,y,wellDiam
+    #wellDiam = value.Item1.Item2.Item4.Item3
+    #print x,y,wellDiam
     # Remove stimuli that would extend into neighbor arena.
-    if (x < wellDiam) and (x > 0) and (y < wellDiam) and (y > 0):
-        x = x + allCoor[ii][2]
-        y = y + allCoor[ii][3]
-    else:
-        # print 'not drawing dot for animal',ii
-        x = 0
-        y = 0
+    #if (x < wellDiam) and (x > 0) and (y < wellDiam) and (y > 0):
+    x = x + allCoor[ii][2]
+    y = y + allCoor[ii][3]
+    #else:
+    #    # print 'not drawing dot for animal',ii
+    #    x = 0
+     #   y = 0
 
     return x,y
 
