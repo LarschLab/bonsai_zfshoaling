@@ -284,7 +284,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-02-29T12_35_38.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-10-29T13_38_23.csv</io:FileName>
                     <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -347,7 +347,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>testExperiment\pairLists\PL_9_eachWithLast.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_16_eachWithSelf.txt</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -384,7 +384,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2020-02-29T12_36_58.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2020-10-29T13_43_13.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>

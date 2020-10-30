@@ -47,10 +47,10 @@
     </VisualizerSettings>
   </DialogSettings>
   <DialogSettings>
-    <Visible>true</Visible>
+    <Visible>false</Visible>
     <Location>
-      <X>280</X>
-      <Y>116</Y>
+      <X>162</X>
+      <Y>355</Y>
     </Location>
     <Size>
       <Width>1049</Width>
