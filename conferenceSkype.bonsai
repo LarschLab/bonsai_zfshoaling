@@ -284,7 +284,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-10-29T13_38_23.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-11-05T15_18_42.csv</io:FileName>
                     <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -384,7 +384,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2020-10-29T13_43_13.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2020-11-05T15_21_33.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -500,10 +500,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1352</cv:X>
-                  <cv:Y>1392</cv:Y>
-                  <cv:Width>636</cv:Width>
-                  <cv:Height>636</cv:Height>
+                  <cv:X>1374</cv:X>
+                  <cv:Y>1374</cv:Y>
+                  <cv:Width>632</cv:Width>
+                  <cv:Height>632</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -813,7 +813,7 @@ def unload():
             </Expression>
             <Expression xsi:type="Add">
               <Operand xsi:type="StringProperty">
-                <Value>False False 2048.0 2048.0 3 6.34444444444</Value>
+                <Value>False False 2048.0 2048.0 3 6.34</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="MemberSelector">
