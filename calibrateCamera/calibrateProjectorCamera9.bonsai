@@ -17,7 +17,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:uEyeCapture">
           <p1:DeviceId xsi:nil="true" />
-          <p1:ConfigFile>2048x2048_10fps_slowClock_4.92.ini</p1:ConfigFile>
+          <p1:ConfigFile>2048x1380_10fps_slowClock_4.92.ini</p1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -142,7 +142,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-02-27T16_48_09.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2021-02-17T10_26_03.csv</io:FileName>
               <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -181,8 +181,8 @@ def process(value):
   detected=value.Item1
   projected=value.Item2
 
-  #ppl=[8,12,22,26]#[0,4,10,14]
-  ppl=[0,2,6,8]
+  ppl=[8,12,22,26]#[0,4,10,14]
+  #ppl=[0,2,6,8]
 
   pl=[]
   boxWidth=(projected[0].Item3/2)
@@ -191,8 +191,8 @@ def process(value):
     x=projected[p].Item1+boxWidth
     y=projected[p].Item2+boxWidth
 
-    ds=3/5.
-    dsh=2000/5.
+    ds=2048/1280#3/7.
+    dsh=0#2000/7.
     
     x=x*ds+dsh
     y=y#*ds+dsh
@@ -346,8 +346,8 @@ def process(value):
 
   allwells=[]
 
-  #wellList=[8,12,22,26]#[0,4,10,14]
-  wellList=[0,2,6,8]
+  wellList=[8,12,22,26]#[0,4,10,14]
+  #wellList=[0,2,6,8]
 
 
   posList=[]
@@ -359,8 +359,8 @@ def process(value):
     x = (well.Item1+well.Item3/2)
     y = (well.Item2+well.Item3/2)
 
-    ds=3/5.
-    dsh=2000/5.
+    ds=2048/1280#3/7.
+    dsh=0#2000/7.
     
     x=x*ds+dsh
     y=y#*ds+dsh

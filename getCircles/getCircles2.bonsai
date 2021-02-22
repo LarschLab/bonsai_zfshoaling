@@ -15,7 +15,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:uEyeCapture">
           <p1:DeviceId xsi:nil="true" />
-          <p1:ConfigFile>2048x2048_30fps_slowClock_4.92.ini</p1:ConfigFile>
+          <p1:ConfigFile>C:\Users\Experimenter\Documents\bonsai_zfshoaling\2048x1380_30fps_slowClock_4.92.ini</p1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -132,7 +132,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="IntProperty">
-                      <Value>3</Value>
+                      <Value>5</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="ExternalizedMapping">
@@ -140,7 +140,7 @@
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="IntProperty">
-                      <Value>3</Value>
+                      <Value>7</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -170,9 +170,9 @@ def process(value):
   w=value.Item1.Width/value.Item2.Item2
   h=value.Item1.Height/value.Item2.Item1
   rad=(w+h)/4
-  minRad=int(rad-rad*0.1)
-  maxRad=int(rad+rad*0.1)
-  minDist=int(rad*1.5)
+  minRad=int(rad-rad*0.15)
+  maxRad=int(rad+rad*0.15)
+  minDist=int(rad*1.55)
   return Tuple.Create(minRad,maxRad,minDist)</scr:Script>
             </Expression>
             <Expression xsi:type="PropertyMapping">
@@ -185,11 +185,11 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:HoughCircles">
                 <cv:AccumulatorFactor>20</cv:AccumulatorFactor>
-                <cv:MinDistance>511</cv:MinDistance>
+                <cv:MinDistance>213</cv:MinDistance>
                 <cv:Param1>50</cv:Param1>
                 <cv:Param2>100</cv:Param2>
-                <cv:MinRadius>306</cv:MinRadius>
-                <cv:MaxRadius>375</cv:MaxRadius>
+                <cv:MinRadius>127</cv:MinRadius>
+                <cv:MaxRadius>156</cv:MaxRadius>
               </Combinator>
             </Expression>
             <Expression xsi:type="SelectMany">
@@ -225,7 +225,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="rx:Take">
-                      <rx:Count>9</rx:Count>
+                      <rx:Count>35</rx:Count>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">

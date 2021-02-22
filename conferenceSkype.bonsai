@@ -15,7 +15,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:uEyeCapture">
           <p1:DeviceId xsi:nil="true" />
-          <p1:ConfigFile>getCircles\2048x2048_30fps_slowClock_4.92.ini</p1:ConfigFile>
+          <p1:ConfigFile>2048x1380_30fps_slowClock_4.92.ini</p1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -170,13 +170,14 @@ def process(inputs):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_15WellPlate_shoalGrateFlickerLoomAbs.csv</io:FileName>
-              <io:ScanPattern>%s,%f,%f,%f,%f,%f</io:ScanPattern>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35WellPlate_3Stim_BoutContNone_abs_All.csv</io:FileName>
+              <io:ListSeparator />
+              <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:RepeatCount">
-                <rx:Count>2</rx:Count>
+                <rx:Count>50</rx:Count>
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
@@ -214,7 +215,7 @@ def process(inputs):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>100</Value>
+                <Value>76</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
@@ -284,7 +285,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-11-05T15_18_42.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2021-02-17T10_26_03.csv</io:FileName>
                     <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -307,7 +308,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="DoubleProperty">
-                      <Value>100</Value>
+                      <Value>76</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -347,7 +348,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_16_eachWithSelf.txt</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_eachWithOneOfThree.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -384,7 +385,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2020-11-05T15_21_33.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2021-02-17T10_52_44.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -500,10 +501,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1374</cv:X>
-                  <cv:Y>1374</cv:Y>
-                  <cv:Width>632</cv:Width>
-                  <cv:Height>632</cv:Height>
+                  <cv:X>1758</cv:X>
+                  <cv:Y>1098</cv:Y>
+                  <cv:Width>264</cv:Width>
+                  <cv:Height>264</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -589,16 +590,17 @@ smoo=3
 def process(value):
   global allCoor,oldCoor,fr,posList,oldHead
 
+  #print('new frame')
   xMax = float(value.Item1.Item2.Item7.Width) # video dimensions, relevant to openGL stimulus scaling
   yMax = float(value.Item1.Item2.Item7.Height)
-  bgCol = value.Item2.Item5 # color of stimulus background
-  DotCol = value.Item2.Item6 # color of dot stimuli
-  sp = value.Item2.Item4  # sprite point size
+  bgCol = 1.#value.Item2.Item5 # color of stimulus background
+  DotCol = 0.#value.Item2.Item6 # color of dot stimuli
+  sp = 4.# value.Item2.Item4  # sprite point size
   hArr =value.Item1.Item2.Item6 #projector-camera calibration matrix
   pxPmm=value.Item1.Item2.Item4.Item3
 
   #Use episode number to infer stimulation mode.
-  eName = value.Item2.Item1
+  eName = 'continuous'#value.Item2.Item1
   grat=eName[:4]=='grat' # grating mode
   CL = eName[:2]=='CL'
 
@@ -630,11 +632,14 @@ def process(value):
     freq=Single(1.)
     LR=None
 
+  #print('getPairList')
   pairList=sS.getPairList(value, FlexPair) #animal pair matrix
   
   # get current animal positions in list and str format
-  allCoor, allwells=sS.getAnimalCoors(value,allCoor)
 
+  #print('getAnimalCoors')
+  allCoor, allwells=sS.getAnimalCoors(value,allCoor)
+  #print('AnimalCoors done')
 
   if CL:
     if fr==0:
@@ -664,6 +669,10 @@ def process(value):
         else:
           x=p[0]+allCoor[ii][2] #add offsets of current dish
           y=p[1]+allCoor[ii][3]
+          if i&gt;34:
+            sp=p[4]
+          else:
+            sp=4.
         x,y=geo.transf(x,y,hArr) ##projector-camera calibration
         x=geo.toGL(x,xMax) # transform to openGL coordinates
         y=-geo.toGL(y,yMax)
@@ -813,7 +822,7 @@ def unload():
             </Expression>
             <Expression xsi:type="Add">
               <Operand xsi:type="StringProperty">
-                <Value>False False 2048.0 2048.0 3 6.34</Value>
+                <Value>False False 2048.0 1380.0 3 3.44285714286</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="MemberSelector">

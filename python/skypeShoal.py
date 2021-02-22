@@ -30,7 +30,7 @@ def getAnimalCoors(value,allCoor):
     camHeight=float(value.Item1.Item2.Item3.Item1)
     pxPmm=value.Item1.Item2.Item4.Item3
     avgRoiRadius=value.Item1.Item2.Item4.Item2/float(2)
-    #print(xMax,yMax,camHeight,pxPmm)
+    #print('getting fish',xMax,yMax,camHeight,pxPmm)
     for w in range(len(value.Item1.Item1)):
 
         well=value.Item1.Item1[w]
@@ -63,20 +63,36 @@ def getAnimalCoors(value,allCoor):
         allCoor.append([x,y,xoff,yoff,o])
         wellstr = "%0.f %0.f %0.3f" % welldata
         allwells.append(wellstr)
-    #print(len(allCoor))
+    #print('len(allCoor)',len(allCoor))
 
 
     # add one more row, representing pre recorded trajectory, episode name and disc size for visual stimulation
-    xp = value.Item2.Item2*pxPmm+avgRoiRadius
-    yp = value.Item2.Item3*pxPmm+avgRoiRadius
-    sp = value.Item2.Item4  # sprite point size
-
-    eName = value.Item2.Item1
-    welldata = ((round(xp)), (round(yp)), sp, eName)
-    #print(avgRoiRadius)
-    allCoor.append([xp, yp, 0, 0, sp])
-    wellstr = "%0.f %0.f %0.f %s" % welldata
-    allwells.append(wellstr)
+    
+    allAns=value.Item2.split(',')
+    
+    # THIS IS QUICK"N DIRTY FOR MAKING MULTI STIMULI WORK
+    # 2021-02-17
+    for ea in range(3):
+    
+        #xp = value.Item2.Item2*pxPmm+avgRoiRadius
+        #yp = value.Item2.Item3*pxPmm+avgRoiRadius
+        #sp = value.Item2.Item4  # sprite point size
+        
+        #eName = value.Item2.Item1
+        
+        #welldata = ((round(xp)), (round(yp)), sp, eName)
+        #print('current stim',allAns[ea*6+1],allAns[ea*6+2],allAns[ea*6+3])
+        xp = float(allAns[ea*6+1])*pxPmm+avgRoiRadius
+        yp = float(allAns[ea*6+2])*pxPmm+avgRoiRadius
+        sp = float(allAns[ea*6+3])  # sprite point size
+        
+        eName = allAns[ea*6+0]
+        
+        welldata = ((round(xp)), (round(yp)), eName)
+        #print(avgRoiRadius)
+        allCoor.append([xp, yp, 0, 0, sp])
+        wellstr = "%0.f %0.f %s" % welldata
+        allwells.append(wellstr)
     return allCoor, allwells,
 
 def CLstim(value,allCoor,posList,p,ii,CLmode):
