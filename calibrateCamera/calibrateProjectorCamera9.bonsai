@@ -17,7 +17,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:uEyeCapture">
           <p1:DeviceId xsi:nil="true" />
-          <p1:ConfigFile>2048x1380_10fps_slowClock_4.92.ini</p1:ConfigFile>
+          <p1:ConfigFile>2048x1280_10fps_slowClock_rev2.ini</p1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -27,7 +27,7 @@
         <Combinator xsi:type="cv:BackgroundSubtraction">
           <cv:BackgroundFrames>10</cv:BackgroundFrames>
           <cv:AdaptationRate>0.01</cv:AdaptationRate>
-          <cv:ThresholdValue>15</cv:ThresholdValue>
+          <cv:ThresholdValue>6</cv:ThresholdValue>
           <cv:ThresholdType>Binary</cv:ThresholdType>
           <cv:SubtractionMethod>Dark</cv:SubtractionMethod>
         </Combinator>
@@ -142,7 +142,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2021-02-17T10_26_03.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2022-12-01T11_02_18.csv</io:FileName>
               <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -181,8 +181,9 @@ def process(value):
   detected=value.Item1
   projected=value.Item2
 
-  ppl=[8,12,22,26]#[0,4,10,14]
+  #ppl=[8,12,22,26]#[0,4,10,14]
   #ppl=[0,2,6,8]
+  ppl=[0,4,10,14]
 
   pl=[]
   boxWidth=(projected[0].Item3/2)
@@ -191,8 +192,8 @@ def process(value):
     x=projected[p].Item1+boxWidth
     y=projected[p].Item2+boxWidth
 
-    ds=2048/1280#3/7.
-    dsh=0#2000/7.
+    ds=1*(2048/1280)#3/7.
+    dsh=0
     
     x=x*ds+dsh
     y=y#*ds+dsh
@@ -346,8 +347,9 @@ def process(value):
 
   allwells=[]
 
-  wellList=[8,12,22,26]#[0,4,10,14]
+  #wellList=[8,12,22,26]#[0,4,10,14]
   #wellList=[0,2,6,8]
+  wellList=[0,4,10,14]
 
 
   posList=[]
@@ -359,8 +361,8 @@ def process(value):
     x = (well.Item1+well.Item3/2)
     y = (well.Item2+well.Item3/2)
 
-    ds=2048/1280#3/7.
-    dsh=0#2000/7.
+    ds=1*(2048/1280)#3/7.
+    dsh=0
     
     x=x*ds+dsh
     y=y#*ds+dsh

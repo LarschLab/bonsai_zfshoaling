@@ -15,7 +15,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:uEyeCapture">
           <p1:DeviceId xsi:nil="true" />
-          <p1:ConfigFile>2048x1380_30fps_slowClock_4.92.ini</p1:ConfigFile>
+          <p1:ConfigFile>getCircles\2048x1280_30fps_slowClock_4.9.ini</p1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -25,14 +25,14 @@
         <Combinator xsi:type="cv:BackgroundSubtraction">
           <cv:BackgroundFrames>120</cv:BackgroundFrames>
           <cv:AdaptationRate>0.001</cv:AdaptationRate>
-          <cv:ThresholdValue>0</cv:ThresholdValue>
+          <cv:ThresholdValue>9</cv:ThresholdValue>
           <cv:ThresholdType>ToZero</cv:ThresholdType>
           <cv:SubtractionMethod>Dark</cv:SubtractionMethod>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:Threshold">
-          <cv:ThresholdValue>8</cv:ThresholdValue>
+          <cv:ThresholdValue>15</cv:ThresholdValue>
           <cv:MaxValue>255</cv:MaxValue>
           <cv:ThresholdType>Binary</cv:ThresholdType>
         </Combinator>
@@ -170,7 +170,7 @@ def process(inputs):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35WellPlate_1hrBout_2hrLoom_30minBout_1hrLoom_1hrBout_PLUSCONTROLCOLUMN2.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectory_15WellPlate_20221201_Lukas_SkypePair_and_knot_abs.csv</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -215,7 +215,7 @@ def process(inputs):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>76</Value>
+                <Value>100</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
@@ -285,7 +285,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2022-02-27T12_52_40.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2022-12-01T11_02_18.csv</io:FileName>
                     <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -308,7 +308,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="DoubleProperty">
-                      <Value>76</Value>
+                      <Value>100</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -348,7 +348,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_eachWithOneOfTwo.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PairList_15_20221201_Lukas_SkypePair_and_knot.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -385,7 +385,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2022-02-27T13_11_08.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2022-12-01T11_40_03.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -501,10 +501,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1779</cv:X>
-                  <cv:Y>1099</cv:Y>
-                  <cv:Width>262</cv:Width>
-                  <cv:Height>262</cv:Height>
+                  <cv:X>1644</cv:X>
+                  <cv:Y>844</cv:Y>
+                  <cv:Width>372</cv:Width>
+                  <cv:Height>372</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -600,9 +600,12 @@ def process(value):
   pxPmm=value.Item1.Item2.Item4.Item3
 
   #Use episode number to infer stimulation mode.
-  eName = 'continuous'#value.Item2.Item1
+  #eName = 'continuous'#value.Item2.Item1
+  eName = value.Item2.split(',')[0]
+#allAns=value.Item2.split(',')
   grat=eName[:4]=='grat' # grating mode
   CL = eName[:2]=='CL'
+  #CL = eName[3:8]=='pairs'
 
   if CL: # closed loop mode
     FlexPair=False
@@ -613,8 +616,8 @@ def process(value):
       posPick=1
     else:
       posPick=int(eName[6:9]) # time interval (frames) for anchoring stimuli in semi CL mode.
-  else:
-    FlexPair=eName[:2]=='FP'
+
+  FlexPair=eName[3:8]=='pairs'
 
   # generate string to save as experiment parameters not part of position output.
   saveSettings=[str(CL),str(FlexPair),str(xMax),str(yMax),str(smoo),str(pxPmm)]
@@ -822,7 +825,7 @@ def unload():
             </Expression>
             <Expression xsi:type="Add">
               <Operand xsi:type="StringProperty">
-                <Value>False False 2048.0 1380.0 3 3.48195488722</Value>
+                <Value>False True 2048.0 1280.0 3 3.85333333333</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="MemberSelector">

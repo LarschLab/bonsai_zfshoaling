@@ -72,7 +72,7 @@ def getAnimalCoors(value,allCoor):
     
     # THIS IS QUICK"N DIRTY FOR MAKING MULTI STIMULI WORK
     # 2021-02-17
-    for ea in range(2):
+    for ea in range(1):
     
         #xp = value.Item2.Item2*pxPmm+avgRoiRadius
         #yp = value.Item2.Item3*pxPmm+avgRoiRadius
@@ -136,7 +136,7 @@ def CLstim(value,allCoor,posList,p,ii,CLmode):
 
 def getPairList(value, FlexPair):
     if FlexPair:
-        eName = value.Item2.Item1
+        eName = value.Item2.split(',')[0]
         pairListNr = int(eName[:2])
         numAn = len(value.Item1.Item2.Item5[0])
         return value.Item1.Item2.Item5[pairListNr * numAn:(pairListNr + 1) * numAn]
