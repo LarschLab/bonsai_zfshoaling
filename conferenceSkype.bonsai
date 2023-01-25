@@ -31,7 +31,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:Threshold">
-          <cv:ThresholdValue>8</cv:ThresholdValue>
+          <cv:ThresholdValue>10</cv:ThresholdValue>
           <cv:MaxValue>255</cv:MaxValue>
           <cv:ThresholdType>Binary</cv:ThresholdType>
         </Combinator>
@@ -106,7 +106,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35wellPlate_03.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35wellPlate_FullShoalGrateLoom.csv</io:FileName>
               <io:ScanPattern>%s,%f,%f,%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -133,7 +133,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-03-06T10_17_54.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2023-01-12T12_36_01.csv</io:FileName>
               <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -157,7 +157,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2020-03-06T10_19_51.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2023-01-12T12_37_19.csv</io:FileName>
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -263,10 +263,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1762</cv:X>
-                  <cv:Y>1102</cv:Y>
-                  <cv:Width>256</cv:Width>
-                  <cv:Height>256</cv:Height>
+                  <cv:X>1760</cv:X>
+                  <cv:Y>1100</cv:Y>
+                  <cv:Width>260</cv:Width>
+                  <cv:Height>260</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -377,7 +377,7 @@ def process(value):
   CL = eName[:2]=='CL'
 
   if CL: # closed loop mode
-    FlexPair=False
+    FlexPair=False # use flexible pairing list based on first two digits in episode name
     CLmode=eName[2:6]=='full' # this should be semi:0 or full:1
     #semi: anchor stimulus position to animal position at defined frame but don't update with subsequent animal motion.
     #full: keep anchoring stimulus position to animal position.
@@ -386,7 +386,7 @@ def process(value):
     else:
       posPick=int(eName[6:9]) # time interval (frames) for anchoring stimuli in semi CL mode.
   else:
-    FlexPair=eName[:2]=='FP'
+    FlexPair = eName[3:8] == 'pairs'
 
   # generate string to save as experiment parameters not part of position output.
   saveSettings=[str(CL),str(FlexPair),str(xMax),str(yMax)]

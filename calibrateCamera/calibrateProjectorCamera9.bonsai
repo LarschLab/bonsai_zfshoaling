@@ -139,7 +139,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2020-03-04T09_27_10.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2022-12-15T12_16_39.csv</io:FileName>
               <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>

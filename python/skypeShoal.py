@@ -114,7 +114,9 @@ def CLstim(value,allCoor,posList,p,ii,CLmode):
 
 def getPairList(value, FlexPair):
     if FlexPair:
+    
         eName = value.Item2.Item1
+        #eName = value.Item2.split(',')[0]
         pairListNr = int(eName[:2])
         numAn = len(value.Item1.Item3[0])
         return value.Item1.Item3[pairListNr * numAn:(pairListNr + 1) * numAn]
