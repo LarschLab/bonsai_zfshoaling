@@ -133,7 +133,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2023-01-12T12_36_01.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2023-03-28T12_04_32.csv</io:FileName>
               <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -157,7 +157,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2023-01-12T12_37_19.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2023-03-28T12_27_41.csv</io:FileName>
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -263,10 +263,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1760</cv:X>
-                  <cv:Y>1100</cv:Y>
-                  <cv:Width>260</cv:Width>
-                  <cv:Height>260</cv:Height>
+                  <cv:X>1761</cv:X>
+                  <cv:Y>1101</cv:Y>
+                  <cv:Width>258</cv:Width>
+                  <cv:Height>258</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
