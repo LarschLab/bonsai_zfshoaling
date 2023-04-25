@@ -106,7 +106,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35wellPlate_FullShoalGrateLoom.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35PlateGratingPilot_test_OL.csv</io:FileName>
               <io:ScanPattern>%s,%f,%f,%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -360,10 +360,11 @@ oldCoor=[]
 posList=[]
 fr=0
 
-@returns(Tuple[str,Array[Vector3],Tuple[Single,Single],str,str,Tuple[bool,Single,Single,Single,str],list])
+@returns(Tuple[str,Array[Vector3],Tuple[Single,Single],str,str,Tuple[bool,Single,Single,Single,str,bool,Single],list])
 def process(value):
   global allCoor,oldCoor,fr,posList
 
+  gratSize=0.18
   xMax = float(value.Item1.Item5.Width) # video dimensions, relevant to openGL stimulus scaling
   yMax = float(value.Item1.Item5.Height)
   bgCol = value.Item2.Item5 # color of stimulus background
@@ -373,7 +374,9 @@ def process(value):
 
   #Use episode number to infer stimulation mode.
   eName = value.Item2.Item1
-  grat=eName[:4]=='grat' # grating mode
+  grat=eName[:2]=='gr' # grating mode closed loop
+  gratOL=eName[2:4]=='OL' # grating mode open loop
+  #print gratOL,eName[2:3]
   CL = eName[:2]=='CL'
 
   if CL: # closed loop mode
@@ -397,6 +400,7 @@ def process(value):
     freq=Single(float(eName[7:10]))
     speed=Single(float(eName[10:13]))
     LR=eName[13]
+    
     #print(len(allheading),allheading[1])
   else:
     contrast=Single(1.)
@@ -422,10 +426,19 @@ def process(value):
   allheading=[]
   for i,p in enumerate(allCoor):
 
-    if LR=='L':
-      allheading.append(p[4]+math.pi/2.)
+    #populate allheading list to be used to rotate closed loop gratings
+    if gratOL: #unless if using open loop gratings - in which case headings are set to zero
+      gratSize=0.18
+      if LR=='L': #rotate grating 180 degrees to switch left right
+        allheading.append(0)
+      else:
+        allheading.append(math.pi)
+
     else:
-      allheading.append((p[4]-math.pi)+math.pi/2.)
+      if LR=='L': #rotate grating 180 degrees to switch left right
+        allheading.append(p[4]+math.pi/2.)
+      else:
+        allheading.append((p[4]-math.pi)+math.pi/2.)
     #p: point to be drawn (unless in skype mode, ones should only be in i=15 or 35 (last animal)
     l=pairList[i] #find where to draw it (which dish)
     for ii,pp in enumerate(l):
@@ -448,7 +461,7 @@ def process(value):
   
   ar=sS.listToTkArray(toDraw)
   
-  return Tuple.Create(" ".join(allwells),ar,Tuple.Create(Single(bgCol),Single(DotCol))," ".join(drawStr)," ".join(saveSettings),Tuple.Create(grat,contrast,speed,freq,eName),allheading)
+  return Tuple.Create(" ".join(allwells),ar,Tuple.Create(Single(bgCol),Single(DotCol))," ".join(drawStr)," ".join(saveSettings),Tuple.Create(grat,contrast,speed,freq,eName,gratOL,Single(gratSize)),allheading)
 
 def unload():
   global allCoor,oldCoor,fr,posList
@@ -653,7 +666,7 @@ def unload():
               </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
-              <Selector>Item4,Item3,Item1.Item2</Selector>
+              <Selector>Item4,Item3,Item1.Item2,Item1.Item1.Item6</Selector>
             </Expression>
             <Expression xsi:type="scr:PythonTransform">
               <scr:Script>import clr
@@ -712,6 +725,10 @@ def process(value):
   #xyhA=Array[Vector3]([Vector3(x[0], x[1], x[2]) for x in tmpAll])
   
 
+  #if open loop grating, use full screen
+  #if value.Item4:
+  #xyhA = Array[float]([0,0,0])
+  #else:
   xyhA = Array[float](xyh)
 
 
@@ -761,7 +778,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="FloatProperty">
-                <Value>5</Value>
+                <Value>10</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -799,12 +816,22 @@ def process(value):
                 <gl:ShaderName>Waveform</gl:ShaderName>
               </Combinator>
             </Expression>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item1.Item1.Item7</Selector>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="gl:UpdateUniform">
+                <gl:UniformName>gratSize</gl:UniformName>
+                <gl:ShaderName>Waveform</gl:ShaderName>
+              </Combinator>
+            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="1" To="6" Label="Source1" />
             <Edge From="1" To="11" Label="Source1" />
+            <Edge From="1" To="25" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
             <Edge From="2" To="5" Label="Source1" />
             <Edge From="3" To="4" Label="Source1" />
@@ -829,6 +856,7 @@ def process(value):
             <Edge From="21" To="22" Label="Source1" />
             <Edge From="22" To="23" Label="Source2" />
             <Edge From="23" To="24" Label="Source1" />
+            <Edge From="25" To="26" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>

@@ -14,6 +14,7 @@ vec4 xAll = vec4(0,1,1,0);
 vec4 yAll = vec4(1,1,0,0);
 // float xAll[8] = float[](0,.25,.75,1,1,.75,.25,0);
 // float yAll[8] = float[](.75,1,1,.75,.25,.0,.0,.25);
+uniform float gratSize;
 
 void main()
 {
@@ -22,10 +23,10 @@ void main()
     for (int i = 0; i <= 4; i++) {
         // Angle between each side in radians
         //float ang = gl_in[0].gl_Position[2]+(PI / 4.0 + PI * 2.0 / 4 * i);
-		float ang = gl_in[0].gl_PointSize+(PI / 4.0 + PI * 2.0 / 4 * i);
+		float ang = gl_in[0].gl_PointSize+(PI / 4.0 + PI * 2.0 / 4 * i); //abusing PointSize variable for angle
 
         // Offset from center of point (0.3 to accomodate for aspect ratio)
-        vec4 offset = vec4(cos(ang) * 0.3*0.6, -sin(ang) * 0.48*0.6, 0.0, 0.0);
+        vec4 offset = vec4(cos(ang) * gratSize, -sin(ang) * gratSize * 1.6, 0.0, 0.0);
         gl_Position = gl_in[0].gl_Position + offset;
 		tex_coord=vec2(xAll[i%4],yAll[i%4]);
         EmitVertex();
