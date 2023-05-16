@@ -15,16 +15,20 @@
     <WindowState>Normal</WindowState>
   </DialogSettings>
   <DialogSettings>
-    <Visible>false</Visible>
+    <Visible>true</Visible>
     <Location>
-      <X>0</X>
-      <Y>0</Y>
+      <X>90</X>
+      <Y>283</Y>
     </Location>
     <Size>
-      <Width>0</Width>
-      <Height>0</Height>
+      <Width>656</Width>
+      <Height>529</Height>
     </Size>
     <WindowState>Normal</WindowState>
+    <VisualizerTypeName>Bonsai.Vision.Design.IplImageVisualizer</VisualizerTypeName>
+    <VisualizerSettings>
+      <IplImageVisualizer />
+    </VisualizerSettings>
   </DialogSettings>
   <DialogSettings>
     <Visible>false</Visible>
@@ -41,8 +45,8 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>792</X>
-      <Y>66</Y>
+      <X>470</X>
+      <Y>208</Y>
     </Location>
     <Size>
       <Width>962</Width>
@@ -352,8 +356,8 @@
     <EditorDialogSettings>
       <Visible>false</Visible>
       <Location>
-        <X>251</X>
-        <Y>302</Y>
+        <X>390</X>
+        <Y>383</Y>
       </Location>
       <Size>
         <Width>726</Width>
@@ -376,18 +380,18 @@
     <EditorDialogSettings>
       <Visible>false</Visible>
       <Location>
-        <X>3</X>
+        <X>-75</X>
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>1084</Width>
-        <Height>811</Height>
+        <Width>1114</Width>
+        <Height>807</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
   </DialogSettings>
   <DialogSettings>
-    <Visible>true</Visible>
+    <Visible>false</Visible>
     <Location>
       <X>122</X>
       <Y>505</Y>
@@ -428,12 +432,12 @@
     <EditorDialogSettings>
       <Visible>false</Visible>
       <Location>
-        <X>208</X>
-        <Y>208</Y>
+        <X>54</X>
+        <Y>376</Y>
       </Location>
       <Size>
-        <Width>1094</Width>
-        <Height>751</Height>
+        <Width>1121</Width>
+        <Height>785</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
