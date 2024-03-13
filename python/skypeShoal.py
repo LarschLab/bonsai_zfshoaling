@@ -5,7 +5,8 @@ from OpenTK import Vector3
 from System import Array, Tuple
 import math
 
-sys.path.append('C:\\Users\\jlarsch\\Documents\\bonsai_zfshoaling\\python')
+#sys.path.append('C:\\Users\\jlarsch\\Documents\\bonsai_zfshoaling\\python')
+sys.path.append('C:\\Users\\Experimenter\\Documents\\bonsai_zfshoaling\\python')
 import CameraInterceptCorrection as cic
 #import geometry as geo
 

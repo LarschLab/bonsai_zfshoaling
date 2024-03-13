@@ -14,7 +14,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:uEyeCapture">
           <p1:DeviceId xsi:nil="true" />
-          <p1:ConfigFile>2048x1380_30fps_slowClock_4.9.ini</p1:ConfigFile>
+          <p1:ConfigFile>2048x1380_30fps_slowClock_4.92.ini</p1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -133,7 +133,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2023-04-25T12_30_59.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2023-06-15T13_17_19.csv</io:FileName>
               <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -157,7 +157,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2023-04-25T12_32_12.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2023-06-15T13_26_15.csv</io:FileName>
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -185,7 +185,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>C:\Users\baierlab\Documents\00_work\demovideos\35Animals\camHeight.csv</io:FileName>
+              <io:FileName>C:\Users\Experimenter\Documents\00_work\demoVideos\35Animals\camHeight.csv</io:FileName>
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -263,10 +263,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1787</cv:X>
-                  <cv:Y>1107</cv:Y>
-                  <cv:Width>246</cv:Width>
-                  <cv:Height>246</cv:Height>
+                  <cv:X>1766</cv:X>
+                  <cv:Y>1106</cv:Y>
+                  <cv:Width>248</cv:Width>
+                  <cv:Height>248</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -348,8 +348,8 @@ clr.AddReference("OpenTK")
 from OpenTK import Vector3
 from System import Array, Tuple, Single
 
-sys.path.append('C:\\Users\\baierlab\\Documents\\bonsai_zfshoaling\\python')
-#sys.path.append('C:\\Users\\jlarsch\\Documents\\bonsai_zfshoaling\\python')
+#sys.path.append('C:\\Users\\baierlab\\Documents\\bonsai_zfshoaling\\python')
+sys.path.append('C:\\Users\\Experimenter\\Documents\\bonsai_zfshoaling\\python')
 import CameraInterceptCorrection as cic
 import geometry as geo
 import skypeShoal as sS

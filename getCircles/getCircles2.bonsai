@@ -15,7 +15,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:uEyeCapture">
           <p1:DeviceId xsi:nil="true" />
-          <p1:ConfigFile>2048x1380_30fps_slowClock_4.9.ini</p1:ConfigFile>
+          <p1:ConfigFile>C:\Users\Experimenter\Documents\bonsai_zfshoaling\2048x1380_30fps_slowClock_4.92.ini</p1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -118,7 +118,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Take">
-                <rx:Count>35</rx:Count>
+                <rx:Count>30</rx:Count>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
