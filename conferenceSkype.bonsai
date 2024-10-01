@@ -170,7 +170,7 @@ def process(inputs):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\TEST_trajectories_35WellPlate_1Stim_2h_isolated_50min_Bout_abs_All_8MM.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\TEST_trajectory_social_buffer_60min_then_6loom_every_4min_4conspecifics_upto130.csv</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -285,7 +285,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2024-07-10T11_17_16.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2024-09-30T11_36_41.csv</io:FileName>
                     <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -308,7 +308,7 @@ def process(value):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="DoubleProperty">
-                      <Value>100</Value>
+                      <Value>70</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -348,7 +348,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_eachWithSelf.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_social_buffering_cfos_experiment.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -385,7 +385,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2024-07-10T11_24_38.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2024-09-30T11_49_43.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -501,10 +501,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>39</cv:X>
-                  <cv:Y>1099</cv:Y>
-                  <cv:Width>262</cv:Width>
-                  <cv:Height>262</cv:Height>
+                  <cv:X>1761</cv:X>
+                  <cv:Y>1101</cv:Y>
+                  <cv:Width>258</cv:Width>
+                  <cv:Height>258</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -825,7 +825,7 @@ def unload():
             </Expression>
             <Expression xsi:type="Add">
               <Operand xsi:type="StringProperty">
-                <Value>False True 2048.0 1280.0 3 3.85333333333</Value>
+                <Value>False False 2048.0 1380.0 3 3.75265306122</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="MemberSelector">
