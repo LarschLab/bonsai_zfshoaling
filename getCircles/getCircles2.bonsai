@@ -22,7 +22,8 @@
         <Selector>Image</Selector>
       </Expression>
       <Expression xsi:type="GroupWorkflow">
-        <Name>WatchKey</Name>
+        <Name>CheckKeyPress</Name>
+        <Description>set boll to false before running this workflow</Description>
         <Workflow>
           <Nodes>
             <Expression xsi:type="Combinator">
@@ -59,34 +60,34 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:CombineLatest" />
       </Expression>
-      <Expression xsi:type="GroupWorkflow">
-        <Name>ROI Segmentation</Name>
+      <Expression xsi:type="rx:Condition">
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="rx:Condition">
-              <Workflow>
-                <Nodes>
-                  <Expression xsi:type="WorkflowInput">
-                    <Name>Source1</Name>
-                  </Expression>
-                  <Expression xsi:type="MemberSelector">
-                    <Selector>Item2</Selector>
-                  </Expression>
-                  <Expression xsi:type="BitwiseNot" />
-                  <Expression xsi:type="WorkflowOutput" />
-                </Nodes>
-                <Edges>
-                  <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source1" />
-                </Edges>
-              </Workflow>
-            </Expression>
             <Expression xsi:type="MemberSelector">
-              <Selector>Item1</Selector>
+              <Selector>Item2</Selector>
+            </Expression>
+            <Expression xsi:type="BitwiseNot" />
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item1</Selector>
+      </Expression>
+      <Expression xsi:type="GroupWorkflow">
+        <Name>GetCircles</Name>
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Grayscale" />
@@ -100,45 +101,26 @@
               <Selector>Size</Selector>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
-              <Property Name="rows" />
-              <Property Name="cols" />
-            </Expression>
-            <Expression xsi:type="GroupWorkflow">
-              <Name>ROI number</Name>
-              <Workflow>
-                <Nodes>
-                  <Expression xsi:type="ExternalizedMapping">
-                    <Property Name="Value" DisplayName="rows" />
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="IntProperty">
-                      <Value>3</Value>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="ExternalizedMapping">
-                    <Property Name="Value" DisplayName="cols" />
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="IntProperty">
-                      <Value>3</Value>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:Zip" />
-                  </Expression>
-                  <Expression xsi:type="WorkflowOutput" />
-                </Nodes>
-                <Edges>
-                  <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="1" To="4" Label="Source1" />
-                  <Edge From="2" To="3" Label="Source1" />
-                  <Edge From="3" To="4" Label="Source2" />
-                  <Edge From="4" To="5" Label="Source1" />
-                </Edges>
-              </Workflow>
+              <Property Name="Value" DisplayName="rows" />
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:CombineLatest" />
+              <Combinator xsi:type="IntProperty">
+                <Value>3</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="columns" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="IntProperty">
+                <Value>3</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Zip" />
             </Expression>
             <Expression xsi:type="ipy:PythonTransform">
               <ipy:Script>from System import Tuple
@@ -172,17 +154,37 @@ def process(value):
                 <cv:MaxRadius>392</cv:MaxRadius>
               </Combinator>
             </Expression>
-            <Expression xsi:type="rx:SelectMany">
-              <Workflow>
-                <Nodes>
-                  <Expression xsi:type="WorkflowInput">
-                    <Name>Source1</Name>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:Concat" />
-                  </Expression>
-                  <Expression xsi:type="ipy:PythonTransform">
-                    <ipy:Script>from System import Tuple
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+            <Edge From="2" To="12" Label="Source1" />
+            <Edge From="3" To="9" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
+            <Edge From="5" To="8" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+            <Edge From="7" To="8" Label="Source2" />
+            <Edge From="8" To="9" Label="Source2" />
+            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="10" To="11" Label="Source1" />
+            <Edge From="11" To="12" Label="Source2" />
+            <Edge From="12" To="13" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="rx:SelectMany">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Concat" />
+            </Expression>
+            <Expression xsi:type="ipy:PythonTransform">
+              <ipy:Script>from System import Tuple
 @returns(Tuple[int,int,int,int,int,int])
 def process(value):
 
@@ -194,39 +196,39 @@ def process(value):
   wh=(r+2)*2
 
   return Tuple.Create(x,y,wh,xc,yc,r)</ipy:Script>
-                  </Expression>
-                  <Expression xsi:type="MemberSelector">
-                    <Selector>Length</Selector>
-                  </Expression>
-                  <Expression xsi:type="PropertyMapping">
-                    <PropertyMappings>
-                      <Property Name="Count" />
-                    </PropertyMappings>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:Take">
-                      <rx:Count>0</rx:Count>
-                    </Combinator>
-                  </Expression>
-                  <Expression xsi:type="Combinator">
-                    <Combinator xsi:type="rx:ToList" />
-                  </Expression>
-                  <Expression xsi:type="WorkflowOutput" />
-                </Nodes>
-                <Edges>
-                  <Edge From="0" To="1" Label="Source1" />
-                  <Edge From="0" To="3" Label="Source1" />
-                  <Edge From="1" To="2" Label="Source1" />
-                  <Edge From="2" To="5" Label="Source1" />
-                  <Edge From="3" To="4" Label="Source1" />
-                  <Edge From="4" To="5" Label="Source2" />
-                  <Edge From="5" To="6" Label="Source1" />
-                  <Edge From="6" To="7" Label="Source1" />
-                </Edges>
-              </Workflow>
             </Expression>
-            <Expression xsi:type="ipy:PythonTransform">
-              <ipy:Script>from System import Tuple
+            <Expression xsi:type="MemberSelector">
+              <Selector>Length</Selector>
+            </Expression>
+            <Expression xsi:type="PropertyMapping">
+              <PropertyMappings>
+                <Property Name="Count" />
+              </PropertyMappings>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Take">
+                <rx:Count>9</rx:Count>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:ToList" />
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="0" To="3" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="5" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source2" />
+            <Edge From="5" To="6" Label="Source1" />
+            <Edge From="6" To="7" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
+      <Expression xsi:type="ipy:PythonTransform">
+        <ipy:Script>from System import Tuple
 from System.Collections.Generic import IList
 
 @returns(IList[Tuple[int,int,int,int,int,int]])
@@ -252,27 +254,6 @@ def process(value):
   s=[tupAll[i] for i in so]
 
   return [Tuple.Create(x[0],x[1],x[2],x[3],x[4],x[5]) for x in s]</ipy:Script>
-            </Expression>
-            <Expression xsi:type="WorkflowOutput" />
-          </Nodes>
-          <Edges>
-            <Edge From="0" To="1" Label="Source1" />
-            <Edge From="1" To="2" Label="Source1" />
-            <Edge From="2" To="3" Label="Source1" />
-            <Edge From="3" To="4" Label="Source1" />
-            <Edge From="4" To="5" Label="Source1" />
-            <Edge From="4" To="11" Label="Source1" />
-            <Edge From="5" To="8" Label="Source1" />
-            <Edge From="6" To="7" Label="Source1" />
-            <Edge From="7" To="8" Label="Source2" />
-            <Edge From="8" To="9" Label="Source1" />
-            <Edge From="9" To="10" Label="Source1" />
-            <Edge From="10" To="11" Label="Source2" />
-            <Edge From="11" To="12" Label="Source1" />
-            <Edge From="12" To="13" Label="Source1" />
-            <Edge From="13" To="14" Label="Source1" />
-          </Edges>
-        </Workflow>
       </Expression>
       <Expression xsi:type="rx:Condition">
         <Workflow>
@@ -297,16 +278,17 @@ def process(value):
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:CombineLatest" />
       </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="rx:Take">
-          <rx:Count>2</rx:Count>
-        </Combinator>
-      </Expression>
-      <Expression xsi:type="rx:SelectMany">
+      <Expression xsi:type="GroupWorkflow">
+        <Name>WriteCSV</Name>
         <Workflow>
           <Nodes>
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="rx:Take">
+                <rx:Count>1</rx:Count>
+              </Combinator>
             </Expression>
             <Expression xsi:type="MemberSelector">
               <Selector>Item1</Selector>
@@ -314,41 +296,26 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Concat" />
             </Expression>
+            <Expression xsi:type="io:CsvWriter">
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef.csv</io:FileName>
+              <io:Delimiter> </io:Delimiter>
+              <io:ListSeparator />
+              <io:Append>false</io:Append>
+              <io:Overwrite>false</io:Overwrite>
+              <io:Suffix>Timestamp</io:Suffix>
+              <io:IncludeHeader>false</io:IncludeHeader>
+              <io:Selector>it</io:Selector>
+            </Expression>
             <Expression xsi:type="WorkflowOutput" />
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="5" Label="Source1" />
           </Edges>
         </Workflow>
-      </Expression>
-      <Expression xsi:type="ipy:PythonTransform">
-        <ipy:Script>import clr
-from System import Array, Single, Random,Tuple
-
-@returns(str)
-def process(value):
-  allwells=[]
-
-  x = value.Item1
-  y=value.Item2
-  wh=value.Item3
-  xc=value.Item4
-  yc=value.Item5
-  r=value.Item6
-
-  welldata = (x, y, wh,xc,yc,r)
-  wellstr = "%i %i %i %i %i %i" % welldata
-  allwells.append(wellstr)
-  return " ".join(allwells)</ipy:Script>
-      </Expression>
-      <Expression xsi:type="Combinator">
-        <Combinator xsi:type="io:WriteAllText">
-          <io:Path>E:\00_bonsai_ffmpeg_out\ROIdefFixed</io:Path>
-          <io:Overwrite>false</io:Overwrite>
-          <io:Append>false</io:Append>
-        </Combinator>
       </Expression>
     </Nodes>
     <Edges>
@@ -356,14 +323,15 @@ def process(value):
       <Edge From="1" To="3" Label="Source1" />
       <Edge From="2" To="3" Label="Source2" />
       <Edge From="3" To="4" Label="Source1" />
-      <Edge From="3" To="5" Label="Source1" />
-      <Edge From="4" To="7" Label="Source1" />
+      <Edge From="3" To="9" Label="Source1" />
+      <Edge From="4" To="5" Label="Source1" />
       <Edge From="5" To="6" Label="Source1" />
-      <Edge From="6" To="7" Label="Source2" />
+      <Edge From="6" To="7" Label="Source1" />
       <Edge From="7" To="8" Label="Source1" />
-      <Edge From="8" To="9" Label="Source1" />
+      <Edge From="8" To="11" Label="Source1" />
       <Edge From="9" To="10" Label="Source1" />
-      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="10" To="11" Label="Source2" />
+      <Edge From="11" To="12" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
