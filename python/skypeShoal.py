@@ -72,7 +72,7 @@ def getAnimalCoors(value,allCoor):
     
     # THIS IS QUICK"N DIRTY FOR MAKING MULTI STIMULI WORK
     # 2021-02-17
-    for ea in range(5):
+    for ea in range(1):
     
         #xp = value.Item2.Item2*pxPmm+avgRoiRadius
         #yp = value.Item2.Item3*pxPmm+avgRoiRadius
