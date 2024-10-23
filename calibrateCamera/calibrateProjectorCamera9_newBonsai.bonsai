@@ -96,8 +96,8 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2024-10-21T19_20_34.csv</io:FileName>
-              <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2024-10-23T12_10_01.csv</io:FileName>
+              <io:ScanPattern>%i,%i,%i,%i,%i,%i</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
@@ -229,7 +229,7 @@ def unload():
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="BooleanProperty">
-          <Value>true</Value>
+          <Value>false</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
@@ -262,7 +262,6 @@ def unload():
       </Expression>
       <Expression xsi:type="io:CsvWriter">
         <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut.csv</io:FileName>
-        <io:Delimiter> </io:Delimiter>
         <io:Append>true</io:Append>
         <io:Overwrite>false</io:Overwrite>
         <io:Suffix>Timestamp</io:Suffix>

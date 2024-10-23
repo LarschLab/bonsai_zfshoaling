@@ -14,8 +14,8 @@
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:uEyeCapture">
-          <p1:DeviceId xsi:nil="true" />
-          <p1:ConfigFile>C:\Users\Experimenter\Documents\bonsai_zfshoaling\2048x1380_30fps_slowClock_4.92.ini</p1:ConfigFile>
+          <p1:DeviceId>1</p1:DeviceId>
+          <p1:ConfigFile>2048x2048_30fps_slowClock_4.92.ini</p1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -39,7 +39,7 @@
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="BooleanProperty">
-          <Value>true</Value>
+          <Value>false</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
