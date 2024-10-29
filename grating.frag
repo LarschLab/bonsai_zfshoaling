@@ -13,7 +13,7 @@ out vec4 frag_colour;
 
 void main()
 {
-  //float value = sin(sqrt(pow(tex_coord.x-.5,2)+pow(tex_coord.y-.5,2)) * 2 * pi * frequency + phase); // concentric rings
+  float value = sin(sqrt(pow(tex_coord.x-.5,2)+pow(tex_coord.y-.5,2)) * 2 * pi * frequency + phase); // concentric rings
   //float value = sin((tex_coord.x + phase/100) * 2 * pi * frequency);  // sinewave
   if (square != 0) value = value > 0 ? 1 : -1; // square modulation
 

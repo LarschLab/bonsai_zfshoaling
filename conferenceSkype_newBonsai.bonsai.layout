@@ -17,12 +17,12 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>38</X>
-      <Y>301</Y>
+      <X>182</X>
+      <Y>182</Y>
     </Location>
     <Size>
-      <Width>766</Width>
-      <Height>793</Height>
+      <Width>336</Width>
+      <Height>279</Height>
     </Size>
     <WindowState>Normal</WindowState>
     <VisualizerTypeName>Bonsai.Vision.Design.IplImageVisualizer</VisualizerTypeName>
@@ -33,8 +33,8 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>931</X>
-      <Y>547</Y>
+      <X>136</X>
+      <Y>578</Y>
     </Location>
     <Size>
       <Width>519</Width>
@@ -73,12 +73,12 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>663</X>
-      <Y>274</Y>
+      <X>208</X>
+      <Y>208</Y>
     </Location>
     <Size>
-      <Width>883</Width>
-      <Height>818</Height>
+      <Width>336</Width>
+      <Height>279</Height>
     </Size>
     <WindowState>Normal</WindowState>
     <VisualizerTypeName>Bonsai.Vision.Design.IplImageVisualizer</VisualizerTypeName>
@@ -98,7 +98,7 @@
     </Size>
     <WindowState>Normal</WindowState>
   </DialogSettings>
-  <DialogSettings>
+  <DialogSettings xsi:type="WorkflowEditorSettings">
     <Visible>false</Visible>
     <Location>
       <X>0</X>
@@ -109,6 +109,18 @@
       <Height>0</Height>
     </Size>
     <WindowState>Normal</WindowState>
+    <EditorDialogSettings>
+      <Visible>false</Visible>
+      <Location>
+        <X>104</X>
+        <Y>104</Y>
+      </Location>
+      <Size>
+        <Width>316</Width>
+        <Height>239</Height>
+      </Size>
+      <WindowState>Normal</WindowState>
+    </EditorDialogSettings>
   </DialogSettings>
   <DialogSettings>
     <Visible>false</Visible>
@@ -152,7 +164,7 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>1297</Width>
+        <Width>786</Width>
         <Height>780</Height>
       </Size>
       <WindowState>Normal</WindowState>

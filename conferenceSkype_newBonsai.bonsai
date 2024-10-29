@@ -16,8 +16,8 @@
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:uEyeCapture">
-          <p1:DeviceId>1</p1:DeviceId>
-          <p1:ConfigFile>getCircles\2048x2048_30fps_slowClock_4.92.ini</p1:ConfigFile>
+          <p1:DeviceId>2</p1:DeviceId>
+          <p1:ConfigFile>getCircles\2048x1380_30fps_slowClock_4.9.ini</p1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -144,7 +144,7 @@ def process(inputs):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\TEST_CLsemi00_xy_7.5_maxsize_80.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35wellPlate_BoutTuning_abs.csv</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -169,7 +169,7 @@ def process(inputs):
       </Expression>
       <Expression xsi:type="PropertySource" TypeArguments="io:CsvReader,sys:String">
         <MemberName>FileName</MemberName>
-        <Value>testExperiment\trajectories\KnotTrajectory_6Sizes_abs.csv</Value>
+        <Value>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35wellPlate_BoutTuning_abs.csv</Value>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:CombineLatest" />
@@ -195,7 +195,7 @@ def process(inputs):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>100</Value>
+                <Value>70</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="rx:Defer">
@@ -206,7 +206,7 @@ def process(inputs):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2024-10-23T13_47_58.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2024-10-29T15_02_00.csv</io:FileName>
                     <io:ScanPattern>%i,%i,%i,%i,%i,%i</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -229,7 +229,7 @@ def process(inputs):
                   </Expression>
                   <Expression xsi:type="Combinator">
                     <Combinator xsi:type="DoubleProperty">
-                      <Value>100</Value>
+                      <Value>70</Value>
                     </Combinator>
                   </Expression>
                   <Expression xsi:type="Combinator">
@@ -273,7 +273,7 @@ def process(inputs):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2024-10-23T14_02_27.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2024-10-29T15_34_23.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -314,7 +314,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_9_eachWithLast.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_eachWithLast.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -478,10 +478,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1379</cv:X>
-                  <cv:Y>1359</cv:Y>
-                  <cv:Width>622</cv:Width>
-                  <cv:Height>622</cv:Height>
+                  <cv:X>1740</cv:X>
+                  <cv:Y>1080</cv:Y>
+                  <cv:Width>260</cv:Width>
+                  <cv:Height>260</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -824,7 +824,7 @@ def unload():
             </Expression>
             <Expression xsi:type="Add">
               <Operand xsi:type="StringProperty">
-                <Value>True False 2048.0 2048.0 3 6.22222222222</Value>
+                <Value>False False 2048.0 1380.0 3 3.73877551020</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -1181,15 +1181,6 @@ def process(value):
         <Combinator xsi:type="gl:ShaderResources">
           <gl:Shaders>
             <gl:ShaderConfiguration xsi:type="gl:Material">
-              <gl:Name>Particles</gl:Name>
-              <gl:RenderState />
-              <gl:ShaderUniforms />
-              <gl:BufferBindings />
-              <gl:FramebufferAttachments />
-              <gl:VertexShader>particles.vert</gl:VertexShader>
-              <gl:FragmentShader>particles.frag</gl:FragmentShader>
-            </gl:ShaderConfiguration>
-            <gl:ShaderConfiguration xsi:type="gl:Material">
               <gl:Name>bg</gl:Name>
               <gl:RenderState />
               <gl:ShaderUniforms />
@@ -1197,6 +1188,15 @@ def process(value):
               <gl:FramebufferAttachments />
               <gl:VertexShader>bg.vert</gl:VertexShader>
               <gl:FragmentShader>bg.frag</gl:FragmentShader>
+            </gl:ShaderConfiguration>
+            <gl:ShaderConfiguration xsi:type="gl:Material">
+              <gl:Name>Particles</gl:Name>
+              <gl:RenderState />
+              <gl:ShaderUniforms />
+              <gl:BufferBindings />
+              <gl:FramebufferAttachments />
+              <gl:VertexShader>particles.vert</gl:VertexShader>
+              <gl:FragmentShader>particles.frag</gl:FragmentShader>
             </gl:ShaderConfiguration>
             <gl:ShaderConfiguration xsi:type="gl:Material">
               <gl:Name>Waveform</gl:Name>
