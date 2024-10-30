@@ -144,7 +144,7 @@ def process(inputs):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35wellPlate_BoutTuning_abs.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\TEST_dot_and_grat_trajectories_35PlateGratingPilot_test_OL_slow.csv</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -824,7 +824,7 @@ def unload():
             </Expression>
             <Expression xsi:type="Add">
               <Operand xsi:type="StringProperty">
-                <Value>False False 2048.0 1380.0 3 3.73877551020</Value>
+                <Value>True False 2048.0 1380.0 3 3.73877551020</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -1117,13 +1117,19 @@ def process(value):
           </Edges>
         </Workflow>
       </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item1</Selector>
+      </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item1.Item1</Selector>
+      </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gl:CreateWindow">
           <gl:Width>1280</gl:Width>
           <gl:Height>800</gl:Height>
           <gl:VSync>On</gl:VSync>
           <gl:SwapSync>false</gl:SwapSync>
-          <gl:ClearColor>Transparent</gl:ClearColor>
+          <gl:ClearColor>White</gl:ClearColor>
           <gl:ClearMask>DepthBufferBit ColorBufferBit</gl:ClearMask>
           <gl:CursorVisible>true</gl:CursorVisible>
           <gl:Location xsi:nil="true" />
@@ -1181,15 +1187,6 @@ def process(value):
         <Combinator xsi:type="gl:ShaderResources">
           <gl:Shaders>
             <gl:ShaderConfiguration xsi:type="gl:Material">
-              <gl:Name>bg</gl:Name>
-              <gl:RenderState />
-              <gl:ShaderUniforms />
-              <gl:BufferBindings />
-              <gl:FramebufferAttachments />
-              <gl:VertexShader>bg.vert</gl:VertexShader>
-              <gl:FragmentShader>bg.frag</gl:FragmentShader>
-            </gl:ShaderConfiguration>
-            <gl:ShaderConfiguration xsi:type="gl:Material">
               <gl:Name>Particles</gl:Name>
               <gl:RenderState />
               <gl:ShaderUniforms />
@@ -1208,6 +1205,15 @@ def process(value):
               <gl:GeometryShader>waveform_self.geom</gl:GeometryShader>
               <gl:FragmentShader>grating.frag</gl:FragmentShader>
               <gl:MeshName>Waveform</gl:MeshName>
+            </gl:ShaderConfiguration>
+            <gl:ShaderConfiguration xsi:type="gl:Material">
+              <gl:Name>bg</gl:Name>
+              <gl:RenderState />
+              <gl:ShaderUniforms />
+              <gl:BufferBindings />
+              <gl:FramebufferAttachments />
+              <gl:VertexShader>bg.vert</gl:VertexShader>
+              <gl:FragmentShader>bg.frag</gl:FragmentShader>
             </gl:ShaderConfiguration>
           </gl:Shaders>
         </Combinator>
@@ -1248,9 +1254,11 @@ def process(value):
       <Edge From="19" To="20" Label="Source2" />
       <Edge From="23" To="24" Label="Source1" />
       <Edge From="24" To="25" Label="Source1" />
+      <Edge From="24" To="26" Label="Source1" />
       <Edge From="26" To="27" Label="Source1" />
-      <Edge From="27" To="28" Label="Source1" />
       <Edge From="28" To="29" Label="Source1" />
+      <Edge From="29" To="30" Label="Source1" />
+      <Edge From="30" To="31" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>

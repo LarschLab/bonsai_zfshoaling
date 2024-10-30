@@ -15,18 +15,8 @@ void main()
 {
   float value = sin(sqrt(pow(tex_coord.x-.5,2)+pow(tex_coord.y-.5,2)) * 2 * pi * frequency + phase); // concentric rings
   //float value = sin((tex_coord.x + phase/100) * 2 * pi * frequency);  // sinewave
-  if (square != 0) value = value > 0 ? 1 : -1; // square modulation
-
-  float envelope;
-  float dist = length(tex_coord * 2 - 1) / radius; // distance to the edge
-  if (edge == 0) envelope = dist < 1 ? 1 : 0; // square envelope
-  else
-  {
-    // gaussian envelope
-    dist = dist / edge;
-    envelope = 1. / (edge * sqrtTwoPi) * exp(-0.5 * dist * dist);
-  }
-  value = value * contrast * envelope * 0.5 + 0.5; // contrast modulation
+  
+  value = value * contrast; // contrast modulation
   //value = zero;
   
   if (contrast == 1)
@@ -34,7 +24,10 @@ void main()
   {
   frag_colour = vec4(1, 1, 1, 0);
   }
-  else{
-  frag_colour = vec4(value, value, value, opacity * envelope);
+  else
+  {
+  frag_colour = vec4(value, value, value, 1.0);
   }
+  
+
 }
