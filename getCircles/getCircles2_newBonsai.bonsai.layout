@@ -147,12 +147,12 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>363</X>
-      <Y>489</Y>
+      <X>197</X>
+      <Y>140</Y>
     </Location>
     <Size>
-      <Width>336</Width>
-      <Height>279</Height>
+      <Width>1029</Width>
+      <Height>906</Height>
     </Size>
     <WindowState>Normal</WindowState>
     <VisualizerTypeName>Bonsai.Vision.Design.CircleVisualizer</VisualizerTypeName>
