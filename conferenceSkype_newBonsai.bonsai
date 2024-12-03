@@ -17,7 +17,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:uEyeCapture">
           <p1:DeviceId>1</p1:DeviceId>
-          <p1:ConfigFile>getCircles\2048x2048_30fps_slowClock_4.92.ini</p1:ConfigFile>
+          <p1:ConfigFile>getCircles\2048x1380_30fps_slowClock_4.9.ini</p1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -144,7 +144,7 @@ def process(inputs):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\TEST_trajectories_baseline10min_gratings10min_loomeverymin_iso_or_grat_after.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\20241203_35FlickerStimuli_absolutea_fixed.csv</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -206,7 +206,7 @@ def process(inputs):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2024-10-30T11_10_18.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2024-12-03T09_52_44.csv</io:FileName>
                     <io:ScanPattern>%i,%i,%i,%i,%i,%i</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -273,7 +273,7 @@ def process(inputs):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2024-10-30T11_12_07.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2024-12-03T11_27_55.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -314,7 +314,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_9_eachWithLast.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_eachWithLast.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -478,10 +478,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1397</cv:X>
-                  <cv:Y>1397</cv:Y>
-                  <cv:Width>626</cv:Width>
-                  <cv:Height>626</cv:Height>
+                  <cv:X>1778</cv:X>
+                  <cv:Y>1098</cv:Y>
+                  <cv:Width>264</cv:Width>
+                  <cv:Height>264</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -824,7 +824,7 @@ def unload():
             </Expression>
             <Expression xsi:type="Add">
               <Operand xsi:type="StringProperty">
-                <Value>False False 2048.0 2048.0 3 8.98730158730</Value>
+                <Value>False False 2048.0 1380.0 3 3.73224489796</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="MemberSelector">

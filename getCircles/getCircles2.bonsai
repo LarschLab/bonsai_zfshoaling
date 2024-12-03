@@ -15,7 +15,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:uEyeCapture">
           <p1:DeviceId>1</p1:DeviceId>
-          <p1:ConfigFile>2048x2048_30fps_slowClock_4.92.ini</p1:ConfigFile>
+          <p1:ConfigFile>2048x1380_30fps_slowClock_4.9.ini</p1:ConfigFile>
         </Combinator>
       </Expression>
       <Expression xsi:type="MemberSelector">
@@ -105,7 +105,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>3</Value>
+                <Value>5</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
@@ -113,7 +113,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>3</Value>
+                <Value>7</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -298,7 +298,6 @@ def process(value):
             </Expression>
             <Expression xsi:type="io:CsvWriter">
               <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef.csv</io:FileName>
-              <io:Delimiter> </io:Delimiter>
               <io:ListSeparator />
               <io:Append>false</io:Append>
               <io:Overwrite>false</io:Overwrite>
