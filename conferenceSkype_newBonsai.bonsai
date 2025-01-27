@@ -26,7 +26,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:BackgroundSubtraction">
           <cv:BackgroundFrames>120</cv:BackgroundFrames>
-          <cv:AdaptationRate>0.01</cv:AdaptationRate>
+          <cv:AdaptationRate>0.001</cv:AdaptationRate>
           <cv:ThresholdValue>9</cv:ThresholdValue>
           <cv:ThresholdType>ToZero</cv:ThresholdType>
           <cv:SubtractionMethod>Dark</cv:SubtractionMethod>
@@ -144,7 +144,7 @@ def process(inputs):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\TEST_trajectories_35WellPlate_1Stim_2h_isolated_50min_Bout_abs_All_8MM.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\MP\semiCLTest01_static_16dots_testcoord</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -154,7 +154,7 @@ def process(inputs):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:RepeatCount">
-                <rx:Count>1</rx:Count>
+                <rx:Count>100</rx:Count>
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
@@ -273,7 +273,7 @@ def process(inputs):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2024-12-03T11_27_55.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2025-01-22T15_22_28.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -314,7 +314,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_oneWithLast_onewithnothing.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\MP\PL_51_testPL</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -592,7 +592,9 @@ def process(value):
     if CLmode:
       posPick=1
     else:
+      #print('entering semi closed loop, eName',eName, 'piece:', eName[6:9])
       posPick=int(eName[6:9]) # time interval (frames) for anchoring stimuli in semi CL mode.
+      #print(str(posPick))
 
   FlexPair=eName[3:8]=='pairs'
 
@@ -650,7 +652,12 @@ def process(value):
         else:
           x=p[0]+allCoor[ii][2] #add offsets of current dish
           y=p[1]+allCoor[ii][3]
-          if i&gt;8:
+
+          #use default size = 4 for all animal pairing stimuli.
+          #use variable size from stimulus file (p[4]) for all subsequent stimuli from stimulus file
+
+          numArenas=len(value.Item1.Item1) # number of ROIs
+          if i&gt;=numArenas:
             sp=p[4]
           else:
             sp=4.
@@ -658,9 +665,10 @@ def process(value):
         x=geo.toGL(x,xMax) # transform to openGL coordinates
         y=-geo.toGL(y,yMax)
         toDraw.append([x,y,sp]) 
-        wellStr = "%0.f %0.f" % (x,y)
+        wellStr = "%.2f %.2f" % (x,y)
         drawStr.append(wellStr)
   ar=sS.listToTkArray(toDraw)
+  #print(" ".join(drawStr))
   # smooth heading.
   # Only applies to allheading - used for CL stim presentation and gratings to reduce jitter
   if smoo&gt;0: 
@@ -1123,6 +1131,21 @@ def process(value):
       <Expression xsi:type="MemberSelector">
         <Selector>Item1.Item1</Selector>
       </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="MemberSelector">
+          <Selector>Item4</Selector>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="io:CsvWriter">
+          <io:FileName>E:\00_bonsai_ffmpeg_out\StimOut.csv</io:FileName>
+          <io:Append>true</io:Append>
+          <io:Overwrite>false</io:Overwrite>
+          <io:Suffix>Timestamp</io:Suffix>
+          <io:IncludeHeader>false</io:IncludeHeader>
+          <io:Selector>it</io:Selector>
+        </Builder>
+      </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gl:CreateWindow">
           <gl:Width>1280</gl:Width>
@@ -1247,6 +1270,7 @@ def process(value):
       <Edge From="14" To="19" Label="Source1" />
       <Edge From="14" To="21" Label="Source2" />
       <Edge From="14" To="23" Label="Source1" />
+      <Edge From="14" To="28" Label="Source1" />
       <Edge From="15" To="16" Label="Source1" />
       <Edge From="17" To="18" Label="Source1" />
       <Edge From="18" To="20" Label="Source1" />
@@ -1257,8 +1281,9 @@ def process(value):
       <Edge From="24" To="26" Label="Source1" />
       <Edge From="26" To="27" Label="Source1" />
       <Edge From="28" To="29" Label="Source1" />
-      <Edge From="29" To="30" Label="Source1" />
       <Edge From="30" To="31" Label="Source1" />
+      <Edge From="31" To="32" Label="Source1" />
+      <Edge From="32" To="33" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>

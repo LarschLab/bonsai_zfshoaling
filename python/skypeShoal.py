@@ -18,6 +18,16 @@ import CameraInterceptCorrection as cic
 #  Item5: videoSize
 #  Item6: camHeight
 #Item2: (Trajectory File)
+def cart2pol(x, y):
+    theta = math.atan2(y, x)
+    rho = math.hypot(x, y)
+    return theta, rho
+
+def pol2cart(theta, rho):
+    x = rho * math.cos(theta)
+    y = rho * math.sin(theta)
+    return x, y
+    
 
 def getAnimalCoors(value,allCoor):
 
@@ -38,7 +48,7 @@ def getAnimalCoors(value,allCoor):
         yoff=value.Item1.Item2.Item4.Item1[i].Item2
 
         #Also correct dish ROI! Added 7-19-2017
-        xoff,yoff = cic.CorrectFish(xoff,yoff,0,0,xMax,yMax,camHeight)
+        #xoff,yoff = cic.CorrectFish(xoff,yoff,0,0,xMax,yMax,camHeight)
 
         x = well.Centroid.X
         y = well.Centroid.Y
@@ -53,7 +63,8 @@ def getAnimalCoors(value,allCoor):
                 yoff=oldCoor[w][3]
                 o=oldCoor[w][4]
         else:
-            x,y = cic.CorrectFish(x,y,xoff,yoff,xMax,yMax,camHeight)
+            #x,y = cic.CorrectFish(x,y,xoff,yoff,xMax,yMax,camHeight)
+            pass
 
 
 
@@ -72,7 +83,7 @@ def getAnimalCoors(value,allCoor):
     
     # THIS IS QUICK"N DIRTY FOR MAKING MULTI STIMULI WORK
     # 2021-02-17
-    for ea in range(1):
+    for ea in range(16):
     
         #xp = value.Item2.Item2*pxPmm+avgRoiRadius
         #yp = value.Item2.Item3*pxPmm+avgRoiRadius
@@ -106,20 +117,23 @@ def CLstim(value,allCoor,posList,p,ii,CLmode):
     dx = (p[0]-avgRoiRadius)   # stim position (already defined animal centric)
     dy = (p[1]-avgRoiRadius)
     #print dx,dy
-    dist = math.sqrt((dx ** 2) + (dy ** 2))
-    if dist == 0:
-        dist = 1
+    #dist = math.sqrt((dx ** 2) + (dy ** 2))
+    #if dist == 0:
+    #    dist = 1
 
-    phi = math.asin(dx / dist)
+    #phi = math.asin(dx / dist)
+    heading = o - (math.pi * (1 / 2.))
+    theta, rho=cart2pol(dx,dy)
+    xRot,yRot=pol2cart(theta+heading,rho)
 
-    heading = -o + (math.pi * (1 / 2.))
+    
     # heading=o+(math.pi*(1/2))
 
-    x = math.sin(heading + phi) * dist
-    y = math.cos(heading + phi) * dist
+    #x = math.sin(heading + phi) * dist
+    #y = math.cos(heading + phi) * dist
     # print 'x',x,'y',y,'dist',dist,'phi',phi,'o',o,'heading',heading
-    x = x + xo
-    y = y + yo
+    x = xRot + xo
+    y = yRot + yo
 
     #wellDiam = value.Item1.Item2.Item4.Item3
     #print x,y,wellDiam

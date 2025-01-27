@@ -105,7 +105,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>5</Value>
+                <Value>3</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
@@ -113,7 +113,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>7</Value>
+                <Value>5</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
@@ -234,13 +234,15 @@ from System.Collections.Generic import IList
 @returns(IList[Tuple[int,int,int,int,int,int]])
 def process(value):
 
+  roundFactor=400
   tupAll=[]
   tupRoundAll=[]
   for c in value:
+    
     x=c.Item1
-    xr=(x/180)*180
+    xr=(x/roundFactor)*roundFactor
     y=c.Item2
-    yr=(y/180)*180
+    yr=(y/roundFactor)*roundFactor
     w=c.Item3
     xc=c.Item4
     yc=c.Item5
