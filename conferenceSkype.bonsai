@@ -21,7 +21,7 @@
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2023-06-15T13_17_19.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2025-01-28T12_12_59.csv</io:FileName>
               <io:ScanPattern>%i %i %i %i %i %i</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -70,7 +70,7 @@
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_eachWithLast.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_eachWithSelf.csv</io:FileName>
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -104,7 +104,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2023-06-15T13_26_15.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2025-01-28T12_18_18.csv</io:FileName>
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
