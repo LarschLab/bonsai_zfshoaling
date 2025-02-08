@@ -72,7 +72,7 @@
             <cv:X>0</cv:X>
             <cv:Y>0</cv:Y>
           </cv:Offset>
-          <cv:MinArea>50</cv:MinArea>
+          <cv:MinArea>200</cv:MinArea>
           <cv:MaxArea xsi:nil="true" />
         </Combinator>
       </Expression>
@@ -124,7 +124,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2025-01-27T10_52_11.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2025-02-05T17_03_51.csv</io:FileName>
               <io:ScanPattern>%i,%i,%i,%i,%i,%i</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
