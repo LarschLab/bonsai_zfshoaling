@@ -127,7 +127,7 @@ def process(inputs):
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="cv:Threshold">
-          <cv:ThresholdValue>9</cv:ThresholdValue>
+          <cv:ThresholdValue>14</cv:ThresholdValue>
           <cv:MaxValue>255</cv:MaxValue>
           <cv:ThresholdType>Binary</cv:ThresholdType>
         </Combinator>
@@ -144,7 +144,7 @@ def process(inputs):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\MP\2025.02.26\test_stimuli.txt</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\MP\2025.03.15\2025.03.15-1007_GsizeMotionChoice_371min_boutmm.csv</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -206,7 +206,7 @@ def process(inputs):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2025-02-26T10_54_42.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2025-03-15T12_10_23.csv</io:FileName>
                     <io:ScanPattern>%i,%i,%i,%i,%i,%i</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -273,7 +273,7 @@ def process(inputs):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2025-02-26T10_58_47.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2025-03-15T12_16_50.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -478,10 +478,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1567</cv:X>
-                  <cv:Y>867</cv:Y>
-                  <cv:Width>366</cv:Width>
-                  <cv:Height>366</cv:Height>
+                  <cv:X>1546</cv:X>
+                  <cv:Y>906</cv:Y>
+                  <cv:Width>368</cv:Width>
+                  <cv:Height>368</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -644,6 +644,7 @@ def process(value):
     #p: point to be drawn (unless in skype mode, ones should only be in i=15 or 35 (last animal)
     l=pairList[i] #find where to draw it (which dish)
     for ii,pp in enumerate(l):
+
       if pp==1: #draw into dish ii
 
         if CL: # for 'closed loop', place stimuli relative to defined position
@@ -662,12 +663,15 @@ def process(value):
             sp=p[4]
           else:
             sp=4.
+        
+        wellStr = "%.2f %.2f" % (x,y)
+        drawStr.append(wellStr)
         x,y=geo.transf(x,y,hArr) ##projector-camera calibration
         x=geo.toGL(x,xMax) # transform to openGL coordinates
         y=-geo.toGL(y,yMax)
         toDraw.append([x,y,sp]) 
-        wellStr = "%.2f %.2f" % (x,y)
-        drawStr.append(wellStr)
+        #wellStr = "%.2f %.2f" % (x,y)
+        #drawStr.append(wellStr)
   ar=sS.listToTkArray(toDraw)
   #print(" ".join(drawStr))
   # smooth heading.
@@ -833,7 +837,7 @@ def unload():
             </Expression>
             <Expression xsi:type="Add">
               <Operand xsi:type="StringProperty">
-                <Value>True False 2048.0 1380.0 3 3.628</Value>
+                <Value>False False 2048.0 1380.0 3 3.62133333333</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="MemberSelector">
@@ -1132,20 +1136,16 @@ def process(value):
       <Expression xsi:type="MemberSelector">
         <Selector>Item1.Item1</Selector>
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="MemberSelector">
-          <Selector>Item4</Selector>
-        </Builder>
+      <Expression xsi:type="MemberSelector">
+        <Selector>Item4</Selector>
       </Expression>
-      <Expression xsi:type="Disable">
-        <Builder xsi:type="io:CsvWriter">
-          <io:FileName>E:\00_bonsai_ffmpeg_out\StimOut.csv</io:FileName>
-          <io:Append>true</io:Append>
-          <io:Overwrite>false</io:Overwrite>
-          <io:Suffix>Timestamp</io:Suffix>
-          <io:IncludeHeader>false</io:IncludeHeader>
-          <io:Selector>it</io:Selector>
-        </Builder>
+      <Expression xsi:type="io:CsvWriter">
+        <io:FileName>E:\00_bonsai_ffmpeg_out\StimOut.csv</io:FileName>
+        <io:Append>true</io:Append>
+        <io:Overwrite>false</io:Overwrite>
+        <io:Suffix>Timestamp</io:Suffix>
+        <io:IncludeHeader>false</io:IncludeHeader>
+        <io:Selector>it</io:Selector>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="gl:CreateWindow">
