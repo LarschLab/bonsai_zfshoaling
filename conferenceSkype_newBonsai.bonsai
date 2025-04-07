@@ -144,7 +144,7 @@ def process(inputs):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\TEST_trajectories_35WellPlate_1Stim_2h_isolated_50min_Bout_abs_All_8MM.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectory_1hr_buffer_then_5sec-loom-6times_rep_every_10_min.csv</io:FileName>
               <io:ListSeparator />
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
@@ -206,7 +206,7 @@ def process(inputs):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2024-12-03T09_52_44.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2025-03-22T11_54_20.csv</io:FileName>
                     <io:ScanPattern>%i,%i,%i,%i,%i,%i</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -273,7 +273,7 @@ def process(inputs):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2024-12-03T11_27_55.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2025-03-22T12_05_53.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -314,7 +314,7 @@ def process(value):
                     <Property Name="FileName" />
                   </Expression>
                   <Expression xsi:type="io:CsvReader">
-                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_oneWithLast_onewithnothing.csv</io:FileName>
+                    <io:FileName>E:\00_bonsai_ffmpeg_out\pairLists\PL_35_social_buffering_skype_pairs_and_last.csv</io:FileName>
                     <io:ScanPattern>%s</io:ScanPattern>
                     <io:SkipRows>0</io:SkipRows>
                   </Expression>
@@ -478,10 +478,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1778</cv:X>
-                  <cv:Y>1098</cv:Y>
-                  <cv:Width>264</cv:Width>
-                  <cv:Height>264</cv:Height>
+                  <cv:X>1763</cv:X>
+                  <cv:Y>1083</cv:Y>
+                  <cv:Width>254</cv:Width>
+                  <cv:Height>254</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -650,7 +650,7 @@ def process(value):
         else:
           x=p[0]+allCoor[ii][2] #add offsets of current dish
           y=p[1]+allCoor[ii][3]
-          if i&gt;8:
+          if i&gt;34:
             sp=p[4]
           else:
             sp=4.
@@ -824,7 +824,7 @@ def unload():
             </Expression>
             <Expression xsi:type="Add">
               <Operand xsi:type="StringProperty">
-                <Value>False False 2048.0 1380.0 3 3.73224489796</Value>
+                <Value>False False 2048.0 1380.0 3 3.72816326531</Value>
               </Operand>
             </Expression>
             <Expression xsi:type="MemberSelector">
