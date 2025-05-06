@@ -88,8 +88,6 @@ def getAnimalCoors(value,allCoor):
         #yp = value.Item2.Item3*pxPmm+avgRoiRadius
         #sp = value.Item2.Item4  # sprite point size
         
-        #eName = value.Item2.Item1
-        
         #welldata = ((round(xp)), (round(yp)), sp, eName)
         #print('current stim',allAns[ea*6+1],allAns[ea*6+2],allAns[ea*6+3])
         xp = float(allAns[ea*6+1])*pxPmm+avgRoiRadius
@@ -97,6 +95,7 @@ def getAnimalCoors(value,allCoor):
         sp = float(allAns[ea*6+3])  # sprite point size
         
         eName = allAns[ea*6+0]
+        #eName = eName[11:]
         
         welldata = ((round(xp)), (round(yp)), eName)
         #print(avgRoiRadius)
@@ -133,17 +132,16 @@ def CLstim(value,allCoor,posList,p,ii,CLmode):
     # print 'x',x,'y',y,'dist',dist,'phi',phi,'o',o,'heading',heading
     x = xRot + xo
     y = yRot + yo
+    
+    wellDiam = (avgRoiRadius*2) #361.6 for now
 
-    #wellDiam = value.Item1.Item2.Item4.Item3
-    #print x,y,wellDiam
     # Remove stimuli that would extend into neighbor arena.
-    #if (x < wellDiam) and (x > 0) and (y < wellDiam) and (y > 0):
-    x = x + allCoor[ii][2]
-    y = y + allCoor[ii][3]
-    #else:
-    #    # print 'not drawing dot for animal',ii
-    #    x = 0
-     #   y = 0
+    if (x < wellDiam) and (x > 0) and (y < wellDiam) and (y > 0):
+        x = x + allCoor[ii][2]
+        y = y + allCoor[ii][3]
+    else:
+        x=0
+        y=0
 
     return x,y
 
