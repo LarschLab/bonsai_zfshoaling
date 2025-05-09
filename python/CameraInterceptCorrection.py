@@ -19,8 +19,8 @@ def deCorrectFish(x,y,xOff,yOff,xMax,yMax,camHeight):#camHeight default used to 
   xR=x+xOff
   yR=y+yOff
 
-  xR=xR+((xR-xMax/2.)/(camHeight))
-  yR=yR+((yR-yMax/2.)/(camHeight))
+  #xR=xR+((xR-xMax/2.)/(camHeight))
+  #yR=yR+((yR-yMax/2.)/(camHeight))
 
   return xR-xOff,yR-yOff
 
@@ -29,7 +29,7 @@ def CorrectFish(x,y,xOff,yOff,xMax,yMax,camHeight): #camHeight default used to b
   xR=x+xOff
   yR=y+yOff
 
-  xR=xR-((xR-xMax/2.)/(camHeight))
-  yR=yR-((yR-yMax/2.)/(camHeight))
+  #xR=xR-((xR-xMax/2.)/(camHeight))
+  #yR=yR-((yR-yMax/2.)/(camHeight))
 
   return xR-xOff,yR-yOff
