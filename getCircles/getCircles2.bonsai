@@ -105,7 +105,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>3</Value>
+                <Value>2</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="ExternalizedMapping">
@@ -113,14 +113,38 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="IntProperty">
-                <Value>5</Value>
+                <Value>3</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="emptyEdgeX" Description="default: 0, change to add  emty space without dishes" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="IntProperty">
+                <Value>400</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="emptyEdgeY" Description="default: 0, change to add  emty space without dishes" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="IntProperty">
+                <Value>400</Value>
+              </Combinator>
+            </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Value" DisplayName="minDistanceRadiusFraction" Description="default: 1.5, increase to 2.1 or more for greater dish spacing" />
+            </Expression>
+            <Expression xsi:type="Combinator">
+              <Combinator xsi:type="FloatProperty">
+                <Value>2.1</Value>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Zip" />
             </Expression>
             <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Zip" />
+              <Combinator xsi:type="rx:CombineLatest" />
             </Expression>
             <Expression xsi:type="ipy:PythonTransform">
               <ipy:Script>from System import Tuple
@@ -129,12 +153,12 @@ from System.Collections.Generic import IList
 @returns(Tuple[int,int,int])
 def process(value):
 
-  w=value.Item1.Width/value.Item2.Item2
-  h=value.Item1.Height/value.Item2.Item1
+  w=(value.Item1.Width-value.Item2.Item3)/value.Item2.Item2
+  h=(value.Item1.Height-value.Item2.Item4)/value.Item2.Item1
   rad=(w+h)/4
   minRad=int(rad-rad*0.15)
   maxRad=int(rad+rad*0.15)
-  minDist=int(rad*1.55)
+  minDist=int(rad*value.Item2.Item5)
   return Tuple.Create(minRad,maxRad,minDist)</ipy:Script>
             </Expression>
             <Expression xsi:type="PropertyMapping">
@@ -147,11 +171,11 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:HoughCircles">
                 <cv:AccumulatorFactor>20</cv:AccumulatorFactor>
-                <cv:MinDistance>528</cv:MinDistance>
+                <cv:MinDistance>492</cv:MinDistance>
                 <cv:Param1>50</cv:Param1>
                 <cv:Param2>100</cv:Param2>
-                <cv:MinRadius>289</cv:MinRadius>
-                <cv:MaxRadius>392</cv:MaxRadius>
+                <cv:MinRadius>220</cv:MinRadius>
+                <cv:MaxRadius>297</cv:MaxRadius>
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
@@ -160,17 +184,23 @@ def process(value):
             <Edge From="0" To="1" Label="Source1" />
             <Edge From="1" To="2" Label="Source1" />
             <Edge From="2" To="3" Label="Source1" />
-            <Edge From="2" To="12" Label="Source1" />
-            <Edge From="3" To="9" Label="Source1" />
+            <Edge From="2" To="18" Label="Source1" />
+            <Edge From="3" To="15" Label="Source1" />
             <Edge From="4" To="5" Label="Source1" />
-            <Edge From="5" To="8" Label="Source1" />
+            <Edge From="5" To="14" Label="Source1" />
             <Edge From="6" To="7" Label="Source1" />
-            <Edge From="7" To="8" Label="Source2" />
-            <Edge From="8" To="9" Label="Source2" />
-            <Edge From="9" To="10" Label="Source1" />
+            <Edge From="7" To="14" Label="Source2" />
+            <Edge From="8" To="9" Label="Source1" />
+            <Edge From="9" To="14" Label="Source3" />
             <Edge From="10" To="11" Label="Source1" />
-            <Edge From="11" To="12" Label="Source2" />
+            <Edge From="11" To="14" Label="Source4" />
             <Edge From="12" To="13" Label="Source1" />
+            <Edge From="13" To="14" Label="Source5" />
+            <Edge From="14" To="15" Label="Source2" />
+            <Edge From="15" To="16" Label="Source1" />
+            <Edge From="16" To="17" Label="Source1" />
+            <Edge From="17" To="18" Label="Source2" />
+            <Edge From="18" To="19" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>

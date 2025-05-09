@@ -17,12 +17,12 @@
   <DialogSettings>
     <Visible>true</Visible>
     <Location>
-      <X>14</X>
-      <Y>753</Y>
+      <X>45</X>
+      <Y>491</Y>
     </Location>
     <Size>
-      <Width>336</Width>
-      <Height>279</Height>
+      <Width>407</Width>
+      <Height>349</Height>
     </Size>
     <WindowState>Normal</WindowState>
     <VisualizerTypeName>Bonsai.Vision.Design.IplImageVisualizer</VisualizerTypeName>
@@ -48,8 +48,8 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>1253</Width>
-        <Height>497</Height>
+        <Width>1403</Width>
+        <Height>714</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
@@ -182,12 +182,60 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>1253</Width>
-        <Height>497</Height>
+        <Width>1403</Width>
+        <Height>714</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
     <EditorVisualizerLayout>
+      <DialogSettings>
+        <Visible>false</Visible>
+        <Location>
+          <X>0</X>
+          <Y>0</Y>
+        </Location>
+        <Size>
+          <Width>0</Width>
+          <Height>0</Height>
+        </Size>
+        <WindowState>Normal</WindowState>
+      </DialogSettings>
+      <DialogSettings>
+        <Visible>false</Visible>
+        <Location>
+          <X>0</X>
+          <Y>0</Y>
+        </Location>
+        <Size>
+          <Width>0</Width>
+          <Height>0</Height>
+        </Size>
+        <WindowState>Normal</WindowState>
+      </DialogSettings>
+      <DialogSettings>
+        <Visible>false</Visible>
+        <Location>
+          <X>0</X>
+          <Y>0</Y>
+        </Location>
+        <Size>
+          <Width>0</Width>
+          <Height>0</Height>
+        </Size>
+        <WindowState>Normal</WindowState>
+      </DialogSettings>
+      <DialogSettings>
+        <Visible>false</Visible>
+        <Location>
+          <X>0</X>
+          <Y>0</Y>
+        </Location>
+        <Size>
+          <Width>0</Width>
+          <Height>0</Height>
+        </Size>
+        <WindowState>Normal</WindowState>
+      </DialogSettings>
       <DialogSettings>
         <Visible>false</Visible>
         <Location>
@@ -335,12 +383,40 @@
       <DialogSettings>
         <Visible>true</Visible>
         <Location>
-          <X>335</X>
-          <Y>743</Y>
+          <X>58</X>
+          <Y>855</Y>
         </Location>
         <Size>
-          <Width>417</Width>
-          <Height>291</Height>
+          <Width>639</Width>
+          <Height>184</Height>
+        </Size>
+        <WindowState>Normal</WindowState>
+        <VisualizerTypeName>Bonsai.Design.ObjectTextVisualizer</VisualizerTypeName>
+        <VisualizerSettings>
+          <ObjectTextVisualizer />
+        </VisualizerSettings>
+      </DialogSettings>
+      <DialogSettings>
+        <Visible>false</Visible>
+        <Location>
+          <X>0</X>
+          <Y>0</Y>
+        </Location>
+        <Size>
+          <Width>0</Width>
+          <Height>0</Height>
+        </Size>
+        <WindowState>Normal</WindowState>
+      </DialogSettings>
+      <DialogSettings>
+        <Visible>true</Visible>
+        <Location>
+          <X>780</X>
+          <Y>358</Y>
+        </Location>
+        <Size>
+          <Width>655</Width>
+          <Height>531</Height>
         </Size>
         <WindowState>Normal</WindowState>
         <VisualizerTypeName>Bonsai.Vision.Design.CircleVisualizer</VisualizerTypeName>
@@ -380,8 +456,8 @@
         <Y>434</Y>
       </Location>
       <Size>
-        <Width>439</Width>
-        <Height>249</Height>
+        <Width>783</Width>
+        <Height>318</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
@@ -464,8 +540,8 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>1253</Width>
-        <Height>497</Height>
+        <Width>1403</Width>
+        <Height>714</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
