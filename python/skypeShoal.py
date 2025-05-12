@@ -19,6 +19,8 @@ import CameraInterceptCorrection as cic
 #  Item6: camHeight
 #Item2: (Trajectory File)
 
+stim_num = 4   # number of stimuli in trajectory file 
+
 def getAnimalCoors(value,allCoor):
 
     allwells=[]
@@ -72,7 +74,7 @@ def getAnimalCoors(value,allCoor):
     
     # THIS IS QUICK"N DIRTY FOR MAKING MULTI STIMULI WORK
     # 2021-02-17
-    for ea in range(1):
+    for ea in range(stim_num):
     
         #xp = value.Item2.Item2*pxPmm+avgRoiRadius
         #yp = value.Item2.Item3*pxPmm+avgRoiRadius
@@ -139,7 +141,9 @@ def getPairList(value, FlexPair):
         eName = value.Item2.split(',')[0]
         pairListNr = int(eName[:2])
         numAn = len(value.Item1.Item2.Item5[0])
-        return value.Item1.Item2.Item5[pairListNr * numAn:(pairListNr + 1) * numAn]
+        #print('eName: ', eName, ' pairListNr: ', pairListNr, ' numAn: ', numAn)
+        #print('paitlist indices: ', 'from: ', (pairListNr * (numAn-1+stim_num)), 'to: ',((pairListNr+1) * (numAn-1+stim_num)))
+        return value.Item1.Item2.Item5[(pairListNr * (numAn-1+stim_num)):((pairListNr+1) * (numAn-1+stim_num))]
     else:
         return value.Item1.Item2.Item5  # animal pair matrix
 
