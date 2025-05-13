@@ -171,11 +171,11 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:HoughCircles">
                 <cv:AccumulatorFactor>20</cv:AccumulatorFactor>
-                <cv:MinDistance>492</cv:MinDistance>
+                <cv:MinDistance>213</cv:MinDistance>
                 <cv:Param1>50</cv:Param1>
                 <cv:Param2>100</cv:Param2>
-                <cv:MinRadius>220</cv:MinRadius>
-                <cv:MaxRadius>297</cv:MaxRadius>
+                <cv:MinRadius>120</cv:MinRadius>
+                <cv:MaxRadius>163</cv:MaxRadius>
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
@@ -237,7 +237,7 @@ def process(value):
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Take">
-                <rx:Count>9</rx:Count>
+                <rx:Count>35</rx:Count>
               </Combinator>
             </Expression>
             <Expression xsi:type="Combinator">

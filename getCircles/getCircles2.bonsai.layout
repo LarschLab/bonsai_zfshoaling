@@ -24,7 +24,7 @@
       <Width>407</Width>
       <Height>349</Height>
     </Size>
-    <WindowState>Normal</WindowState>
+    <WindowState>Maximized</WindowState>
     <VisualizerTypeName>Bonsai.Vision.Design.IplImageVisualizer</VisualizerTypeName>
     <VisualizerSettings>
       <IplImageVisualizer />
@@ -48,7 +48,7 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>1403</Width>
+        <Width>1015</Width>
         <Height>714</Height>
       </Size>
       <WindowState>Normal</WindowState>
@@ -182,8 +182,8 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>1403</Width>
-        <Height>714</Height>
+        <Width>1506</Width>
+        <Height>903</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
@@ -411,12 +411,12 @@
       <DialogSettings>
         <Visible>true</Visible>
         <Location>
-          <X>780</X>
-          <Y>358</Y>
+          <X>453</X>
+          <Y>212</Y>
         </Location>
         <Size>
-          <Width>655</Width>
-          <Height>531</Height>
+          <Width>1203</Width>
+          <Height>765</Height>
         </Size>
         <WindowState>Normal</WindowState>
         <VisualizerTypeName>Bonsai.Vision.Design.CircleVisualizer</VisualizerTypeName>
@@ -540,8 +540,8 @@
         <Y>3</Y>
       </Location>
       <Size>
-        <Width>1403</Width>
-        <Height>714</Height>
+        <Width>1506</Width>
+        <Height>903</Height>
       </Size>
       <WindowState>Normal</WindowState>
     </EditorDialogSettings>
