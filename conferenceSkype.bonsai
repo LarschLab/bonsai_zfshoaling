@@ -21,7 +21,7 @@
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2025-05-07T10_49_36.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\ROIdef2025-05-13T10_44_01.csv</io:FileName>
               <io:ScanPattern>%i,%i,%i,%i,%i,%i</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -104,7 +104,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2025-05-12T17_50_38.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\calibrationOut2025-05-13T10_45_43.csv</io:FileName>
               <io:ScanPattern>%s</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>
@@ -210,10 +210,10 @@ def process(value):
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="cv:Crop">
                 <cv:RegionOfInterest>
-                  <cv:X>1758</cv:X>
-                  <cv:Y>1058</cv:Y>
-                  <cv:Width>264</cv:Width>
-                  <cv:Height>264</cv:Height>
+                  <cv:X>1759</cv:X>
+                  <cv:Y>1079</cv:Y>
+                  <cv:Width>262</cv:Width>
+                  <cv:Height>262</cv:Height>
                 </cv:RegionOfInterest>
               </Combinator>
             </Expression>
@@ -293,7 +293,7 @@ def process(value):
               <Property Name="FileName" />
             </Expression>
             <Expression xsi:type="io:CsvReader">
-              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35wellPlate_FullShoalGrateLoomOLGrat.csv</io:FileName>
+              <io:FileName>E:\00_bonsai_ffmpeg_out\trajectories\trajectories_35wellPlate_SelectionTestProtocol.csv</io:FileName>
               <io:ScanPattern>%s,%f,%f,%f,%f,%f</io:ScanPattern>
               <io:SkipRows>0</io:SkipRows>
             </Expression>

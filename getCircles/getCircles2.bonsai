@@ -264,7 +264,7 @@ from System.Collections.Generic import IList
 @returns(IList[Tuple[int,int,int,int,int,int]])
 def process(value):
 
-  roundFactor=180
+  roundFactor=200
   tupAll=[]
   tupRoundAll=[]
   for c in value:
