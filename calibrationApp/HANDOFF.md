@@ -20,13 +20,13 @@ Next-session focus: validate the standalone ROI editor on a behavioural machine,
 
 ## Important Artifacts
 
-- `roi_editor/README.md`: usage, controls, output contract, tests, and build instructions.
-- `roi_editor/app.py`: Tk GUI and interaction behavior.
-- `roi_editor/core.py`: media loading, Hough detection, ordering, labeling, and swaps.
-- `roi_editor/roi_io.py`: legacy CSV loading/export, validation, QC, provenance, and transactional replacement.
-- `scripts/build_roi_editor.py`: PyInstaller build entrypoint.
-- `requirements-roi-editor.txt` and `requirements-roi-editor-build.txt`: runtime/build dependencies.
-- `tests/test_roi_editor.py`: unit and July-fixture integration tests.
+- `calibrationApp/README.md`: usage, controls, output contract, tests, and build instructions.
+- `calibrationApp/roi_editor/app.py`: Tk GUI and interaction behavior.
+- `calibrationApp/roi_editor/core.py`: media loading, Hough detection, ordering, labeling, and swaps.
+- `calibrationApp/roi_editor/roi_io.py`: legacy CSV loading/export, validation, QC, provenance, and transactional replacement.
+- `calibrationApp/scripts/build_roi_editor.py`: PyInstaller build entrypoint.
+- `calibrationApp/requirements-roi-editor.txt` and `calibrationApp/requirements-roi-editor-build.txt`: runtime/build dependencies.
+- `calibrationApp/tests/test_roi_editor.py`: unit and July-fixture integration tests.
 - MacBook-only fixture paths: `/Users/ddharmap/dataProcessing/pth2_virtShoal/out_id0_30fps_20260716122351.avi` and `/Users/ddharmap/dataProcessing/pth2_virtShoal/ROIdef2026-07-16T12_13_33.csv`.
 
 ## Decisions And Constraints
@@ -41,7 +41,7 @@ Next-session focus: validate the standalone ROI editor on a behavioural machine,
 ## Next Steps
 
 1. Clone/fetch the branch on one behavioural machine and record OS, architecture, camera model, IDS driver/SDK, active camera config, image dimensions, and projector geometry.
-2. Build a native frozen artifact following `roi_editor/README.md`; on Windows, build on Windows. Confirm it launches without a separately activated Python environment.
+2. Build a native frozen artifact following `calibrationApp/README.md`; on Windows, build on Windows. Confirm it launches without a separately activated Python environment.
 3. Use a recorded rig video to test detection, move/resize/add/delete, two-click identity swap, save, and reopen.
 4. Inspect the QC PNG and CSV; then load the CSV in the active 35-dish Bonsai workflow.
 5. Project a safe test stimulus into every dish and verify label-to-dish identity. Preserve screenshots/photos and any mismatches.

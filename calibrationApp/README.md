@@ -4,15 +4,41 @@ This offline desktop application detects circular behavioral dishes in an image
 or video, supports manual correction, and writes the legacy ROI CSV consumed by
 the 35-dish Bonsai workflows.
 
+All application code, tests, dependency declarations, and build tooling live
+inside this `calibrationApp/` directory. The examples below start at the
+repository root and enter that directory explicitly.
+
 The first version intentionally does not control an IDS camera or projector. It
 uses saved media so detection and editing can be validated on macOS before the
 hardware integration phase on the behavioral rigs.
 
-## Install and run
+## Use the frozen application (recommended for lab users)
+
+1. Copy the platform-specific `DishROIEditor` release to the behavioural
+   computer. On macOS, open `DishROIEditor.app`; on Windows, open
+   `DishROIEditor.exe` inside the distributed `DishROIEditor` folder.
+2. Select **Open media** and choose a still image or recorded video from the
+   behavioural setup.
+3. For the 35-dish PTH2 arrangement, select **PTH2 preset**, then **Detect**.
+4. Inspect every green circle and red identity label against the physical dish
+   layout. Do not save solely because 35 circles were found.
+5. Refine the overlay as needed using the controls below. Use **Order** only
+   when you intentionally want to assign identities from top-left to
+   bottom-right.
+6. Select **Save ROI** and choose an `ROIdef*.csv` filename.
+7. Inspect the generated labelled `*_qc.png`, reopen the CSV in this app, and
+   then load it in Bonsai. During the first rig tests, project a safe test
+   stimulus into each dish to verify the identity mapping.
+
+The frozen application carries its own Python and dependencies. Lab users do
+not need to install Python, OpenCV, NumPy, or activate an environment.
+
+## Run from source (developers)
 
 Python 3.10 or newer is recommended.
 
 ```bash
+cd calibrationApp
 python3 -m pip install -r requirements-roi-editor.txt
 python3 -m roi_editor /path/to/video.avi
 ```
@@ -26,6 +52,7 @@ dependencies installed.
 On the current MacBook fixture:
 
 ```bash
+cd calibrationApp
 python3 -m roi_editor /Users/ddharmap/dataProcessing/pth2_virtShoal/out_id0_30fps_20260716122351.avi
 ```
 
@@ -77,6 +104,7 @@ a larger format.
 ## Tests
 
 ```bash
+cd calibrationApp
 python3 -m unittest discover -s tests -v
 ```
 
@@ -89,6 +117,7 @@ Build in a new virtual environment so the bundle contains only its declared,
 tested dependencies:
 
 ```bash
+cd calibrationApp
 python3 -m venv .venv-build
 source .venv-build/bin/activate
 python -m pip install -r requirements-roi-editor-build.txt
@@ -101,3 +130,15 @@ folder is `dist/DishROIEditor/`. PyInstaller freezes Python, NumPy, OpenCV, and
 the application code, so later changes to a user's Python packages cannot alter
 the released app. Builds are platform-specific and must be produced separately
 on macOS and Windows.
+
+On Windows, activate the build environment with
+`.venv-build\Scripts\activate` instead of the macOS/Linux `source` command.
+
+## Current scope
+
+- Implemented: offline image/video loading, configurable dish detection,
+  visual refinement, identity correction, legacy ROI export, QC/provenance
+  sidecars, and frozen application packaging.
+- Not yet implemented: direct IDS-camera capture and standalone
+  projector-camera calibration. Keep the existing Bonsai workflows available
+  as a fallback during behavioural-machine testing.

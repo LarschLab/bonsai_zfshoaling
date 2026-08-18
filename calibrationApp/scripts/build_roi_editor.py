@@ -12,6 +12,7 @@ def main() -> int:
     if importlib.util.find_spec("PyInstaller") is None:
         print(
             "PyInstaller is not installed. Create a clean build environment and run:\n"
+            "  cd calibrationApp\n"
             "  python -m pip install -r requirements-roi-editor-build.txt",
             file=sys.stderr,
         )
