@@ -357,7 +357,7 @@ class RoiEditorApp:
                 y,
                 text=circle.label or str(index + 1),
                 fill="#ff3355",
-                font=("TkDefaultFont", max(9, int(13 * min(1.0, self.scale)))),
+                font=("TkDefaultFont", 28, "bold"),
                 tags="overlay",
             )
 
